@@ -1,5 +1,5 @@
 import React from 'react'
-import FormsWrapper from '../../../components/common/form/Formik'
+import FormsWrapper, { showFieldError } from '../../../components/common/form/Formik'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
@@ -36,24 +36,27 @@ export default function Form(props) {
                                         id="username" 
                                         name="username"
                                         onBlur={handleBlur}
-                                        className={`p-col-12 p-my-3  ${errors.username && touched.username? 'p-invalid' : ''}`}
+                                        className={`p-col-12   ${errors.username && touched.username? 'p-invalid' : ''}`}
                                         value={values.username} 
                                         onChange={handleChange} />
                                     <label htmlFor="username">Username</label>
                                 </span>
+                                {showFieldError("username", errors, touched)}
+
                             </div>
-                            <div className="p-field">
+                            <div className="p-field p-my-3">
                                 <span className="p-float-label">
                                     <InputText 
                                         type="text" 
                                         id="password" 
                                         name="password"
                                         onBlur={handleBlur}
-                                        className={`p-col-12 p-my-3  ${errors.password && touched.password? 'p-invalid' : ''}`}
+                                        className={`p-col-12  ${errors.password && touched.password? 'p-invalid' : ''}`}
                                         value={values.password} 
                                         onChange={handleChange} />
                                     <label htmlFor="username">Password</label>
                                 </span>
+                                {showFieldError("password", errors, touched)}
                             </div>
                             <Button label="Submit"></Button>
 

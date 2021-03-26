@@ -33,7 +33,7 @@ export const showFieldError = (name, errors, touched) => {
         <>
             {touched[name] && errors[name] && errors[name].trim() !== "" ?
                 <div className="mb-2">
-                    <small className="text-danger">{errors[name]}</small>
+                    <small className="p-error">{errors[name]}</small>
                 </div>
 
                 : null}
