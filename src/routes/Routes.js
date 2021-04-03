@@ -1,4 +1,4 @@
-import React, {lazy} from "react";
+import React, { lazy } from "react";
 import {
     BrowserRouter as Router,
     Route,
@@ -6,8 +6,9 @@ import {
     Redirect
 } from "react-router-dom";
 import AuthLayout from "../layout/Auth";
-import { auth as AuthRoutes } from ".";
+import { auth as AuthRoutes, dashboard as DashboardRoutes } from ".";
 import ScrollToTop from "../components/common/ScrollToTop";
+import DashboardLayout from "../layout/Dashboard";
 
 
 
@@ -28,6 +29,7 @@ const Routes = () => (
     <Router>
         <ScrollToTop>
             <Switch>
+                {childRoutes(DashboardLayout, DashboardRoutes)}
                 {childRoutes(AuthLayout, AuthRoutes)}
             </Switch>
         </ScrollToTop>
