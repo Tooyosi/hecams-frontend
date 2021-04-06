@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import classNames from 'classnames';
 import { Sidebar } from 'primereact/sidebar';
-import { RTLContext } from '../../App';;
+import { RTLContext } from 'App';;
 
 const AppRightMenu = (props) => {
 

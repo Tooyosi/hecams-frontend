@@ -5,15 +5,15 @@ import {
     Switch,
     Redirect
 } from "react-router-dom";
-import AuthLayout from "../layout/Auth";
+import AuthLayout from "layout/Auth";
 import {
     auth as AuthRoutes,
     dashboard as DashboardRoutes,
     landing as LandingRoutes
 } from ".";
-import ScrollToTop from "../components/common/ScrollToTop";
-import DashboardLayout from "../layout/Dashboard";
-import LandingLayout from "../layout/Landing";
+import ScrollToTop from "components/common/ScrollToTop";
+import DashboardLayout from "layout/Dashboard";
+import LandingLayout from "layout/Landing";
 
 
 

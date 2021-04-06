@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import AppInlineMenu from '../components/common/AppInlineMenu';
-import AppMenu from '../components/common/AppMenu';
-import AppRightMenu from '../components/common/AppRightMenu';
-import AppTopbar from '../components/common/AppTopbar';
+import AppInlineMenu from 'components/common/AppInlineMenu';
+import AppMenu from 'components/common/AppMenu';
+import AppRightMenu from 'components/common/AppRightMenu';
+import AppTopbar from 'components/common/AppTopbar';
 
 import PrimeReact from 'primereact/api';
 

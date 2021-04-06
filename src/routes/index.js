@@ -1,10 +1,10 @@
 import  { lazy } from 'react';
 
-const Login = lazy(()=> import("../pages/Auth/Login/index"))
-const Forgot = lazy(()=> import("../pages/Auth/Forgot/index"))
-const Remember = lazy(()=> import("../pages/Auth/Remember/index"))
-const Dashboard = lazy(()=> import("../pages/Dashboard/index"))
-const LandingPage = lazy(()=> import("../pages/Landing/index"))
+const Login = lazy(()=> import("pages/Auth/Login/index"))
+const Forgot = lazy(()=> import("pages/Auth/Forgot/index"))
+const Remember = lazy(()=> import("pages/Auth/Remember/index"))
+const Dashboard = lazy(()=> import("pages/Dashboard/index"))
+const LandingPage = lazy(()=> import("pages/Landing/index"))
 
 const landingRoutes = {
   path: "/",

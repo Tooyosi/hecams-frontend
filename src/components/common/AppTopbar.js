@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { CSSTransition } from 'react-transition-group';
-import { RTLContext } from '../../App';
+import { RTLContext } from 'App';
 
 
 const AppTopbar = (props) => {

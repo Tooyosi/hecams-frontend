@@ -1,8 +1,8 @@
 import React, { useState, useRef, useContext } from 'react';
 import { Link } from "react-router-dom";
 import Form from './Form';
-import { onChange } from '../../../utilities';
-import { AlertContext } from '../../../layout/Auth';
+import { onChange } from 'utilities';
+import { AlertContext } from 'layout/Auth';
 
 export default function Login() {
 

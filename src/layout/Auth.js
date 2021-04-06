@@ -1,5 +1,5 @@
 import React, { createContext, useState, useRef, useEffect } from "react";
-import Logo from "../components/common/Logo";
+import Logo from "components/common/Logo";
 import { Messages } from 'primereact/messages';
 
 

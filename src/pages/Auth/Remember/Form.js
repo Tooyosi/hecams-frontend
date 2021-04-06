@@ -1,5 +1,5 @@
 import React from 'react'
-import FormsWrapper, { showFieldError } from '../../../components/common/form/Formik'
+import FormsWrapper, { showFieldError } from 'components/common/form/Formik'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';

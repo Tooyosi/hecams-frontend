@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 import { Tooltip } from 'primereact/tooltip';
-import { RTLContext } from '../../App';
+import { RTLContext } from 'App';
 
 const AppInlineMenu = (props) => {
 

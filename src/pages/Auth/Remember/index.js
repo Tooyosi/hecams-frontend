@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react'
 import Form from './Form'
-import { onChange, onDropdownChange } from '../../../utilities'
-import { Messages } from 'primereact/messages';
-import { AlertContext } from '../../../layout/Auth';
+import { onChange } from 'utilities'
+import { AlertContext } from 'layout/Auth';
 
 export default function Remember() {
 
