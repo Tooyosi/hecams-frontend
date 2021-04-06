@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { Route } from 'react-router-dom'
 import AppInlineMenu from '../components/common/AppInlineMenu';
 import AppMenu from '../components/common/AppMenu';
 import AppRightMenu from '../components/common/AppRightMenu';
@@ -31,7 +30,6 @@ const DashboardLayout = ({ children }) => {
     const [mobileTopbarActive, setMobileTopbarActive] = useState(false);
     const [menuTheme, setMenuTheme] = useState('light');
     const [topbarTheme, setTopbarTheme] = useState('blue');
-    const [theme, setTheme] = useState('indigo');
     const [isInputBackgroundChanged, setIsInputBackgroundChanged] = useState(false);
     const [inlineMenuActive, setInlineMenuActive] = useState({});
     const [newThemeLoaded, setNewThemeLoaded] = useState(false);
@@ -162,44 +160,6 @@ const DashboardLayout = ({ children }) => {
         }
     ];
 
-    const routes = [
-        { parent: '', label: '' },
-        { parent: 'Favorites', label: 'Dashboard Analytics' },
-        { parent: 'UI Kit', label: 'Form Layout' },
-        { parent: 'UI Kit', label: 'Input' },
-        { parent: 'UI Kit', label: 'Float Label' },
-        { parent: 'UI Kit', label: 'Invalid State' },
-        { parent: 'UI Kit', label: 'Button' },
-        { parent: 'UI Kit', label: 'Table' },
-        { parent: 'UI Kit', label: 'List' },
-        { parent: 'UI Kit', label: 'Panel' },
-        { parent: 'UI Kit', label: 'Tree' },
-        { parent: 'UI Kit', label: 'Overlay' },
-        { parent: 'UI Kit', label: 'Menu' },
-        { parent: 'UI Kit', label: 'Message' },
-        { parent: 'UI Kit', label: 'File' },
-        { parent: 'UI Kit', label: 'Chart' },
-        { parent: 'UI Kit', label: 'Misc' },
-        { parent: 'Utilities', label: 'Display' },
-        { parent: 'Utilities', label: 'Elevation' },
-        { parent: 'Utilities', label: 'Flexbox' },
-        { parent: 'Utilities', label: 'Icons' },
-        { parent: 'Utilities', label: 'Widgets' },
-        { parent: 'Utilities', label: 'Grid' },
-        { parent: 'Utilities', label: 'Spacing' },
-        { parent: 'Utilities', label: 'Typography' },
-        { parent: 'Utilities', label: 'Text' },
-        { parent: 'Pages', label: 'Crud' },
-        { parent: 'Pages', label: 'Calendar' },
-        { parent: 'Pages', label: 'Timeline' },
-        { parent: 'Pages', label: 'Invoice' },
-        { parent: 'Pages', label: 'Login' },
-        { parent: 'Pages', label: 'Help' },
-        { parent: 'Pages', label: 'Empty' },
-        { parent: 'Pages', label: 'Access' },
-        { parent: 'Start', label: 'Documentation' }
-    ]
-
     useEffect(() => {
         if (menuMode === 'overlay') {
             hideOverlayMenu()
@@ -213,14 +173,6 @@ const DashboardLayout = ({ children }) => {
         onColorModeChange(colorMode)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const onMenuThemeChange = (theme) => {
-        setMenuTheme(theme)
-    }
-
-    const onTopbarThemeChange = (theme) => {
-        setTopbarTheme(theme);
-    }
-
     useEffect(() => {
         const appLogoLink = document.getElementById('app-logo');
 
@@ -232,12 +184,7 @@ const DashboardLayout = ({ children }) => {
         }
     }, [topbarTheme])
 
-    const onThemeChange = (theme) => {
-        setTheme(theme);
-        const themeLink = document.getElementById('theme-css');
-        const themeHref = 'assets/theme/' + theme + '/theme-' + colorMode + '.css';
-        replaceLink(themeLink, themeHref);
-    }
+
 
     const onColorModeChange = (mode) => {
         setColorMode(mode);
@@ -301,27 +248,6 @@ const DashboardLayout = ({ children }) => {
                 }
             });
         }
-    }
-
-    const onInputStyleChange = (inputStyle) => {
-        setInputStyle(inputStyle);
-    }
-
-    const onRipple = (e) => {
-        PrimeReact.ripple = e.value;
-        setRipple(e.value);
-    }
-
-    const onInlineMenuPositionChange = (mode) => {
-        setInlineMenuPosition(mode)
-    }
-
-    const onMenuModeChange = (mode) => {
-        setMenuMode(mode);
-    }
-
-    const onRTLChange = () => {
-        setRTL(prevState => !prevState);
     }
 
     const onMenuClick = (event) => {

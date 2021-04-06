@@ -36,10 +36,10 @@ export default function Form(props) {
                                         id="username" 
                                         name="username"
                                         onBlur={handleBlur}
-                                        className={`p-col-12   ${errors.username && touched.username? 'p-invalid' : ''}`}
+                                        className={`width-100  ${errors.username && touched.username? 'p-invalid' : ''}`}
                                         value={values.username} 
                                         onChange={handleChange} />
-                                    <label htmlFor="username">Username</label>
+                                    <label htmlFor="username">Staff ID</label>
                                 </span>
                                 {showFieldError("username", errors, touched)}
 
@@ -51,14 +51,14 @@ export default function Form(props) {
                                         id="password" 
                                         name="password"
                                         onBlur={handleBlur}
-                                        className={`p-col-12  ${errors.password && touched.password? 'p-invalid' : ''}`}
+                                        className={`width-100 ${errors.password && touched.password? 'p-invalid' : ''}`}
                                         value={values.password} 
                                         onChange={handleChange} />
                                     <label htmlFor="username">Password</label>
                                 </span>
                                 {showFieldError("password", errors, touched)}
                             </div>
-                            <Button label="Submit"></Button>
+                            <Button label="Sign in" className="width-100" ></Button>
 
                         </form>
                     )

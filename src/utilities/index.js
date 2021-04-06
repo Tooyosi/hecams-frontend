@@ -11,3 +11,16 @@ export const onChange = (e, state, changeState) => {
         }
     });
 }
+
+export const onDropdownChange = (e, state, changeState, formName) => {
+    const input = e.target;
+    const value = input.type === 'checkbox' ? input.checked : input.value;
+
+    changeState({
+        ...state,
+        [formName]: {
+            ...state[formName],
+            [input.name]: value.code,
+        }
+    });
+}

@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'prismjs/themes/prism-coy.css';
-// import './App.scss';
+import './App.scss';
 ReactDOM.hydrate(
   <React.StrictMode>
     <App />

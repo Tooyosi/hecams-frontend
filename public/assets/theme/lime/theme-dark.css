@@ -880,7 +880,9 @@
   transition-duration: 0.2s;
 }
 
-.p-input-icon-left > i:first-of-type {
+.p-input-icon-left > i:first-of-type,
+.p-input-icon-left > svg:first-of-type,
+.p-input-icon-left > .p-input-prefix {
   left: 0.75rem;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -893,7 +895,9 @@
   left: 2.5rem;
 }
 
-.p-input-icon-right > i:last-of-type {
+.p-input-icon-right > i:last-of-type,
+.p-input-icon-right > svg:last-of-type,
+.p-input-icon-right > .p-input-suffix {
   right: 0.75rem;
   color: rgba(255, 255, 255, 0.6);
 }

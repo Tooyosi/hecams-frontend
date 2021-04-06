@@ -1,13 +1,12 @@
-import React, { useState, useRef } from 'react'
-import { Panel } from 'primereact/panel';
-import { InputText } from 'primereact/inputtext';
+import React, { useState, useRef, useContext } from 'react';
+import { Link } from "react-router-dom";
 import Form from './Form';
 import { onChange } from '../../../utilities';
-import { Messages } from 'primereact/messages';
+import { AlertContext } from '../../../layout/Auth';
 
 export default function Login() {
-    const message = useRef();
 
+    let [message, setMessage] = useContext(AlertContext)
     const [state, changeState] = useState({
         formLogin: {
             username: '',
@@ -20,33 +19,36 @@ export default function Login() {
     }
 
     const addMessage = (severity, content) => {
-        message.current.show({ severity, content });
+
+        setMessage({
+            severity, content, toggle: !message.toggle
+        })
     };
 
     const handleSubmit = () => {
         addMessage("success", "No backend yet :)")
     }
     return (
-        <div>
-            <div className="card">
-                <div className="card-body p-px-3 p-py-3">
-                    <div className="input-panel p-d-flex p-flex-column p-px-3 p-py-3">
-                        <h2>Login</h2>
-                        <div>
-                            <Form
-                                formControl={state.formLogin}
-                                onChange={handleChange}
-                                formName="formLogin"
-                                onSubmit={handleSubmit}
-                            />
-                        </div>
+        <>
+            <div className="p-text-center">
 
-                    </div>
-                    <Messages className="p-d-block" life={400000000000000} sticky ref={message} />
+                <h1 className="text-primary">Staff Login</h1>
+                <p className="p-px-2 p-pb-4">Enter your credientials to access your online workspace</p>
 
-                </div>
+            </div>
+            <div>
+                <Form
+                    formControl={state.formLogin}
+                    onChange={handleChange}
+                    formName="formLogin"
+                    onSubmit={handleSubmit}
+                />
+                <p className="p-text-right fs-small p-my-2">Can’t Login? <Link to="/forgot"> click here</Link></p>
             </div>
 
-        </div>
+
+            {/* <Messages className="p-d-block" sticky ref={message} /> */}
+
+        </>
     )
 }
