@@ -1,4 +1,4 @@
-import React, { createContext, useState, useRef, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import Logo from "components/common/Logo";
 import { Messages } from 'primereact/messages';
 
@@ -6,7 +6,6 @@ import { Messages } from 'primereact/messages';
 export const AlertContext = createContext();
 
 const Auth = ({ children }) => {
-  const messageRef = useRef();
 
   const [message, setMessage] = useState({
     content: '',

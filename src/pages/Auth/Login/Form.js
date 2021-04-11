@@ -26,6 +26,7 @@ export default function Form(props) {
                         errors,
                         handleBlur,
                         handleChange,
+                        isSubmitting,
                         handleSubmit } = props;
                     return (
                         <form onChange={onChange} onSubmit={handleSubmit} name={formName} >
@@ -58,7 +59,7 @@ export default function Form(props) {
                                 </span>
                                 {showFieldError("password", errors, touched)}
                             </div>
-                            <Button label="Sign in" className="width-100" ></Button>
+                            <Button label={isSubmitting? 'Loading...please wait': `Sign in`} disabled={isSubmitting} className="width-100" ></Button>
 
                         </form>
                     )

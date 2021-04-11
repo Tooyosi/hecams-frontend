@@ -1,16 +1,18 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from "react-router-dom";
 import Form from './Form';
 import { onChange } from 'utilities';
 import { AlertContext } from 'layout/Auth';
-
+import { login } from 'service/authService';
+import { saveCookies } from 'service';
 export default function Login() {
 
     let [message, setMessage] = useContext(AlertContext)
     const [state, changeState] = useState({
         formLogin: {
             username: '',
-            password: ''
+            password: '',
+            loading: false
         }
     })
 
@@ -25,8 +27,34 @@ export default function Login() {
         })
     };
 
-    const handleSubmit = () => {
-        addMessage("success", "No backend yet :)")
+    const handleSubmit = async (formFields, { resetForm, setFieldError, setSubmitting }) => {
+        try {
+            let { formLogin } = state
+            let { data } = await login(formLogin)
+            // Check if login action is successful
+            if (data["action-successful"]) {
+
+                // save cookies and redirect
+                saveCookies({ token: data["access-token"], refreshToken: data["refresh-token"] }, () => {
+
+                    addMessage("success", "Successful")
+                    setTimeout(() => {
+                        localStorage.setItem("loggedIn", "true")
+                        window.location.href = "/dashboard"
+                    }, 1000)
+
+                })
+            }else{
+                addMessage("error", "An error occured during login")
+            }
+        } catch (error) {
+            if (error && error.response) {
+                let { data } = error.response
+                addMessage("error", data.message)
+            } else {
+                addMessage("error", "An error occured during login")
+            }
+        }
     }
     return (
         <>

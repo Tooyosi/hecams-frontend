@@ -10,6 +10,7 @@ import PrimeReact from 'primereact/api';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
+import DashboardGuard from 'routes/guards/DashboardGuard';
 
 
 export const RTLContext = React.createContext();
@@ -29,7 +30,7 @@ const DashboardLayout = ({ children }) => {
     const [ripple, setRipple] = useState(true);
     const [mobileTopbarActive, setMobileTopbarActive] = useState(false);
     const [menuTheme, setMenuTheme] = useState('light');
-    const [topbarTheme, setTopbarTheme] = useState('blue');
+    const [topbarTheme, setTopbarTheme] = useState('green');
     const [isInputBackgroundChanged, setIsInputBackgroundChanged] = useState(false);
     const [inlineMenuActive, setInlineMenuActive] = useState({});
     const [newThemeLoaded, setNewThemeLoaded] = useState(false);
@@ -43,122 +44,7 @@ const DashboardLayout = ({ children }) => {
     let menuClick;
     let inlineMenuClick;
 
-    const menu = [
-        {
-            label: 'Favorites', icon: 'pi pi-fw pi-home',
-            items: [
-                { label: 'Dashboard Sales', icon: 'pi pi-fw pi-home', to: '/', badge: '4', badgeClassName: 'p-badge-info' },
-                { label: 'Dashboard Analytics', icon: 'pi pi-fw pi-home', to: '/favorites/dashboardanalytics', badge: '2', badgeClassName: 'p-badge-success' },
-            ]
-        },
-        {
-            label: 'UI Kit', icon: 'pi pi-fw pi-star',
-            items: [
-                { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout', badge: '6', badgeClassName: 'p-badge-warning' },
-                { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input', badge: '6', badgeClassName: 'p-badge-danger' },
-                { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/uikit/floatlabel' },
-                { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', to: '/uikit/invalidstate' },
-                { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', className: 'rotated-icon' },
-                { label: 'Table', icon: 'pi pi-fw pi-table', to: '/uikit/table', badge: '6', badgeClassName: 'p-badge-help' },
-                { label: 'List', icon: 'pi pi-fw pi-list', to: '/uikit/list' },
-                { label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/uikit/tree' },
-                { label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/uikit/panel' },
-                { label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/uikit/overlay' },
-                { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/uikit/menu' },
-                { label: 'Message', icon: 'pi pi-fw pi-comment', to: '/uikit/message' },
-                { label: 'File', icon: 'pi pi-fw pi-file', to: '/uikit/file' },
-                { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/uikit/chart' },
-                { label: 'Misc', icon: 'pi pi-fw pi-circle-off', to: '/uikit/misc' },
-            ]
-        },
-        {
-            label: 'Utilities', icon: 'pi pi-fw pi-compass',
-            items: [
-                { label: 'Display', icon: 'pi pi-fw pi-desktop', to: '/utilities/display' },
-                { label: 'Elevation', icon: 'pi pi-fw pi-external-link', to: '/utilities/elevation' },
-                { label: 'Flexbox', icon: 'pi pi-fw pi-directions', to: '/utilities/flexbox' },
-                { label: 'Icons', icon: 'pi pi-fw pi-search', to: '/utilities/icons' },
-                { label: 'Widgets', icon: 'pi pi-fw pi-star-o', to: '/utilities/widgets' },
-                { label: 'Grid System', icon: 'pi pi-fw pi-th-large', to: '/utilities/grid' },
-                { label: 'Spacing', icon: 'pi pi-fw pi-arrow-right', to: '/utilities/spacing' },
-                { label: 'Typography', icon: 'pi pi-fw pi-align-center', to: '/utilities/typography' },
-                { label: 'Text', icon: 'pi pi-fw pi-pencil', to: '/utilities/text' },
-            ]
-        },
-        {
-            label: 'Pages', icon: 'pi pi-fw pi-briefcase',
-            items: [
-                { label: 'Crud', icon: 'pi pi-fw pi-pencil', to: '/pages/crud' },
-                { label: 'Calendar', icon: 'pi pi-fw pi-calendar-plus', to: '/pages/calendar' },
-                { label: 'Timeline', icon: 'pi pi-fw pi-calendar', to: '/pages/timeline' },
-                {
-                    label: 'Landing', icon: 'pi pi-fw pi-globe', badge: '2', badgeClassName: 'p-badge-warning',
-                    items: [
-                        { label: 'Static', icon: 'pi pi-fw pi-globe', url: 'assets/pages/landing.html', target: '_blank' },
-                        { label: 'Component', icon: 'pi pi-fw pi-globe', to: '/landing' }
-                    ]
-                }, { label: 'Login', icon: 'pi pi-fw pi-sign-in', to: '/login' },
-                { label: 'Invoice', icon: 'pi pi-fw pi-dollar', to: '/pages/invoice' },
-                { label: 'Help', icon: 'pi pi-fw pi-question-circle', to: '/pages/help' },
-                { label: 'Error', icon: 'pi pi-fw pi-times-circle', to: '/error' },
-                { label: 'Not Found', icon: 'pi pi-fw pi-exclamation-circle', to: '/notfound' },
-                { label: 'Access Denied', icon: 'pi pi-fw pi-lock', to: '/access' },
-                { label: 'Empty Page', icon: 'pi pi-fw pi-circle-off', to: '/pages/empty' }
-            ]
-        },
-        {
-            label: 'Hierarchy', icon: 'pi pi-fw pi-align-left',
-            items: [
-                {
-                    label: 'Submenu 1', icon: 'pi pi-fw pi-align-left',
-                    items: [
-                        {
-                            label: 'Submenu 1.1', icon: 'pi pi-fw pi-align-left',
-                            items: [
-                                { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-align-left' },
-                                { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-align-left' },
-                                { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-align-left' },
-                            ]
-                        },
-                        {
-                            label: 'Submenu 1.2', icon: 'pi pi-fw pi-align-left',
-                            items: [
-                                { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-align-left' },
-                                { label: 'Submenu 1.2.2', icon: 'pi pi-fw pi-align-left' }
-                            ]
-                        },
-                    ]
-                },
-                {
-                    label: 'Submenu 2', icon: 'pi pi-fw pi-align-left',
-                    items: [
-                        {
-                            label: 'Submenu 2.1', icon: 'pi pi-fw pi-align-left',
-                            items: [
-                                { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-align-left' },
-                                { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-align-left' },
-                                { label: 'Submenu 2.1.3', icon: 'pi pi-fw pi-align-left' },
-                            ]
-                        },
-                        {
-                            label: 'Submenu 2.2', icon: 'pi pi-fw pi-align-left',
-                            items: [
-                                { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-align-left' },
-                                { label: 'Submenu 2.2.2', icon: 'pi pi-fw pi-align-left' }
-                            ]
-                        },
-                    ]
-                }
-            ]
-        },
-        {
-            label: 'Start', icon: 'pi pi-fw pi-download',
-            items: [
-                { label: 'Documentation', icon: 'pi pi-fw pi-question', to: '/start/documentation' },
-                { label: 'Buy Now', icon: 'pi pi-fw pi-shopping-cart', command: () => { window.location = "https://www.primefaces.org/store" } }
-            ]
-        }
-    ];
+
 
     useEffect(() => {
         if (menuMode === 'overlay') {
@@ -177,10 +63,10 @@ const DashboardLayout = ({ children }) => {
         const appLogoLink = document.getElementById('app-logo');
 
         if (topbarTheme === 'white' || topbarTheme === 'yellow' || topbarTheme === 'amber' || topbarTheme === 'orange' || topbarTheme === 'lime') {
-            appLogoLink.src = 'assets/layout/images/logo-dark.svg';
+            // appLogoLink.src = 'assets/layout/images/logo-dark.svg';
         }
         else {
-            appLogoLink.src = 'assets/layout/images/logo-light.svg';
+            // appLogoLink.src = 'assets/layout/images/logo-light.svg';
         }
     }, [topbarTheme])
 
@@ -203,7 +89,7 @@ const DashboardLayout = ({ children }) => {
             setTopbarTheme('dark');
         } else {
             setMenuTheme('light');
-            setTopbarTheme('blue');
+            setTopbarTheme('green');
 
         }
 
@@ -305,9 +191,6 @@ const DashboardLayout = ({ children }) => {
         setMenuActive((prevState) => !prevState);
     }
 
-    const onRightMenuButtonClick = () => {
-        setRightMenuActive((prevState) => !prevState)
-    }
 
     const onMobileTopbarButtonClick = (event) => {
         setMobileTopbarActive((prevState) => !prevState);
@@ -367,17 +250,6 @@ const DashboardLayout = ({ children }) => {
         return /(MSIE|Trident\/|Edge\/)/i.test(window.navigator.userAgent)
     }
 
-    const onInlineMenuClick = (e, key) => {
-        let menuKeys = { ...inlineMenuActive };
-        if (key !== currentInlineMenuKey.current && currentInlineMenuKey.current) {
-            menuKeys[currentInlineMenuKey.current] = false;
-        }
-
-        menuKeys[key] = !menuKeys[key];
-        setInlineMenuActive(menuKeys);
-        currentInlineMenuKey.current = key;
-        inlineMenuClick = true;
-    }
 
     const layoutContainerClassName = classNames('layout-wrapper ', 'layout-menu-' + menuTheme + ' layout-topbar-' + topbarTheme, {
         'layout-menu-static': menuMode === 'static',
@@ -396,36 +268,33 @@ const DashboardLayout = ({ children }) => {
 
     return (
         <React.Suspense fallback={<i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>}>
+            <DashboardGuard>
+                <RTLContext.Provider value={isRTL}>
+                    <div className={layoutContainerClassName} onClick={onDocumentClick}>
+                        <AppTopbar horizontal={isHorizontal()}
+                            activeTopbarItem={activeTopbarItem}
+                            onMenuButtonClick={onMenuButtonClick}
+                            onTopbarItemClick={onTopbarItemClick}
+                            onMobileTopbarButtonClick={onMobileTopbarButtonClick} mobileTopbarActive={mobileTopbarActive}
+                            searchActive={searchActive} onSearch={onSearch} />
 
-            <RTLContext.Provider value={isRTL}>
-                <div className={layoutContainerClassName} onClick={onDocumentClick}>
-                    <AppTopbar horizontal={isHorizontal()}
-                        activeTopbarItem={activeTopbarItem}
-                        onMenuButtonClick={onMenuButtonClick}
-                        onTopbarItemClick={onTopbarItemClick}
-                        onRightMenuButtonClick={onRightMenuButtonClick}
-                        onMobileTopbarButtonClick={onMobileTopbarButtonClick} mobileTopbarActive={mobileTopbarActive}
-                        searchActive={searchActive} onSearch={onSearch} />
-
-                    <div className="menu-wrapper" onClick={onMenuClick}>
-                        <div className="layout-menu-container">
-                            {(inlineMenuPosition === 'top' || inlineMenuPosition === 'both') && <AppInlineMenu menuKey="top" inlineMenuActive={inlineMenuActive} onInlineMenuClick={onInlineMenuClick} horizontal={isHorizontal()} menuMode={menuMode} />}
-                            <AppMenu model={menu} onMenuItemClick={onMenuItemClick} onRootMenuItemClick={onRootMenuItemClick}
-                                menuMode={menuMode} active={menuActive} />
-                            {(inlineMenuPosition === 'bottom' || inlineMenuPosition === 'both') && <AppInlineMenu menuKey="bottom" inlineMenuActive={inlineMenuActive} onInlineMenuClick={onInlineMenuClick} horizontal={isHorizontal()} menuMode={menuMode} />}
+                        <div className="menu-wrapper" onClick={onMenuClick}>
+                            <div className="layout-menu-container">
+                                <AppMenu onMenuItemClick={onMenuItemClick} onRootMenuItemClick={onRootMenuItemClick}
+                                    menuMode={menuMode} active={menuActive} />
+                            </div>
                         </div>
+
+                        <div className="layout-main">
+                            {children}
+                        </div>
+
+
+
+                        {mobileMenuActive && <div className="layout-mask modal-in"></div>}
                     </div>
-
-                    <div className="layout-main">
-                        {children}
-                    </div>
-
-
-                    <AppRightMenu rightMenuActive={rightMenuActive} onRightMenuButtonClick={onRightMenuButtonClick} />
-
-                    {mobileMenuActive && <div className="layout-mask modal-in"></div>}
-                </div>
-            </RTLContext.Provider>
+                </RTLContext.Provider>
+            </DashboardGuard>
         </React.Suspense>
     );
 

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Ripple } from 'primereact/ripple';
 import { Tooltip } from 'primereact/tooltip';
-
+import model from "routes/index"
 const AppSubmenu = (props) => {
 
     const [activeIndex, setActiveIndex] = useState(null);
@@ -170,7 +170,7 @@ const AppSubmenu = (props) => {
 
 const AppMenu = (props) => {
 
-    return <AppSubmenu items={props.model} className="layout-menu"
+    return <AppSubmenu items={model} className="layout-menu"
         menuActive={props.active} onRootItemClick={props.onRootMenuItemClick}
         onMenuItemClick={props.onMenuItemClick} root={true} menuMode={props.menuMode}
         parentMenuItemActive={true} />
