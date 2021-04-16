@@ -41,3 +41,17 @@ export const showFieldError = (name, errors, touched) => {
 
     )
 }
+
+export const showUploadError = (name, errors) => {
+    return (
+        <>
+            { errors[name] && errors[name].trim() !== "" ?
+                <div className="mb-2">
+                    <small className="p-error">{errors[name]}</small>
+                </div>
+
+                : null}
+        </>
+
+    )
+}

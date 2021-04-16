@@ -65,10 +65,6 @@ p:last-child {
   margin-bottom: 0;
 }
 
-.text-primary {
-  color: #50A656;
-}
-
 .splash-screen {
   width: 100%;
   min-height: 100%;
@@ -4458,3 +4454,31 @@ body {
 }
 
 /* Add your customizations of layout here */
+.upload-div {
+  background: #ced4da;
+  color: #fff;
+}
+.upload-div i {
+  font-size: 3rem;
+}
+.upload-div span {
+  position: relative;
+  margin-left: 10px;
+  top: -14px;
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.text-primary {
+  color: #50A656;
+}
+
+.bg-primary {
+  background: #50A656 !important;
+}
+
+.bg-grey {
+  background: #ced4da;
+}

@@ -11,6 +11,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import DashboardGuard from 'routes/guards/DashboardGuard';
+import AppBreadcrumb from 'components/common/AppBreadcrumb';
 
 
 export const RTLContext = React.createContext();
@@ -265,6 +266,43 @@ const DashboardLayout = ({ children }) => {
         'layout-rtl': isRTL
     });
 
+    const routes = [
+        { parent: '', label: '' },
+        { parent: 'Favorites', label: 'Dashboard Analytics' },
+        { parent: 'UI Kit', label: 'Form Layout' },
+        { parent: 'UI Kit', label: 'Input' },
+        { parent: 'UI Kit', label: 'Float Label' },
+        { parent: 'UI Kit', label: 'Invalid State' },
+        { parent: 'UI Kit', label: 'Button' },
+        { parent: 'UI Kit', label: 'Table' },
+        { parent: 'UI Kit', label: 'List' },
+        { parent: 'UI Kit', label: 'Panel' },
+        { parent: 'UI Kit', label: 'Tree' },
+        { parent: 'UI Kit', label: 'Overlay' },
+        { parent: 'UI Kit', label: 'Menu' },
+        { parent: 'UI Kit', label: 'Message' },
+        { parent: 'UI Kit', label: 'File' },
+        { parent: 'UI Kit', label: 'Chart' },
+        { parent: 'UI Kit', label: 'Misc' },
+        { parent: 'Utilities', label: 'Display' },
+        { parent: 'Utilities', label: 'Elevation' },
+        { parent: 'Utilities', label: 'Flexbox' },
+        { parent: 'Utilities', label: 'Icons' },
+        { parent: 'Utilities', label: 'Widgets' },
+        { parent: 'Utilities', label: 'Grid' },
+        { parent: 'Utilities', label: 'Spacing' },
+        { parent: 'Utilities', label: 'Typography' },
+        { parent: 'Utilities', label: 'Text' },
+        { parent: 'Pages', label: 'Crud' },
+        { parent: 'Pages', label: 'Calendar' },
+        { parent: 'Pages', label: 'Timeline' },
+        { parent: 'Pages', label: 'Invoice' },
+        { parent: 'Pages', label: 'Login' },
+        { parent: 'Pages', label: 'Help' },
+        { parent: 'Pages', label: 'Empty' },
+        { parent: 'Pages', label: 'Access' },
+        { parent: 'Start', label: 'Documentation' }
+    ]
 
     return (
         <React.Suspense fallback={<i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>}>
@@ -286,7 +324,10 @@ const DashboardLayout = ({ children }) => {
                         </div>
 
                         <div className="layout-main">
-                            {children}
+                            {/* <AppBreadcrumb routes={routes} /> */}
+                            <div className="layout-content">
+                                {children}
+                            </div>
                         </div>
 
 

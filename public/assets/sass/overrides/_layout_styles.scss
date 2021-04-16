@@ -1,1 +1,32 @@
 /* Add your customizations of layout here */
+.upload-div{
+    background: rgba(206, 212, 218, 1);
+    color: $white;
+    i{
+        font-size: 3rem;
+    }
+    span{
+        position: relative;
+        margin-left: 10px;
+        top: -14px;
+    }
+}
+
+.visibility-hidden{
+    visibility: hidden;
+}
+
+
+.text-primary{
+    color: $primaryColor;
+}
+
+
+.bg-primary{
+    background: $primaryColor !important;
+}
+
+
+.bg-grey{
+    background: $grey
+}

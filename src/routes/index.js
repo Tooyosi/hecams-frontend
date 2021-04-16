@@ -5,6 +5,7 @@ const Forgot = lazy(() => import("pages/Auth/Forgot/index"))
 const Remember = lazy(() => import("pages/Auth/Remember/index"))
 const Dashboard = lazy(() => import("pages/Dashboard/index"))
 const LandingPage = lazy(() => import("pages/Landing/index"))
+const OnboardPage = lazy(() => import("pages/Onboard/index"))
 
 const landingRoutes = {
   path: "/",
@@ -44,6 +45,16 @@ const dashboardRoutes = {
   component: Dashboard,
 };
 
+
+const onboardRoutes = {
+  path: "/onboard",
+  name: "Onboard",
+  items: [
+    { label: 'Onboard', icon: 'pi pi-fw pi-user-edit', to: '/onboard'},
+  ],
+  component: OnboardPage,
+};
+
 export const auth = [
   authRoutes
 ]
@@ -53,10 +64,12 @@ export const landing = [
   landingRoutes
 ]
 export const dashboard = [
-  dashboardRoutes
+  dashboardRoutes,
+  onboardRoutes
 ]
 
 
 export default [
   dashboardRoutes,
+  onboardRoutes
 ]
