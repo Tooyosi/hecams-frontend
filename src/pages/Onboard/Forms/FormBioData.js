@@ -1,8 +1,9 @@
-import React from 'react'
-import FormsWrapper, { showFieldError } from 'components/common/form/Formik'
+import React, { useState, useEffect } from 'react'
+import FormsWrapper, { showFieldError, showUploadError } from 'components/common/form/Formik'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import * as Yup from "yup"
+import { toBase64Display } from 'utilities';
 
 export const validation = Yup.object().shape({
     firstname: Yup.string().required("Required"),
@@ -17,7 +18,26 @@ export const validation = Yup.object().shape({
 })
 export default function FormBioData(props) {
     let { formControl, onChange, formName } = props
+    let [passportImg, setPassportImg] = useState(null)
+    let [licenseImg, seLicenseImg] = useState(null)
+    useEffect(() => {
 
+        doConvertImg(formControl.passport, setPassportImg)
+    }, [formControl.passport])
+
+    useEffect(() => {
+
+        doConvertImg(formControl.license, seLicenseImg)
+    }, [formControl.license])
+
+    const doConvertImg = async (imgFile, setImageFile) => {
+        if (imgFile !== "" && imgFile !== null) {
+            let img = await toBase64Display(imgFile)
+            setImageFile(img)
+        } else {
+            setImageFile(null)
+        }
+    }
     return (
         <FormsWrapper values={formControl}
             handleSubmit={props.onSubmit}
@@ -35,6 +55,60 @@ export default function FormBioData(props) {
                         handleSubmit } = props;
                     return (
                         <form onChange={onChange} onSubmit={handleSubmit} name={formName} >
+                            <div className="p-grid">
+                                <div className="p-field p-col">
+                                    {formControl.passport !== "" && formControl.passport !== null ?
+                                    <>
+                                        <img className="width-100" src={passportImg} />
+                                        <label htmlFor="passport">Change</label>
+                                        </>
+                                        :
+                                        <label htmlFor="passport"
+                                            className={`${formControl.passport !== "" && formControl.passport !== null ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
+                                        > <i className="pi pi-cloud-upload " />
+
+                                            <p>Upload Passport photograph</p></label>
+                                    }
+                                    <InputText
+                                        type="file"
+                                        id="passport"
+                                        name="passport"
+                                        onBlur={handleBlur}
+                                        accept="image/*"
+                                        className={`width-100 p-d-none  ${errors.passport && touched.passport ? 'p-invalid' : ''}`}
+                                        // value={values.passport}
+                                        onChange={handleChange} />
+                                    {showUploadError("passport", errors)}
+                                </div>
+                                <div className="p-field p-col">
+                                    {formControl.license !== "" && formControl.license !== null ?
+                                    <>
+                                        <img className="width-100" src={licenseImg} />
+                                        <label htmlFor="license"> Change</label>                                      
+                                      </>  :
+                                        <label htmlFor="license"
+                                            className={`${formControl.license !== "" && formControl.license !== null ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
+
+                                        > <i className="pi pi-cloud-upload" />
+                                            <br />
+
+                                            <p>Upload Driver Liccense</p></label>
+                                    }
+
+                                    <InputText
+                                        type="file"
+                                        id="license"
+                                        accept="image/*"
+                                        name="license"
+                                        onBlur={handleBlur}
+                                        className={`width-100 p-d-none  ${errors.license && touched.license ? 'p-invalid' : ''}`}
+                                        // value={values.passport}
+                                        onChange={handleChange} />
+
+                                    {showUploadError("license", errors)}
+                                </div>
+
+                            </div>
                             <div className="p-formgrid p-grid">
                                 <div className="p-field p-col">
                                     <label htmlFor="firstname">Firstname</label>

@@ -34,7 +34,6 @@ export default function FormAddress(props) {
                         handleSubmit } = props;
                     return (
                         <form onChange={onChange} onSubmit={handleSubmit} name={formName} >
-
                             <div className="p-field">
                                 <label htmlFor="address1">Address 1</label>
                                 <InputText

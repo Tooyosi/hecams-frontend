@@ -48,7 +48,7 @@ export default function Form(props) {
                             <div className="p-field p-my-3">
                                 <span className="p-float-label">
                                     <InputText 
-                                        type="text" 
+                                        type="password" 
                                         id="password" 
                                         name="password"
                                         onBlur={handleBlur}

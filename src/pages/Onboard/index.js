@@ -22,6 +22,8 @@ export default function Onboard() {
         showModal: false,
         showSuccess: false,
         formBioData: {
+            passport: '',
+            license: '',
             firstname: '',
             lastname: '',
             middlename: '',
