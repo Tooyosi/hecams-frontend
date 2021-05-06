@@ -6,6 +6,7 @@ const Remember = lazy(() => import("pages/Auth/Remember/index"))
 const Dashboard = lazy(() => import("pages/Dashboard/index"))
 const LandingPage = lazy(() => import("pages/Landing/index"))
 const OnboardPage = lazy(() => import("pages/Onboard/index"))
+const ApplicationPage = lazy(() => import("pages/Application/index"))
 
 const landingRoutes = {
   path: "/",
@@ -55,6 +56,14 @@ const onboardRoutes = {
   component: OnboardPage,
 };
 
+
+const applicationRoutes = {
+  path: "/apply",
+  name: "Job Application",
+  component: ApplicationPage,
+};
+
+
 export const auth = [
   authRoutes
 ]
@@ -66,6 +75,10 @@ export const landing = [
 export const dashboard = [
   dashboardRoutes,
   onboardRoutes
+]
+
+export const application =[
+  applicationRoutes
 ]
 
 

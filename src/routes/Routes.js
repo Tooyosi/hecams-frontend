@@ -8,11 +8,13 @@ import AuthLayout from "layout/Auth";
 import {
     auth as AuthRoutes,
     dashboard as DashboardRoutes,
-    landing as LandingRoutes
+    landing as LandingRoutes,
+    application as ApplicationRoutes
 } from ".";
 import ScrollToTop from "components/common/ScrollToTop";
 import DashboardLayout from "layout/Dashboard";
 import LandingLayout from "layout/Landing";
+import PlainLayout from "layout/PlainLayout";
 
 
 
@@ -50,6 +52,7 @@ const Routes = () => (
             <Switch>
                 {childRoutes(DashboardLayout, DashboardRoutes)}
                 {childRoutes(AuthLayout, AuthRoutes)}
+                {childRoutes(PlainLayout, ApplicationRoutes)}
                 {childRoutes(LandingLayout, LandingRoutes)}
             </Switch>
         </ScrollToTop>

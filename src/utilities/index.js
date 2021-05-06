@@ -1,6 +1,6 @@
 export const onChange = (e, state, changeState, formName) => {
     const input = e.target;
-    const form = input.form || {name: formName};
+    const form = formName ? {name: formName}: input.form
     const value = input.type === 'checkbox' ? input.checked : input.value;
     if (input.files && input.files[0]) {
         changeState({
@@ -64,6 +64,8 @@ export const SUPPORTED_FORMATS = [
     "image/gif",
     "image/png"
 ];
+
+export const DATE_FORMAT = "mm/dd/yy"
 
 export function checkProperties(obj) {
     for (var key in obj) {
