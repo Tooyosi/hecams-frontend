@@ -20,7 +20,7 @@ export const validation = Yup.object().shape({
 })
 
 
-const FormDisplay = ({ formName, countryOption, handleChange, onChange,handleBlur, errors, values, handleDropdownChange, touched, showFieldError, withLevel, formControl, header }) => {
+const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, showFieldError, withLevel, formControl, header }) => {
     let doChange = (e) => {
         handleChange(e)
         onChange(e, formName)
@@ -29,7 +29,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange,handleBlu
     return (
         <div className="p-card p-p-4">
             <div className="p-card-body">
-                <div className="p-grid">
+                <div className="">
                     <div className="p-col-12">
                         <h6>{header}</h6>
                         <span className="p-float-label">
@@ -76,7 +76,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange,handleBlu
                         </span>
                         {showFieldError(`${formName}State`, errors, touched)}
                     </div>
-                    <div className="p-col-12">
+                    {withLevel && <div className="p-col-12">
 
                         <Dropdown
                             id={`${formName}Country`}
@@ -95,6 +95,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange,handleBlu
 
                         {showFieldError(`${formName}Country`, errors, touched)}
                     </div>
+                    }
                     {withLevel && <div className="p-col-12">
                         <span className="p-float-label">
                             <InputText
@@ -146,7 +147,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange,handleBlu
                                 className={`${formControl[`${formName}Certificate`] !== "" && formControl[`${formName}Certificate`] !== null ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
                             >
 
-                                <p>{formControl[`${formName}Certificate`] !== "" && formControl[`${formName}Certificate`] !== null ? formControl[`${formName}Certificate`] : "Load certificate"}</p></label>
+                                <p>{formControl[`${formName}Certificate`] !== "" && formControl[`${formName}Certificate`] !== null ? formControl[`${formName}Certificate`].name : "Load certificate"}</p></label>
 
                             <span className="p-float-label">
                                 <InputText
@@ -155,7 +156,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange,handleBlu
                                     name={`${formName}Certificate`}
                                     onBlur={handleBlur}
                                     className={`p-d-none  ${errors[`${formName}Certificate`] && touched[`${formName}Certificate`] ? 'p-invalid' : ''}`}
-                                    value={values[`${formName}Certificate`]}
+                                    // value={values[`${formName}Certificate`]}
                                     onChange={doChange} />
 
                             </span>
@@ -170,7 +171,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange,handleBlu
 
 
 export default function Education(props) {
-    let { formControl, onChange, formHighSchoolName, countryOption } = props
+    let { formControl, onChange, formHighSchoolName, countryOption, formCollegeName, formTradeName, formProfessionalName } = props
 
     return (
         <FormsWrapper values={{ ...formControl.formHighSchool, ...formControl.formCollege, ...formControl.formTrade }}
@@ -196,7 +197,7 @@ export default function Education(props) {
                                         <FormDisplay
                                             formName={formHighSchoolName}
                                             countryOption={countryOption}
-                                            handleChange={handleChange} handleBlur errors values handleDropdownChange touched showFieldError
+                                            handleChange={handleChange}
                                             withLevel={true}
                                             values={values}
                                             errors={errors}
@@ -207,6 +208,58 @@ export default function Education(props) {
                                             formControl={formControl.formHighSchool}
                                             showFieldError={showFieldError} />
                                     </div>
+
+                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
+                                        <FormDisplay
+                                            formName={formCollegeName}
+                                            countryOption={countryOption}
+                                            handleChange={handleChange}
+                                            withLevel={false}
+                                            values={values}
+                                            errors={errors}
+                                            onChange={onChange}
+                                            touched={touched}
+                                            header="College"
+                                            handleBlur={handleBlur}
+                                            formControl={formControl.formCollege}
+                                            showFieldError={showFieldError} />
+                                    </div>
+
+                                </div>
+
+                                <div className="p-grid">
+                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
+                                        <FormDisplay
+                                            formName={formTradeName}
+                                            countryOption={countryOption}
+                                            handleChange={handleChange}
+                                            withLevel={false}
+                                            values={values}
+                                            errors={errors}
+                                            onChange={onChange}
+                                            touched={touched}
+                                            header="Bus or Trade School "
+                                            handleBlur={handleBlur}
+                                            formControl={formControl.formTrade}
+                                            showFieldError={showFieldError} />
+                                    </div>
+
+                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
+                                        <FormDisplay
+                                            formName={formProfessionalName}
+                                            countryOption={countryOption}
+                                            handleChange={handleChange}
+                                            withLevel={false}
+                                            values={values}
+                                            errors={errors}
+                                            onChange={onChange}
+                                            touched={touched}
+                                            header="Professional"
+                                            handleBlur={handleBlur}
+                                            formControl={formControl.formProfessional}
+                                            showFieldError={showFieldError} />
+                                    </div>
+
                                 </div>
 
 

@@ -7,6 +7,8 @@ import Emergency from './Forms/Emergency';
 import Transportation from './Forms/Transportation';
 import Availability from './Forms/Availability';
 import Education from './Forms/Education'
+import Task from './Forms/Task';
+import PastJob from './Forms/PastJob';
 
 export default function Application() {
     let [state, changeState] = useState({
@@ -75,7 +77,42 @@ export default function Application() {
             allowedToWork: "",
             notavailableToWork: "",
             employmentDesired: ""
+        },
+        formTask: {
+            bathing: '',
+            dressing: '',
+            personalHygine: '',
+            eating: '',
+            mealPlanning: '',
+            houseKeeping: '',
+            mealPreparation: '',
+            independentLivingSkills: '',
+            communityIntegration: '',
+            valuedBehaviours: '',
+            naturalSupports: '',
+            leisureActivities: '',
+            skillDevelopment: '',
+            ambAndMobility: '',
+            medication: '',
+            specializedTheraphies: '',
+            transportation: '',
+            safetyAdSecurity: '',
+            monitoringHealth: '',
+            additionalSkills: '',
+            safetyAndSecurity: ''
+        },
+        formPastJob: {
+            list: [],
+            company: '',
+            reasonLeft: '',
+            from: '',
+            supervisor: '',
+            to: '',
+            phone: '',
+            jobTitle: '',
+            contact: ''
         }
+
     })
     let educationFields = (formName) => {
         return {
@@ -99,7 +136,41 @@ export default function Application() {
         formTrade: {
             ...educationFields("formTrade")
         },
+        formProfessional: {
+            ...educationFields("formProfessional")
+        },
     })
+
+    let updatePastJobList = (values, {  setFieldValue ,resetForm, ...params }) => {
+
+        console.log({values, params})
+        //  reset the form fields
+        resetForm({})
+        changeState({
+            ...state, 
+            formPastJob: {
+                company: "",
+                reasonLeft: "",
+                from: "",
+                supervisor: "",
+                to: "",
+                phone: "",
+                jobTitle: "",
+                contact: "",
+                list: [...state.formPastJob.list, { ...values}]
+            }
+        })
+        setFieldValue('formPastJob', '')
+        setFieldValue('company', '')
+        setFieldValue('reasonLeft', '')
+        setFieldValue('from', '')
+        setFieldValue('supervisor', '')
+        setFieldValue('to', '')
+        setFieldValue('phone', '')
+        setFieldValue('jobTitle', '')
+        setFieldValue('contact', '')
+
+    }
 
     const tabChange = (e) => {
         let denyChange = false
@@ -213,12 +284,33 @@ export default function Application() {
                             {state.formStep == 5 && <Education
                                 onChange={handleEducationChange}
                                 formHighSchoolName="formHighSchool"
+                                formCollegeName="formCollege"
+                                formTradeName="formTrade"
+                                formProfessionalName="formProfessional"
                                 formControl={educationState}
                                 countryOption={[
                                     { name: 'Yes', code: 'yes' },
                                     { name: 'No', code: 'no' }
                                 ]}
                                 handleDropdownChange={handleDropdownChange}
+                            />}
+
+                            {state.formStep == 6 && <Task
+                                onChange={handleChange}
+                                formName="formTask"
+                                formControl={state.formTask}
+                                yesOrNoOptions={[
+                                    { name: 'Yes', code: 'yes' },
+                                    { name: 'No', code: 'no' }
+                                ]}
+                                handleDropdownChange={handleDropdownChange}
+                            />}
+
+                            {state.formStep == 8 && <PastJob
+                                onChange={handleChange}
+                                formName="formPastJob"
+                                formControl={state.formPastJob}
+                                onSubmit={updatePastJobList}
                             />}
 
                         </div>
