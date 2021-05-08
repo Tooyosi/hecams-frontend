@@ -21,7 +21,7 @@ export const validation = Yup.object().shape({
 })
 
 export default function PastJob(props) {
-    let { formControl, onChange, formName, updatePastJobList, yesOrNoOptions } = props
+    let { formControl, onChange, formName,  editPastJobList } = props
     var today = new Date();
 
     let [minDate, setMinDate] = useState(today)
@@ -30,7 +30,8 @@ export default function PastJob(props) {
         <FormsWrapper values={formControl}
             handleSubmit={props.onSubmit}
             handleChange={onChange}
-            validationSchema={validation}>
+            validationSchema={validation}
+           >
             {
                 props => {
                     const {
@@ -40,6 +41,7 @@ export default function PastJob(props) {
                         handleBlur,
                         handleChange,
                         isSubmitting,
+                        setFieldValue,
                         handleSubmit } = props;
                     return (
                         <form onChange={onChange} onSubmit={handleSubmit} name={formName} >
@@ -194,12 +196,12 @@ export default function PastJob(props) {
                                 <div className="p-grid">
                                     <div className="p-col p-text-right">
                                         {/* <p className="text-primary">Add Another</p>  */}
-                                        <Button type="submit" disabled={isSubmitting} className="p-button-rounded" icon="pi pi-plus" iconPos="center" ></Button>
+                                        <Button type="submit" disabled={isSubmitting} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
                                     </div>
 
                                 </div>
 
-                                <div className="p-grid">
+                                {formControl.list.length > 0 && <div className="p-grid company-table">
                                     <table>
                                         <thead>
                                             <tr>
@@ -214,14 +216,16 @@ export default function PastJob(props) {
                                                 <tr key={i}>
                                                     <td>{data.company}</td>
                                                     <td>{data.jobTitle}</td>
-                                                    <td><Button type="button" role="button" label="Edit" className="p-button-secondary"/></td>
-                                                    <td><Button type="button" role="button" label="Delete" className="p-button-danger"/></td>
+                                                    <td><Button type="button" role="button" onClick={(e)=>{
+                                                        editPastJobList("edit", i, setFieldValue)
+                                                    }} label="Edit" className="p-button-secondary" /></td>
+                                                    <td><Button type="button" role="button" label="Delete" className="p-button-danger" /></td>
                                                 </tr>
-                                                ))}
+                                            ))}
                                         </tbody>
                                     </table>
                                 </div>
-
+                                }
                             </FormLayout>
                             <div className="p-grid p-justify-end">
                                 <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">

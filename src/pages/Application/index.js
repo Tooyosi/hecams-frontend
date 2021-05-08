@@ -141,15 +141,15 @@ export default function Application() {
         },
     })
 
-    let updatePastJobList = (values, {  setFieldValue ,resetForm, ...params }) => {
+    let updatePastJobList = (values, {  setFieldValue ,resetForm, ...params }, a, b) => {
 
-        console.log({values, params})
+        console.log({values, params, a, b})
         //  reset the form fields
         resetForm({})
         changeState({
             ...state, 
             formPastJob: {
-                company: "",
+                company: "ok",
                 reasonLeft: "",
                 from: "",
                 supervisor: "",
@@ -171,6 +171,17 @@ export default function Application() {
         setFieldValue('contact', '')
 
     }
+
+    let editPastJobList = (param1, param2, param3) => {
+        console.log({param1, param2, param3})
+        param3("company", "test")
+        
+    }
+
+    let setPastjobField = (field, value)=>{
+        return {field, value}
+    }
+
 
     const tabChange = (e) => {
         let denyChange = false
@@ -310,7 +321,9 @@ export default function Application() {
                                 onChange={handleChange}
                                 formName="formPastJob"
                                 formControl={state.formPastJob}
+                                setPastjobField={setPastjobField}
                                 onSubmit={updatePastJobList}
+                                editPastJobList={editPastJobList}
                             />}
 
                         </div>
