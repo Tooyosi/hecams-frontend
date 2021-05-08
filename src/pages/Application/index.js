@@ -9,6 +9,7 @@ import Availability from './Forms/Availability';
 import Education from './Forms/Education'
 import Task from './Forms/Task';
 import PastJob from './Forms/PastJob';
+import Reference from './Forms/Reference';
 
 export default function Application() {
     let [state, changeState] = useState({
@@ -19,7 +20,7 @@ export default function Application() {
             { label: "Avaliability", step: 4 },
             { label: "Education", step: 5 },
             { label: "Task review", step: 6 },
-            { label: "Certificate", step: 7 },
+            // { label: "Certificate", step: 7 },
             { label: "Past Job", step: 8 },
             { label: "Reference", step: 9 },
             { label: "Consent", step: 10 },
@@ -126,6 +127,15 @@ export default function Application() {
             [`${formName}Certificate`]: ''
         }
     }
+
+    let referenceFields = (formName) => {
+        return {
+            [`${formName}Name`]: '',
+            [`${formName}Relationship`]: '',
+            [`${formName}Years`]: '',
+            [`${formName}Phone`]: ''
+        }
+    }
     let [educationState, changeEducationState] = useState({
         formHighSchool: {
             ...educationFields("formHighSchool")
@@ -141,15 +151,27 @@ export default function Application() {
         },
     })
 
-    let updatePastJobList = (values, {  setFieldValue ,resetForm, ...params }, a, b) => {
+    let [referenceState, changeReferenceState] = useState({
+        formReference1: {
+            ...referenceFields("formHighSchool")
+        },
+        formReference2: {
+            ...referenceFields("formCollege")
+        },
+        formReference3: {
+            ...referenceFields("formTrade")
+        }
+    })
 
-        console.log({values, params, a, b})
+    let updatePastJobList = (values, { setFieldValue, resetForm, ...params }, a, b) => {
+
+        console.log({ values, params, a, b })
         //  reset the form fields
         resetForm({})
         changeState({
-            ...state, 
+            ...state,
             formPastJob: {
-                company: "ok",
+                company: "",
                 reasonLeft: "",
                 from: "",
                 supervisor: "",
@@ -157,7 +179,7 @@ export default function Application() {
                 phone: "",
                 jobTitle: "",
                 contact: "",
-                list: [...state.formPastJob.list, { ...values}]
+                list: [...state.formPastJob.list, { ...values }]
             }
         })
         setFieldValue('formPastJob', '')
@@ -173,13 +195,35 @@ export default function Application() {
     }
 
     let editPastJobList = (param1, param2, param3) => {
-        console.log({param1, param2, param3})
-        param3("company", "test")
+        let item = state.formPastJob.list[param2]
+        if (param1 == "edit") {
+            delete item["list"]
+            param3(item)
+            changeState({
+                ...state,
+                formPastJob: {
+                    ...state.formPastJob,
+                    ...item
+                }
+            })
+        }else{
+            item.list?.splice(param2, 1)
+
+            changeState({
+                ...state,
+                formPastJob:{
+                    ...state.formPastJob,
+                    list: item.list || []
+                }
+    
+            })
+        }
+        state.formPastJob.list?.splice(param2, 1)
         
     }
 
-    let setPastjobField = (field, value)=>{
-        return {field, value}
+    let setPastjobField = (field, value) => {
+        return { field, value }
     }
 
 
@@ -213,6 +257,12 @@ export default function Application() {
 
     const handleEducationChange = (e, formName) => {
         onChange(e, educationState, changeEducationState, formName)
+    }
+
+
+
+    const handleReferenceChange = (e, formName) => {
+        onChange(e, referenceState, changeReferenceState, formName)
     }
 
 
@@ -326,6 +376,18 @@ export default function Application() {
                                 editPastJobList={editPastJobList}
                             />}
 
+{state.formStep == 9 && <Reference
+                                onChange={handleReferenceChange}
+                                formReference1Name="formReference1"
+                                formReference2Name="formReference2"
+                                formReference3Name="formReference3"
+                                formControl={referenceState}
+                                countryOption={[
+                                    { name: 'Yes', code: 'yes' },
+                                    { name: 'No', code: 'no' }
+                                ]}
+                                handleDropdownChange={handleDropdownChange}
+                            />}
                         </div>
                     </div>
                 </div>

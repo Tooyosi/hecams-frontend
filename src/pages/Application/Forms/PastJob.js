@@ -42,6 +42,7 @@ export default function PastJob(props) {
                         handleChange,
                         isSubmitting,
                         setFieldValue,
+                        setValues,
                         handleSubmit } = props;
                     return (
                         <form onChange={onChange} onSubmit={handleSubmit} name={formName} >
@@ -201,6 +202,7 @@ export default function PastJob(props) {
 
                                 </div>
 
+
                                 {formControl.list.length > 0 && <div className="p-grid company-table">
                                     <table>
                                         <thead>
@@ -217,9 +219,11 @@ export default function PastJob(props) {
                                                     <td>{data.company}</td>
                                                     <td>{data.jobTitle}</td>
                                                     <td><Button type="button" role="button" onClick={(e)=>{
-                                                        editPastJobList("edit", i, setFieldValue)
+                                                        editPastJobList("edit", i, setValues)
                                                     }} label="Edit" className="p-button-secondary" /></td>
-                                                    <td><Button type="button" role="button" label="Delete" className="p-button-danger" /></td>
+                                                    <td><Button type="button" role="button" onClick={(e)=>{
+                                                        editPastJobList("delete", i, null)
+                                                    }} label="Delete" className="p-button-danger" /></td>
                                                 </tr>
                                             ))}
                                         </tbody>
