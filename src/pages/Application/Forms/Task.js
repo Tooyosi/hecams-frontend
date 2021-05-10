@@ -56,141 +56,151 @@ export default function Task(props) {
 
                                 <div className="p-grid">
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="bathing"
-                                            name="bathing"
-                                            value={values.bathing}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.bathing && touched.bathing ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Bathing"></Dropdown>
+                                            <Dropdown
+                                                id="bathing"
+                                                name="bathing"
+                                                value={values.bathing}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.bathing && touched.bathing ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
 
-
+                                            <label htmlFor="bathing">Bathing</label>
+                                        </span>
 
                                         {showFieldError("bathing", errors, touched)}
                                     </div>
 
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="dressing"
-                                            name="dressing"
-                                            value={values.dressing}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.dressing && touched.dressing ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Dressing"></Dropdown>
-
-
-
-                                        {showFieldError("dressing", errors, touched)}
-                                    </div>
-                                    <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
-
-                                        <Dropdown
-                                            id="personalHygine"
-                                            name="personalHygine"
-                                            value={values.personalHygine}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.personalHygine && touched.personalHygine ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Personal Hygiene"></Dropdown>
-
-
+                                            <Dropdown
+                                                id="dressing"
+                                                name="dressing"
+                                                value={values.dressing}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.dressing && touched.dressing ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="dressing">Dressing</label>
+                                        </span>
 
                                         {showFieldError("dressing", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="eating"
-                                            name="eating"
-                                            value={values.eating}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.eating && touched.eating ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Eating"></Dropdown>
+                                            <Dropdown
+                                                id="personalHygine"
+                                                name="personalHygine"
+                                                value={values.personalHygine}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.personalHygine && touched.personalHygine ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="personalHygine">Personal Hygiene</label>
+                                        </span>
 
+                                        {showFieldError("dressing", errors, touched)}
+                                    </div>
+                                    <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
+
+                                            <Dropdown
+                                                id="eating"
+                                                name="eating"
+                                                value={values.eating}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.eating && touched.eating ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="eating">Eating</label>
+                                        </span>
 
 
                                         {showFieldError("eating", errors, touched)}
                                     </div>
 
-                                        </div>
+                                </div>
                                 <div className="p-grid">
-                                  
+
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="mealPlanning"
-                                            name="mealPlanning"
-                                            value={values.mealPlanning}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.mealPlanning && touched.mealPlanning ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Meal Planning"></Dropdown>
+                                            <Dropdown
+                                                id="mealPlanning"
+                                                name="mealPlanning"
+                                                value={values.mealPlanning}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.mealPlanning && touched.mealPlanning ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="mealPlanning">Meal Planning</label>
 
-
-
+                                        </span>
                                         {showFieldError("mealPlanning", errors, touched)}
                                     </div>
 
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="houseKeeping"
-                                            name="houseKeeping"
-                                            value={values.houseKeeping}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.houseKeeping && touched.houseKeeping ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Housekeeping"></Dropdown>
-
-
+                                            <Dropdown
+                                                id="houseKeeping"
+                                                name="houseKeeping"
+                                                value={values.houseKeeping}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.houseKeeping && touched.houseKeeping ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="houseKeeping">Housekeeping</label>
+                                        </span>
 
                                         {showFieldError("houseKeeping", errors, touched)}
                                     </div>
 
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="mealPreparation"
-                                            name="mealPreparation"
-                                            value={values.mealPreparation}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.mealPreparation && touched.mealPreparation ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Meal Preparation"></Dropdown>
-
+                                            <Dropdown
+                                                id="mealPreparation"
+                                                name="mealPreparation"
+                                                value={values.mealPreparation}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.mealPreparation && touched.mealPreparation ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="mealPreparation">Meal Preparation</label>
+                                        </span>
 
 
                                         {showFieldError("mealPreparation", errors, touched)}
@@ -202,120 +212,127 @@ export default function Task(props) {
 
                                 <div className="p-grid">
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="independentLivingSkills"
-                                            name="independentLivingSkills"
-                                            value={values.independentLivingSkills}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.independentLivingSkills && touched.independentLivingSkills ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Improve independent living skills"></Dropdown>
+                                            <Dropdown
+                                                id="independentLivingSkills"
+                                                name="independentLivingSkills"
+                                                value={values.independentLivingSkills}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.independentLivingSkills && touched.independentLivingSkills ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
 
-
-
+                                            <label htmlFor="independentLivingSkills">Improve independent living skills</label>
+                                        </span>
                                         {showFieldError("independentLivingSkills", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
 
-                                        <Dropdown
-                                            id="communityIntegration"
-                                            name="communityIntegration"
-                                            value={values.communityIntegration}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.communityIntegration && touched.communityIntegration ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Community integration"></Dropdown>
+                                        <span className="p-float-label">
+                                            <Dropdown
+                                                id="communityIntegration"
+                                                name="communityIntegration"
+                                                value={values.communityIntegration}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.communityIntegration && touched.communityIntegration ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                                placeholder="Community integration"></Dropdown>
 
-
+                                        </span>
 
                                         {showFieldError("communityIntegration", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="valuedBehaviours"
-                                            name="valuedBehaviours"
-                                            value={values.valuedBehaviours}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.valuedBehaviours && touched.valuedBehaviours ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Develop socially valued Behaviours"></Dropdown>
+                                            <Dropdown
+                                                id="valuedBehaviours"
+                                                name="valuedBehaviours"
+                                                value={values.valuedBehaviours}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.valuedBehaviours && touched.valuedBehaviours ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
 
-
-
+                                            <label htmlFor="valuedBehaviours">Develop socially valued Behaviours</label>
+                                        </span>
                                         {showFieldError("valuedBehaviours", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="naturalSupports"
-                                            name="naturalSupports"
-                                            value={values.naturalSupports}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.naturalSupports && touched.naturalSupports ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Use of Natural Supports"></Dropdown>
+                                            <Dropdown
+                                                id="naturalSupports"
+                                                name="naturalSupports"
+                                                value={values.naturalSupports}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.naturalSupports && touched.naturalSupports ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                                placeholder="Use of Natural Supports"></Dropdown>
 
 
-
+                                        </span>
                                         {showFieldError("naturalSupports", errors, touched)}
                                     </div>
 
                                 </div>
 
                                 <div className="p-grid">
-                                   <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                    <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="leisureActivities"
-                                            name="leisureActivities"
-                                            value={values.leisureActivities}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.leisureActivities && touched.leisureActivities ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Meal Planning"></Dropdown>
+                                            <Dropdown
+                                                id="leisureActivities"
+                                                name="leisureActivities"
+                                                value={values.leisureActivities}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.leisureActivities && touched.leisureActivities ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                                placeholder=""></Dropdown>
 
-
+                                            <label htmlFor="leisureActivities">Participate In Leisure Activities*</label>
+                                        </span>
                                         {showFieldError("leisureActivities", errors, touched)}
                                     </div>
 
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="skillDevelopment"
-                                            name="skillDevelopment"
-                                            value={values.skillDevelopment}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.skillDevelopment && touched.skillDevelopment ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="IP Skill Development"></Dropdown>
+                                            <Dropdown
+                                                id="skillDevelopment"
+                                                name="skillDevelopment"
+                                                value={values.skillDevelopment}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.skillDevelopment && touched.skillDevelopment ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                                placeholder="IP Skill Development"></Dropdown>
 
-
+                                        </span>
 
                                         {showFieldError("skillDevelopment", errors, touched)}
                                     </div>
@@ -323,83 +340,88 @@ export default function Task(props) {
 
                                 </div>
 
-                     
+
                                 <h5>Assisting with*</h5>
 
                                 <div className="p-grid">
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="ambAndMobility"
-                                            name="ambAndMobility"
-                                            value={values.ambAndMobility}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.ambAndMobility && touched.ambAndMobility ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Ambulation and Mobility"></Dropdown>
+                                            <Dropdown
+                                                id="ambAndMobility"
+                                                name="ambAndMobility"
+                                                value={values.ambAndMobility}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.ambAndMobility && touched.ambAndMobility ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="ambAndMobility">Ambulation and Mobility</label>
 
-
-
+                                        </span>
                                         {showFieldError("ambAndMobility", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="medication"
-                                            name="medication"
-                                            value={values.medication}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.medication && touched.medication ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Administration of Medication"></Dropdown>
-
-
+                                            <Dropdown
+                                                id="medication"
+                                                name="medication"
+                                                value={values.medication}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.medication && touched.medication ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="medication">Administration of Medication</label>
+                                        </span>
 
                                         {showFieldError("medication", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="specializedTheraphies"
-                                            name="specializedTheraphies"
-                                            value={values.specializedTheraphies}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.specializedTheraphies && touched.specializedTheraphies ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Reinforcing specialized Therapies"></Dropdown>
-
-
+                                            <Dropdown
+                                                id="specializedTheraphies"
+                                                name="specializedTheraphies"
+                                                value={values.specializedTheraphies}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.specializedTheraphies && touched.specializedTheraphies ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="specializedTheraphies">Reinforcing specialized Therapies</label>
+                                        </span>
 
                                         {showFieldError("specializedTheraphies", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="transportation"
-                                            name="transportation"
-                                            value={values.transportation}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.transportation && touched.transportation ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Transportation"></Dropdown>
+                                            <Dropdown
+                                                id="transportation"
+                                                name="transportation"
+                                                value={values.transportation}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.transportation && touched.transportation ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="transportation">Transportation</label>
 
-
+                                        </span>
 
                                         {showFieldError("transportation", errors, touched)}
                                     </div>
@@ -408,6 +430,7 @@ export default function Task(props) {
 
                                 <div className="p-grid">
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                    <span className="p-float-label">
 
                                         <Dropdown
                                             id="safetyAndSecurity"
@@ -420,9 +443,10 @@ export default function Task(props) {
                                             options={yesOrNoOptions}
                                             className={`width-100  ${errors.safetyAndSecurity && touched.safetyAndSecurity ? 'p-invalid' : ''}`}
                                             optionLabel="name"
-                                            placeholder="Supervising safety and Security"></Dropdown>
+                                            ></Dropdown>
 
-
+                                            <label htmlFor="safetyAndSecurity">Supervising safety and Security</label>
+                                            </span>
                                         {showFieldError("safetyAndSecurity", errors, touched)}
                                     </div>
 
@@ -433,58 +457,63 @@ export default function Task(props) {
 
                                 <div className="p-grid">
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="safetyAdSecurity"
-                                            name="safetyAdSecurity"
-                                            value={values.safetyAdSecurity}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.safetyAdSecurity && touched.safetyAdSecurity ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Supervising Safety and Security"></Dropdown>
-
+                                            <Dropdown
+                                                id="safetyAdSecurity"
+                                                name="safetyAdSecurity"
+                                                value={values.safetyAdSecurity}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.safetyAdSecurity && touched.safetyAdSecurity ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="safetyAdSecurity">Supervising Safety and Security</label>
+                                        </span>
                                         {showFieldError("safetyAdSecurity", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="monitoringHealth"
-                                            name="monitoringHealth"
-                                            value={values.monitoringHealth}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.monitoringHealth && touched.monitoringHealth ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Monitoring Health"></Dropdown>
+                                            <Dropdown
+                                                id="monitoringHealth"
+                                                name="monitoringHealth"
+                                                value={values.monitoringHealth}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.monitoringHealth && touched.monitoringHealth ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
 
-
-
+                                            <label htmlFor="monitoringHealth">Monitoring Health</label>
+                                        </span>
                                         {showFieldError("monitoringHealth", errors, touched)}
                                     </div>
                                     <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+                                        <span className="p-float-label">
 
-                                        <Dropdown
-                                            id="additionalSkills"
-                                            name="additionalSkills"
-                                            value={values.additionalSkills}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                handleDropdownChange(e, formName)
-                                            }}
-                                            options={yesOrNoOptions}
-                                            className={`width-100  ${errors.additionalSkills && touched.additionalSkills ? 'p-invalid' : ''}`}
-                                            optionLabel="name"
-                                            placeholder="Additional Skills"></Dropdown>
+                                            <Dropdown
+                                                id="additionalSkills"
+                                                name="additionalSkills"
+                                                value={values.additionalSkills}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={yesOrNoOptions}
+                                                className={`width-100  ${errors.additionalSkills && touched.additionalSkills ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor="additionalSkills">Additional Skills</label>
 
 
-
+                                        </span>
                                         {showFieldError("additionalSkills", errors, touched)}
                                     </div>
 

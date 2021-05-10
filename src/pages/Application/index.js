@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Logo from 'components/common/Logo'
 import { TabMenu } from 'primereact/components/tabmenu/TabMenu';
-import { checkProperties, onChange, onDropdownChange } from 'utilities';
+import { checkProperties, onChange, onDropdownChange, guid } from 'utilities';
 import Personal from './Forms/Personal';
 import Emergency from './Forms/Emergency';
 import Transportation from './Forms/Transportation';
@@ -73,7 +73,7 @@ export default function Application() {
         formAvailability: {
             hours: "",
             night: "",
-            weekend: "",
+            weekends: "",
             startDate: "",
             allowedToWork: "",
             notavailableToWork: "",
@@ -153,19 +153,19 @@ export default function Application() {
 
     let [referenceState, changeReferenceState] = useState({
         formReference1: {
-            ...referenceFields("formHighSchool")
+            ...referenceFields("formReference1")
         },
         formReference2: {
-            ...referenceFields("formCollege")
+            ...referenceFields("formReference2")
         },
         formReference3: {
-            ...referenceFields("formTrade")
+            ...referenceFields("formReference3")
         }
     })
 
     let updatePastJobList = (values, { setFieldValue, resetForm, ...params }, a, b) => {
 
-        console.log({ values, params, a, b })
+        delete values.list
         //  reset the form fields
         resetForm({})
         changeState({
@@ -179,7 +179,7 @@ export default function Application() {
                 phone: "",
                 jobTitle: "",
                 contact: "",
-                list: [...state.formPastJob.list, { ...values }]
+                list: [...state.formPastJob.list, { id: guid(), ...values }]
             }
         })
         setFieldValue('formPastJob', '')
@@ -195,31 +195,42 @@ export default function Application() {
     }
 
     let editPastJobList = (param1, param2, param3) => {
+        // let item = state.formPastJob.list.filter((a)=> a.id == param2)[0]
         let item = state.formPastJob.list[param2]
+        // let index = state.formPastJob.list.indexOf(item)
+
+
+        let newList = []
+        for (let i = 0; i < state.formPastJob ?.list ?.length; i++) {
+            if (i != param2) {
+                const element = state.formPastJob.list[i];
+                newList.push(element)
+            }
+
+        }
         if (param1 == "edit") {
             delete item["list"]
             param3(item)
+
             changeState({
                 ...state,
                 formPastJob: {
                     ...state.formPastJob,
-                    ...item
+                    ...item,
+                    list: newList
                 }
             })
-        }else{
-            item.list?.splice(param2, 1)
-
+        } else {
             changeState({
                 ...state,
-                formPastJob:{
+                formPastJob: {
                     ...state.formPastJob,
-                    list: item.list || []
+                    list: newList
                 }
-    
+
             })
         }
-        state.formPastJob.list?.splice(param2, 1)
-        
+
     }
 
     let setPastjobField = (field, value) => {
@@ -250,6 +261,8 @@ export default function Application() {
 
 
     const handleChange = (e, formName) => {
+        // e.target.value = e.target.value.replace(/[&\/\\#,+()~%.'":*?<>{}!|]/g,'');
+        // console.log(e.target.value)
         onChange(e, state, changeState, formName)
     }
 
@@ -376,7 +389,7 @@ export default function Application() {
                                 editPastJobList={editPastJobList}
                             />}
 
-{state.formStep == 9 && <Reference
+                            {state.formStep == 9 && <Reference
                                 onChange={handleReferenceChange}
                                 formReference1Name="formReference1"
                                 formReference2Name="formReference2"

@@ -5,20 +5,22 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import *  as Yup from "yup"
 import FormLayout from './Layout';
+import { PDF_OR_WORD } from 'utilities';
 
-export const validation = Yup.object().shape({
-    fullName: Yup.string().required("Required"),
-    phone: Yup.string().required("Required"),
-    alternativePhone: Yup.string().required("Required"),
-    relationship: Yup.string().required("Required"),
-    address: Yup.string().required("Required"),
-    city: Yup.string().required("Required"),
-    zip: Yup.string().required("Required")
-        .matches(/[0-9]/g, "Zip Code must be a number"),
-    state: Yup.string().required("Required")
 
-})
 
+let validationFn = (formName)=>{
+    return {
+        [`${formName}Name`]: Yup.string().required("Required"),
+        [`${formName}City`]: Yup.string().required("Required"),
+        [`${formName}State`]: Yup.string().required("Required"),
+        [`${formName}Country`]: Yup.string().required("Required"),
+        [`${formName}Level`]: Yup.string().required("Required"),
+        [`${formName}Degree`]: Yup.string().required("Required"),
+        [`${formName}Major`]: Yup.string().required("Required"),
+        [`${formName}Certificate`]: Yup.string().required("Required")
+    }
+}
 
 const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, showFieldError, withLevel, formControl, header }) => {
     let doChange = (e) => {
@@ -76,7 +78,8 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                         </span>
                         {showFieldError(`${formName}State`, errors, touched)}
                     </div>
-                    {withLevel && <div className="p-col-12">
+                     <div className="p-col-12">
+                     <span className="p-float-label">
 
                         <Dropdown
                             id={`${formName}Country`}
@@ -89,13 +92,12 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                             options={countryOption}
                             className={`width-100  ${errors[`${formName}Country`] && touched[`${formName}Country`] ? 'p-invalid' : ''}`}
                             optionLabel="name"
-                            placeholder="Country"></Dropdown>
-
-
+                            ></Dropdown>
+                            <label htmlFor={`${formName}Country`}>Country</label>
+                            </span>
 
                         {showFieldError(`${formName}Country`, errors, touched)}
                     </div>
-                    }
                     {withLevel && <div className="p-col-12">
                         <span className="p-float-label">
                             <InputText
@@ -155,6 +157,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                                     id={`${formName}Certificate`}
                                     name={`${formName}Certificate`}
                                     onBlur={handleBlur}
+                                    accept={PDF_OR_WORD}
                                     className={`p-d-none  ${errors[`${formName}Certificate`] && touched[`${formName}Certificate`] ? 'p-invalid' : ''}`}
                                     // value={values[`${formName}Certificate`]}
                                     onChange={doChange} />
@@ -171,10 +174,56 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
 
 
 export default function Education(props) {
-    let { formControl, onChange, formHighSchoolName, countryOption, formCollegeName, formTradeName, formProfessionalName } = props
+    let { formControl, onChange, formHighSchoolName, countryOption, formCollegeName, formTradeName, formProfessionalName, handleDropdownChange } = props
 
+    let validationShape = {
+        ...validationFn(formHighSchoolName)
+    }
+
+    let collegeValues = Object.values(formControl[formCollegeName])
+    let tradeValues = Object.values(formControl[formTradeName])
+    let professionalValues = Object.values(formControl[formProfessionalName])
+
+
+    const notEmpty = (array)=>{
+        let response = false
+        for (let i = 0; i < array.length; i++) {
+            const element = array[i];
+            if(element !== ""){
+                response = true
+            }
+            
+        }
+
+        return response
+    }
+
+    // check if each form sets are empty
+    let hasCollegeField = notEmpty(collegeValues)
+    let hasTradeField = notEmpty(tradeValues)
+    let hasProfessionalField = notEmpty(professionalValues)
+    if(hasCollegeField){
+        validationShape = {
+            ...validationShape,
+        ...validationFn(formCollegeName)
+        }
+    }
+    if(hasTradeField){
+        validationShape = {
+            ...validationShape,
+        ...validationFn(formTradeName)
+        }
+    }
+    if(hasProfessionalField){
+        validationShape = {
+            ...validationShape,
+        ...validationFn(formProfessionalName)
+        }
+    }
+
+    const validation = Yup.object().shape(validationShape)
     return (
-        <FormsWrapper values={{ ...formControl.formHighSchool, ...formControl.formCollege, ...formControl.formTrade }}
+        <FormsWrapper values={{ ...formControl.formHighSchool, ...formControl.formCollege, ...formControl.formTrade, ...formControl.formProfessional }}
             handleSubmit={props.onSubmit}
             handleChange={onChange}
             validationSchema={validation}>
@@ -200,6 +249,7 @@ export default function Education(props) {
                                             handleChange={handleChange}
                                             withLevel={true}
                                             values={values}
+                                            handleDropdownChange={handleDropdownChange}
                                             errors={errors}
                                             onChange={onChange}
                                             touched={touched}
@@ -216,6 +266,7 @@ export default function Education(props) {
                                             handleChange={handleChange}
                                             withLevel={false}
                                             values={values}
+                                            handleDropdownChange={handleDropdownChange}
                                             errors={errors}
                                             onChange={onChange}
                                             touched={touched}
@@ -240,6 +291,7 @@ export default function Education(props) {
                                             touched={touched}
                                             header="Bus or Trade School "
                                             handleBlur={handleBlur}
+                                            handleDropdownChange={handleDropdownChange}
                                             formControl={formControl.formTrade}
                                             showFieldError={showFieldError} />
                                     </div>
@@ -252,6 +304,7 @@ export default function Education(props) {
                                             withLevel={false}
                                             values={values}
                                             errors={errors}
+                                            handleDropdownChange={handleDropdownChange}
                                             onChange={onChange}
                                             touched={touched}
                                             header="Professional"

@@ -92,13 +92,14 @@ export default function PastJob(props) {
                                                 name="from"
                                                 dateFormat={DATE_FORMAT}
                                                 value={values.from}
-                                                max={minDate}
+                                                maxDate={minDate}
                                                 onChange={(e) => {
                                                     handleChange(e)
                                                     onChange(e, formName)
                                                 }}
-                                                placeholder="From*"
+                                                id="from"
                                             />
+                                                <label htmlFor="from">From*</label>
 
                                         </span>
                                         {showFieldError("from", errors, touched)}
@@ -135,9 +136,9 @@ export default function PastJob(props) {
                                                     handleChange(e)
                                                     onChange(e, formName)
                                                 }}
-                                                placeholder="To*"
+                                                id="to"
                                             />
-
+                                                <label htmlFor="to">To*</label>
                                         </span>
                                         {showFieldError("to", errors, touched)}
                                     </div>

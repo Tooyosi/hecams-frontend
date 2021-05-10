@@ -6,17 +6,20 @@ import { Dropdown } from 'primereact/dropdown';
 import * as Yup from "yup"
 import FormLayout from './Layout';
 
-export const validation = Yup.object().shape({
-    car: Yup.string().required("Required"),
-    reason: Yup.string().required("Required"),
-    license: Yup.string().required("Required"),
-    expiration: Yup.string().required("Required"),
-
-})
 
 export default function Transportation(props) {
     let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions } = props
 
+    let validationShape = {
+        car: Yup.string().required("Required"),
+        license: Yup.string().required("Required"),
+        expiration: Yup.string().required("Required")
+    }
+
+    if(formControl.car !== "" && formControl.car.code == "no"){
+        validationShape.reason = Yup.string().required("Required")
+    }
+    const validation = Yup.object().shape(validationShape)
     return (
         <FormsWrapper values={formControl}
             handleSubmit={props.onSubmit}
@@ -37,11 +40,12 @@ export default function Transportation(props) {
                             <FormLayout>
                                 <div className="p-grid">
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
+                                    <span className="p-float-label">
 
                                         <Dropdown
                                             id="car"
                                             name="car"
-                                            value={values.car}
+                                            value={formControl.car}
                                             onChange={(e) => {
                                                 handleChange(e)
                                                 handleDropdownChange(e, formName)
@@ -49,9 +53,9 @@ export default function Transportation(props) {
                                             options={yesOrNoOptions}
                                             className={`width-100  ${errors.car && touched.car ? 'p-invalid' : ''}`}
                                             optionLabel="name"
-                                            placeholder="Do you have a car?*"></Dropdown>
-
-
+                                            ></Dropdown>
+                                            <label htmlFor="car">Do you have a car?*</label>
+                                            </span>
 
                                         {showFieldError("car", errors, touched)}
                                     </div>
@@ -83,7 +87,7 @@ export default function Transportation(props) {
                                                 name="license"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.license && touched.license ? 'p-invalid' : ''}`}
-                                                value={values.fullName}
+                                                value={values.license}
                                                 onChange={handleChange} />
                                             <label htmlFor="license">Driver Driver’s Liense #</label>
 

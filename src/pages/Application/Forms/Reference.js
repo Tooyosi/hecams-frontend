@@ -6,20 +6,17 @@ import { Dropdown } from 'primereact/dropdown';
 import *  as Yup from "yup"
 import FormLayout from './Layout';
 
-export const validation = Yup.object().shape({
-    fullName: Yup.string().required("Required"),
-    phone: Yup.string().required("Required"),
-    alternativePhone: Yup.string().required("Required"),
-    relationship: Yup.string().required("Required"),
-    address: Yup.string().required("Required"),
-    city: Yup.string().required("Required"),
-    zip: Yup.string().required("Required")
-        .matches(/[0-9]/g, "Zip Code must be a number"),
-    state: Yup.string().required("Required")
-
-})
 
 
+
+let validationFn = (formName)=>{
+    return {
+        [`${formName}Name`]: Yup.string().required("Required"),
+        [`${formName}Relationship`]: Yup.string().required("Required"),
+        [`${formName}Years`]: Yup.string().required("Required"),
+        [`${formName}Phone`]: Yup.string().required("Required")
+    }
+}
 const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, showFieldError, withLevel, formControl, header }) => {
     let doChange = (e) => {
         handleChange(e)
@@ -49,6 +46,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                 {showFieldError(`${formName}Name`, errors, touched)}
             </div>
             <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
+            <span className="p-float-label">
 
                 <Dropdown
                     id={`${formName}Relationship`}
@@ -61,9 +59,9 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                     options={countryOption}
                     className={`width-100  ${errors[`${formName}Relationship`] && touched[`${formName}Relationship`] ? 'p-invalid' : ''}`}
                     optionLabel="name"
-                    placeholder="Relationship"></Dropdown>
-
-
+                    ></Dropdown>
+                    <label htmlFor={`${formName}Relationship`}>Relationship</label>
+                    </span>
 
                 {showFieldError(`${formName}Relationship`, errors, touched)}
             </div>
@@ -74,6 +72,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                         id={`${formName}Years`}
                         name={`${formName}Years`}
                         onBlur={handleBlur}
+                        min="0"
                         className={`width-100  ${errors[`${formName}Years`] && touched[`${formName}Years`] ? 'p-invalid' : ''}`}
                         value={values[`${formName}Years`]}
                         onChange={doChange} />
@@ -105,11 +104,19 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
 
 
 export default function Reference(props) {
-    let { formControl, onChange, formReference1Name, countryOption, formReference2Name, formReference3Name, formProfessionalName } = props
+    let { formControl, onChange, formReference1Name, countryOption, formReference2Name, formReference3Name, handleDropdownChange } = props
+    const validation = Yup.object().shape({
+       ...validationFn(formReference1Name),
+       ...validationFn(formReference2Name),
+       ...validationFn(formReference3Name)
+    })
 
     return (
         <FormsWrapper values={{ ...formControl.formReference1, ...formControl.formReference2, ...formControl.formReference3 }}
-            handleSubmit={props.onSubmit}
+            // handleSubmit={props.onSubmit}
+            handleSubmit={(e)=>{
+                console.log({e})
+            }}
             handleChange={onChange}
             validationSchema={validation}>
             {
@@ -126,13 +133,13 @@ export default function Reference(props) {
                         <form onSubmit={handleSubmit} >
                             <FormLayout>
 
-
                                 <div className="p-col-12">
                                     <FormDisplay
                                         formName={formReference1Name}
                                         countryOption={countryOption}
                                         handleChange={handleChange}
                                         withLevel={true}
+                                        handleDropdownChange={handleDropdownChange}
                                         values={values}
                                         errors={errors}
                                         onChange={onChange}
@@ -149,6 +156,7 @@ export default function Reference(props) {
                                         countryOption={countryOption}
                                         handleChange={handleChange}
                                         withLevel={false}
+                                        handleDropdownChange={handleDropdownChange}
                                         values={values}
                                         errors={errors}
                                         onChange={onChange}
@@ -164,6 +172,7 @@ export default function Reference(props) {
                                         formName={formReference3Name}
                                         countryOption={countryOption}
                                         handleChange={handleChange}
+                                        handleDropdownChange={handleDropdownChange}
                                         withLevel={false}
                                         values={values}
                                         errors={errors}
@@ -182,7 +191,7 @@ export default function Reference(props) {
                             </FormLayout>
                             <div className="p-grid p-justify-end">
                                 <div className="p-col-6 p-lg-3  p-md-6 p-sm-6 p-lg-6 p-md-6 p-sm-6-6">
-                                    <Button label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
+                                    <Button type="submit" label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} onClick={handleSubmit} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
                                 </div>
                             </div>
                         </form>

@@ -153,7 +153,7 @@ export default function Emergency(props) {
                                                 name="relationship"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.relationship && touched.relationship ? 'p-invalid' : ''}`}
-                                                value={values.workPhone}
+                                                value={values.relationship}
                                                 onChange={handleChange} />
                                             <label htmlFor="relationship">Relationship</label>
 
