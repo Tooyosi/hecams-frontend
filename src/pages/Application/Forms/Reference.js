@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import *  as Yup from "yup"
 import FormLayout from './Layout';
+import FormFooter from './FormFooter';
 
 
 
@@ -104,7 +105,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
 
 
 export default function Reference(props) {
-    let { formControl, onChange, formReference1Name, countryOption, formReference2Name, formReference3Name, handleDropdownChange } = props
+    let { formControl, onChange, formReference1Name,handleGoBack, countryOption, formReference2Name, formReference3Name, handleDropdownChange } = props
     const validation = Yup.object().shape({
        ...validationFn(formReference1Name),
        ...validationFn(formReference2Name),
@@ -113,10 +114,7 @@ export default function Reference(props) {
 
     return (
         <FormsWrapper values={{ ...formControl.formReference1, ...formControl.formReference2, ...formControl.formReference3 }}
-            // handleSubmit={props.onSubmit}
-            handleSubmit={(e)=>{
-                console.log({e})
-            }}
+            handleSubmit={props.onSubmit}
             handleChange={onChange}
             validationSchema={validation}>
             {
@@ -189,11 +187,13 @@ export default function Reference(props) {
 
 
                             </FormLayout>
-                            <div className="p-grid p-justify-end">
-                                <div className="p-col-6 p-lg-3  p-md-6 p-sm-6 p-lg-6 p-md-6 p-sm-6-6">
-                                    <Button type="submit" label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} onClick={handleSubmit} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
-                                </div>
-                            </div>
+                            <FormFooter    
+                                backText="Back"
+                                nextText="Next"
+                                goBack={handleGoBack}
+                                proceed={handleSubmit}
+                                disabled={isSubmitting}
+                            />
                         </form>
                     )
                 }

@@ -7,6 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import * as Yup from "yup"
 import FormLayout from './Layout';
 import { DATE_FORMAT } from 'utilities';
+import FormFooter from './FormFooter';
 
 export const validation = Yup.object().shape({
     company: Yup.string().required("Required"),
@@ -21,7 +22,7 @@ export const validation = Yup.object().shape({
 })
 
 export default function PastJob(props) {
-    let { formControl, onChange, formName,  editPastJobList } = props
+    let { formControl, onChange, formName,  editPastJobList, handleGoBack, onFinish } = props
     var today = new Date();
 
     let [minDate, setMinDate] = useState(today)
@@ -232,11 +233,13 @@ export default function PastJob(props) {
                                 </div>
                                 }
                             </FormLayout>
-                            <div className="p-grid p-justify-end">
-                                <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">
-                                    <Button type="button" role="button" label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
-                                </div>
-                            </div>
+                            <FormFooter    
+                                backText="Back"
+                                nextText="Next"
+                                goBack={handleGoBack}
+                                proceed={formControl.list.length < 1? handleSubmit : onFinish}
+                                disabled={isSubmitting}
+                            />
                         </form>
                     )
                 }

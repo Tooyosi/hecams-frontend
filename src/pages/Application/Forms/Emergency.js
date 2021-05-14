@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import * as Yup from "yup"
 import FormLayout from './Layout';
+import FormFooter from './FormFooter';
 
 export const validation = Yup.object().shape({
     fullName: Yup.string().required("Required"),
@@ -20,7 +21,7 @@ export const validation = Yup.object().shape({
 })
 
 export default function Emergency(props) {
-    let { formControl, onChange, formName } = props
+    let { formControl, onChange, formName, handleGoBack } = props
 
     return (
         <FormsWrapper values={formControl}
@@ -179,11 +180,18 @@ export default function Emergency(props) {
                                 </div>
 
                             </FormLayout>
-                            <div className="p-grid p-justify-end">
+                            {/* <div className="p-grid p-justify-end">
                                 <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">
                                     <Button label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
                                 </div>
-                            </div>
+                            </div> */}
+                             <FormFooter
+                                backText="Back"
+                                nextText="Next"
+                                goBack={handleGoBack}
+                                proceed={handleSubmit}
+                                disabled={isSubmitting}
+                            />
                         </form>
                     )
                 }

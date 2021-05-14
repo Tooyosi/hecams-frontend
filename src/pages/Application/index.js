@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Logo from 'components/common/Logo'
 import { TabMenu } from 'primereact/components/tabmenu/TabMenu';
-import { checkProperties, onChange, onDropdownChange, guid } from 'utilities';
+import { checkProperties, onChange, onDropdownChange, guid, COMPANY_NAME } from 'utilities';
 import Personal from './Forms/Personal';
 import Emergency from './Forms/Emergency';
 import Transportation from './Forms/Transportation';
@@ -10,22 +10,31 @@ import Education from './Forms/Education'
 import Task from './Forms/Task';
 import PastJob from './Forms/PastJob';
 import Reference from './Forms/Reference';
+import Consent from './Forms/Consent';
+import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit } from './Application.run';
 
 export default function Application() {
+    let signatureRef = useRef(null)
+    const clearSignature = ()=>{
+        // console.log(signatureRef)
+        // clear the canvas
+        signatureRef.current.clear()
+    }
+    let itemsArr =  [
+        { label: "Personal", step: 1 },
+        { label: "Emergency Contact", step: 2 },
+        { label: "Transportation", step: 3 },
+        { label: "Avaliability", step: 4 },
+        { label: "Education", step: 5 },
+        { label: "Task review", step: 6 },
+        // { label: "Certificate", step: 7 },
+        { label: "Past Job", step: 7 },
+        { label: "Reference", step: 8 },
+        { label: "Consent", step: 9 },
+    ]
     let [state, changeState] = useState({
-        items: [
-            { label: "Personal", step: 1 },
-            { label: "Emergency Contact", step: 2 },
-            { label: "Transportation", step: 3 },
-            { label: "Avaliability", step: 4 },
-            { label: "Education", step: 5 },
-            { label: "Task review", step: 6 },
-            // { label: "Certificate", step: 7 },
-            { label: "Past Job", step: 8 },
-            { label: "Reference", step: 9 },
-            { label: "Consent", step: 10 },
-        ],
-        activeItem: '',
+        items: itemsArr,
+        activeItem: itemsArr[0],
         formStep: 1,
         showModal: false,
         showSuccess: false,
@@ -240,23 +249,28 @@ export default function Application() {
 
     const tabChange = (e) => {
         let denyChange = false
-        switch (e.value) {
-            case state.items[1]:
-                denyChange = checkProperties(state.formBioData)
-                break;
-            case state.items[2]:
-                denyChange = checkProperties(state.formAddress) || checkProperties(state.formBioData)
-                break;
-            case state.items[3]:
-                denyChange = checkProperties(state.formQualification) || checkProperties(state.formAddress) || checkProperties(state.formBioData)
-                break;
-            case state.items[4]:
-                denyChange = checkProperties(state.formCriminal) || checkProperties(state.formQualification) || checkProperties(state.formAddress) || checkProperties(state.formBioData)
-                break;
-        }
-
-        if (!denyChange)
+        if(e.value.step <=(Number(state.activeItem.step))){
             changeState({ ...state, activeItem: e.value, formStep: e.value.step })
+
+        }
+        // switch (e.value) {
+        //     case state.items[1]:
+        //         denyChange = checkProperties(state.formBioData)
+        //         break;
+        //     case state.items[2]:
+        //         denyChange = checkProperties(state.formAddress) || checkProperties(state.formBioData)
+        //         break;
+        //     case state.items[3]:
+        //         denyChange = checkProperties(state.formQualification) || checkProperties(state.formAddress) || checkProperties(state.formBioData)
+        //         break;
+        //     case state.items[4]:
+        //         denyChange = checkProperties(state.formCriminal) || checkProperties(state.formQualification) || checkProperties(state.formAddress) || checkProperties(state.formBioData)
+        //         break;
+        // }
+        
+
+        // if (!denyChange)
+        //     changeState({ ...state, activeItem: e.value, formStep: e.value.step })
     }
 
 
@@ -283,17 +297,26 @@ export default function Application() {
         onDropdownChange(e, state, changeState, formName)
     }
 
+    const handleSubmit = (fn, param1, param2)=>{
+        fn(param1, param2, state, changeState)
+    }
 
+    const handleGoBack = ()=>{
+        if(state.formStep > 1){
+            let newFormstep = state.formStep - 1
+            changeState({ ...state, activeItem: state.items[(newFormstep - 1)], formStep: newFormstep })
+        }
+    }
     return (
         <div className="p-d-flex p-flex-column application-page">
             {/* Application Page */}
-            <div class="p-grid p-m-0 p-py-3 p-pl-xl-6">
-                <div class="p-col-12">
-                    <div class="p-grid p-justify-center p-mt-auto p-mb-auto">
+            <div className="p-grid p-m-0 p-py-3 p-pl-xl-6">
+                <div className="p-col-12">
+                    <div className="p-grid p-justify-center p-mt-auto p-mb-auto">
 
                         <div className="p-col-12 p-lg-6 p-text-center">
                             <Logo />
-                            <h3 className="text-primary">Ability Options Applicaton Form</h3>
+                            <h3 className="text-primary">{COMPANY_NAME} Applicaton Form</h3>
                             <p>
                                 We are an equal opportunity employer, dedicated to a policy of non-discrimination in
                                 employment on any basis including race, color, national origin, age, sex, religion, disability status,
@@ -303,8 +326,8 @@ export default function Application() {
                         </div>
                     </div>
                 </div>
-                <div class="p-col-12">
-                    <div class="p-grid p-justify-center p-px-3 p-mt-auto p-mb-auto">
+                <div className="p-col-12">
+                    <div className="p-grid p-justify-center p-px-3 p-mt-auto p-mb-auto">
                         <div className="p-mb-3">
                             <TabMenu className="application-tabs" model={state.items} activeItem={state.activeItem}
                                 onTabChange={tabChange}
@@ -324,6 +347,7 @@ export default function Application() {
                                         { name: 'Female', code: 'female' },
                                         { name: 'I prefer not to say', code: 'not_say' }
                                     ]}
+                                    onSubmit={(values, formikProps)=>handleSubmit(personalSubmit, values, formikProps)}
                                 />}
 
                             {state.formStep == 2 &&
@@ -331,6 +355,9 @@ export default function Application() {
                                     onChange={handleChange}
                                     formName="formEmergency"
                                     formControl={state.formEmergency}
+                                    handleGoBack={handleGoBack}
+                                    onSubmit={(values, formikProps)=>handleSubmit(emergencySubmit, values, formikProps)}
+                                    
                                 />}
 
                             {state.formStep == 3 && <Transportation
@@ -341,7 +368,9 @@ export default function Application() {
                                     { name: 'Yes', code: 'yes' },
                                     { name: 'No', code: 'no' }
                                 ]}
-                                handleDropdownChange={handleDropdownChange} />}
+                                handleDropdownChange={handleDropdownChange} 
+                                handleGoBack={handleGoBack}
+                                onSubmit={(values, formikProps)=>handleSubmit(transportationSubmit, values, formikProps)}/>}
 
 
                             {state.formStep == 4 && <Availability
@@ -353,6 +382,8 @@ export default function Application() {
                                     { name: 'No', code: 'no' }
                                 ]}
                                 handleDropdownChange={handleDropdownChange}
+                                handleGoBack={handleGoBack}
+                                onSubmit={(values, formikProps)=>handleSubmit(transportationSubmit, values, formikProps)}
                             />}
 
                             {state.formStep == 5 && <Education
@@ -367,6 +398,8 @@ export default function Application() {
                                     { name: 'No', code: 'no' }
                                 ]}
                                 handleDropdownChange={handleDropdownChange}
+                                handleGoBack={handleGoBack}
+                                onSubmit={(values, formikProps)=>handleSubmit(transportationSubmit, values, formikProps)}
                             />}
 
                             {state.formStep == 6 && <Task
@@ -378,18 +411,22 @@ export default function Application() {
                                     { name: 'No', code: 'no' }
                                 ]}
                                 handleDropdownChange={handleDropdownChange}
+                                handleGoBack={handleGoBack}
+                                onSubmit={(values, formikProps)=>handleSubmit(taskSubmit, values, formikProps)}
                             />}
 
-                            {state.formStep == 8 && <PastJob
+                            {state.formStep == 7 && <PastJob
                                 onChange={handleChange}
                                 formName="formPastJob"
                                 formControl={state.formPastJob}
                                 setPastjobField={setPastjobField}
                                 onSubmit={updatePastJobList}
                                 editPastJobList={editPastJobList}
+                                handleGoBack={handleGoBack}
+                                onFinish={(values, formikProps)=>handleSubmit(pastJobSubmit, values, formikProps)}
                             />}
 
-                            {state.formStep == 9 && <Reference
+                            {state.formStep == 8 && <Reference
                                 onChange={handleReferenceChange}
                                 formReference1Name="formReference1"
                                 formReference2Name="formReference2"
@@ -400,7 +437,16 @@ export default function Application() {
                                     { name: 'No', code: 'no' }
                                 ]}
                                 handleDropdownChange={handleDropdownChange}
+                                handleGoBack={handleGoBack}
+                                onSubmit={(values, formikProps)=>handleSubmit(referenceSubmit, values, formikProps)}
                             />}
+                            {state.formStep == 9 &&<Consent
+                                signatureRef={signatureRef}
+                                clearSignature={clearSignature} 
+                                personalDetails={state.formPersonal}
+                                handleGoBack={handleGoBack}
+                                onSubmit={(values, formikProps)=>handleSubmit(consentSubmit, values, formikProps)}/>
+                            }
                         </div>
                     </div>
                 </div>

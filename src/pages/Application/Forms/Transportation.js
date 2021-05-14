@@ -5,10 +5,11 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import * as Yup from "yup"
 import FormLayout from './Layout';
+import FormFooter from './FormFooter';
 
 
 export default function Transportation(props) {
-    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions } = props
+    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack } = props
 
     let validationShape = {
         car: Yup.string().required("Required"),
@@ -113,11 +114,18 @@ export default function Transportation(props) {
                                 </div>
 
                             </FormLayout>
-                            <div className="p-grid p-justify-end">
+                            {/* <div className="p-grid p-justify-end">
                                 <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">
                                     <Button label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
                                 </div>
-                            </div>
+                            </div> */}
+                             <FormFooter
+                                backText="Back"
+                                nextText="Next"
+                                goBack={handleGoBack}
+                                proceed={handleSubmit}
+                                disabled={isSubmitting}
+                            />
                         </form>
                     )
                 }

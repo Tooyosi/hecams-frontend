@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import *  as Yup from "yup"
 import FormLayout from './Layout';
 import { PDF_OR_WORD } from 'utilities';
+import FormFooter from './FormFooter';
 
 
 
@@ -174,7 +175,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
 
 
 export default function Education(props) {
-    let { formControl, onChange, formHighSchoolName, countryOption, formCollegeName, formTradeName, formProfessionalName, handleDropdownChange } = props
+    let { formControl, onChange, formHighSchoolName, countryOption, handleGoBack, formCollegeName, formTradeName, formProfessionalName, handleDropdownChange } = props
 
     let validationShape = {
         ...validationFn(formHighSchoolName)
@@ -318,11 +319,18 @@ export default function Education(props) {
 
 
                             </FormLayout>
-                            <div className="p-grid p-justify-end">
+                            {/* <div className="p-grid p-justify-end">
                                 <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">
                                     <Button label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
                                 </div>
-                            </div>
+                            </div> */}
+                             <FormFooter    
+                                backText="Back"
+                                nextText="Next"
+                                goBack={handleGoBack}
+                                proceed={handleSubmit}
+                                disabled={isSubmitting}
+                            />
                         </form>
                     )
                 }

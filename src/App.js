@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import './App.css';
 import Routes from './routes/Routes';
+import store from './redux/store';
+import { Provider } from 'react-redux';
 
 
 export const RTLContext = React.createContext();

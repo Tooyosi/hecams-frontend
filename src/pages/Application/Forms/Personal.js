@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import * as Yup from "yup"
 import FormLayout from './Layout';
 import { inputValidate, RequiredWithCharacterValidation } from 'utilities';
+import FormFooter from './FormFooter';
 
 
 export default function Personal(props) {
@@ -17,8 +18,8 @@ export default function Personal(props) {
         lastname: RequiredWithCharacterValidation,
         phone: RequiredWithCharacterValidation,
         middlename: Yup.string().test("fileFormat",
-        "Invalid Character",
-         value =>  !value?.match(/[&\/\\#,+()~%.'":*?<>{}!|]/g)
+            "Invalid Character",
+            value => !value?.match(/[&\/\\#,+()~%.'":*?<>{}!|]/g)
         ),
         workPhone: RequiredWithCharacterValidation,
         address1: RequiredWithCharacterValidation,
@@ -466,11 +467,16 @@ export default function Personal(props) {
                                 </div>
 
                             </FormLayout>
-                            <div className="p-grid p-justify-end">
+                            {/* <div className="p-grid p-justify-end">
                                 <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">
                                     <Button label={isSubmitting ? 'Loading..please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
                                 </div>
-                            </div>
+                            </div> */}
+                            <FormFooter
+                                nextText="Next"
+                                proceed={handleSubmit}
+                                disabled={isSubmitting}
+                            />
                         </form>
                     )
                 }

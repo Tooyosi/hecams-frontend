@@ -7,6 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import * as Yup from "yup"
 import FormLayout from './Layout';
 import { DATE_FORMAT } from 'utilities';
+import FormFooter from './FormFooter';
 
 export const validation = Yup.object().shape({
     hours: Yup.string().required("Required"),
@@ -19,7 +20,7 @@ export const validation = Yup.object().shape({
 })
 
 export default function Availability(props) {
-    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions } = props
+    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack } = props
     var today = new Date();
 
     let [minDate, setMinDate] = useState(today)
@@ -199,11 +200,13 @@ export default function Availability(props) {
 
                                 </div>
                             </FormLayout>
-                            <div className="p-grid p-justify-end">
-                                <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">
-                                    <Button label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
-                                </div>
-                            </div>
+                            <FormFooter
+                                backText="Back"
+                                nextText="Next"
+                                goBack={handleGoBack}
+                                proceed={handleSubmit}
+                                disabled={isSubmitting}
+                            />
                         </form>
                     )
                 }

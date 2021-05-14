@@ -1,4 +1,12 @@
 import * as Yup from "yup"
+
+export const updateObject = (oldObject, updatedProperties) => {
+    return {
+      ...oldObject,
+      ...updatedProperties
+    };
+  };
+
 export const onChange = (e, state, changeState, formName) => {
     const input = e.target;
     const form = formName ? { name: formName } : input.form
@@ -115,3 +123,5 @@ export const RequiredWithCharacterValidation = Yup.string().required("Required")
 "Invalid Character",
  value => value && !value.match(/[&\/\\#,+()~%'":*?<>{}!|]/g)
 )
+
+export const COMPANY_NAME = "Ability Options"
