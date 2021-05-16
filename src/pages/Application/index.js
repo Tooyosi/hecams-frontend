@@ -34,8 +34,8 @@ export default function Application() {
     ]
     let [state, changeState] = useState({
         items: itemsArr,
-        activeItem: itemsArr[0],
-        formStep: 1,
+        activeItem: itemsArr[8],
+        formStep: 9,
         showModal: false,
         showSuccess: false,
         formPersonal: {
@@ -307,6 +307,10 @@ export default function Application() {
             changeState({ ...state, activeItem: state.items[(newFormstep - 1)], formStep: newFormstep })
         }
     }
+
+    const onCaptchaChange = (value) =>{
+        console.log("Captcha value:", value);
+      }
     return (
         <div className="p-d-flex p-flex-column application-page">
             {/* Application Page */}
@@ -444,6 +448,7 @@ export default function Application() {
                                 signatureRef={signatureRef}
                                 clearSignature={clearSignature} 
                                 personalDetails={state.formPersonal}
+                                onCaptchaChange={onCaptchaChange}
                                 handleGoBack={handleGoBack}
                                 onSubmit={(values, formikProps)=>handleSubmit(consentSubmit, values, formikProps)}/>
                             }

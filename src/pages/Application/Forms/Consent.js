@@ -1,12 +1,13 @@
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'primereact/button';
 import FormLayout from './Layout';
 import SignaturePad from 'react-signature-canvas'
 import { COMPANY_NAME } from 'utilities';
 import FormFooter from './FormFooter';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Consent(props) {
-
+    let [allowSubmit, setAllowSubmit] = useState(true)
     return (
         <>
             <FormLayout>
@@ -63,14 +64,20 @@ export default function Consent(props) {
                             </div>
                         </div>
                     </div>
-
+                    <ReCAPTCHA
+                        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                        // onChange={props.onCaptchaChange}
+                        onChange={()=> setAllowSubmit(!allowSubmit)}
+                        theme="light"
+                    />
                 </div>
             </div>
             <FormFooter
+                disabledSubmit={allowSubmit}
                 goBack={props.handleGoBack}
                 proceed={props.onSubmit}
                 backText="Back"
-                nextText="Next"
+                nextText="Submit"
             />
         </>
     )

@@ -10,7 +10,7 @@ export default function FormFooter(props) {
                 }
             </div>
             <div className="p-col-6 p-lg-6 p-md-6 p-sm-6 p-justify-end p-text-right">
-                <Button type="button" role="button" disabled={props.disabled} onClick={props.proceed} label={props.nextText} className="button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
+                <Button type="button" role="button" disabled={props.disabled || props.disabledSubmit} onClick={props.proceed} label={props.nextText} className="button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
             </div>
         </div>
     )
