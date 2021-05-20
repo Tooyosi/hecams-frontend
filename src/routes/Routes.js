@@ -15,7 +15,7 @@ import ScrollToTop from "components/common/ScrollToTop";
 import DashboardLayout from "layout/Dashboard";
 import LandingLayout from "layout/Landing";
 import PlainLayout from "layout/PlainLayout";
-
+import HomeLayout from "layout/HomepageLayout";
 
 
 

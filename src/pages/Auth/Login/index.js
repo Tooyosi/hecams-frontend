@@ -50,7 +50,7 @@ export default function Login() {
         } catch (error) {
             if (error && error.response) {
                 let { data } = error.response
-                addMessage("error", data.message)
+                addMessage("error", data.message || "An error occured during login")
             } else {
                 addMessage("error", "An error occured during login")
             }

@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla&family=Oswald:wght@600&display=swap');
+body{
+    font-family: 'Karla', sans-serif;
+    font-size: 0.98rem;
+    /* scroll-padding-top: 100em; */
+  }
+
+  .field{
+    font-family: 'Oswald', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+section{
+    padding-top: 6em;
+    padding-bottom: 6em
+}
+
+.left {
+    background: grey;  
+  }
+  
+  .right {
+    background: black;  
+  }
+  
+  .main-wrapper {
+    height: 100vh;  
+  }
+  
+  .section {
+    height: 100%;  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+  }
+
+  .body p {
+    line-height: 1.5;
+    /* color: #313131; */
+  }
+  
+  .half {
+    background: #f9f9f9;
+    height: 50%;  
+    width: 100%;
+    margin: 15px 0;
+  }
+  
+  h4 {
+    color: white;  
+  }

@@ -32,3 +32,18 @@ export const consentSubmit = (values, formikProps, state, changeState)=>{
     changeState({...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
 
 }
+
+
+export const verifyEmail = (values, formikProps, state, changeState)=>{
+    if(state.otpStep == 1){
+        changeState({
+            ...state,
+            otpStep: 2
+        })
+    }else{
+        changeState({
+            ...state,
+            otpStep: 3
+        })
+    }
+}

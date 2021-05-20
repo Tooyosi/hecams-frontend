@@ -25,9 +25,9 @@ const Auth = ({ children }) => {
   return (
     <AlertContext.Provider value={[message, setMessage]}>
       <React.Suspense fallback={<i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>}>
-        <div className="pages-body p-d-flex p-flex-column">
+        <div className="pages-body p-d-flex">
 
-          <div className="p-grid p-justify-center p-mt-auto p-mb-auto">
+          <div className="p-grid p-justify-center p-mt-auto p-mb-auto width-100">
             <div className="p-col-12 p-md-6 p-lg-4">
               <Messages className="p-d-block" sticky ref={message} />
               <div className="card">

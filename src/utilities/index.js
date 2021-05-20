@@ -2,10 +2,10 @@ import * as Yup from "yup"
 
 export const updateObject = (oldObject, updatedProperties) => {
     return {
-      ...oldObject,
-      ...updatedProperties
+        ...oldObject,
+        ...updatedProperties
     };
-  };
+};
 
 export const onChange = (e, state, changeState, formName) => {
     const input = e.target;
@@ -78,6 +78,7 @@ export const SUPPORTED_FORMATS = [
 
 export const DATE_FORMAT = "MM/dd/yy"
 export const PDF_OR_WORD = "application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+
 export function checkProperties(obj) {
     for (var key in obj) {
         if (obj[key] == null || obj[key] == "")
@@ -120,8 +121,21 @@ export const inputValidate = (error, name, value) => {
 
 
 export const RequiredWithCharacterValidation = Yup.string().required("Required").test("fileFormat",
-"Invalid Character",
- value => value && !value.match(/[&\/\\#,+()~%'":*?<>{}!|]/g)
+    "Invalid Character",
+    value => value && !value.match(/[&\/\\#,+()~%'":*?<>{}!|]/g)
 )
+
+
+export const EmailValidation = Yup.string().required("Required").email("Enter a valid email address").test("fileFormat",
+    "Invalid Character",
+    value => value && !value.match(/[&\/\\#,+()~%'":*?<>{}!|]/g)
+)
+
+
+export const NumberLengthValidation = length => Yup.string()
+    .required("Required")
+    .matches(/[0-9]/g, "Must be a number")
+    .length(length, `Must be ${length} digits long`)
+
 
 export const COMPANY_NAME = "Ability Options"

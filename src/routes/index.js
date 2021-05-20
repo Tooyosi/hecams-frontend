@@ -4,14 +4,50 @@ const Login = lazy(() => import("pages/Auth/Login/index"))
 const Forgot = lazy(() => import("pages/Auth/Forgot/index"))
 const Remember = lazy(() => import("pages/Auth/Remember/index"))
 const Dashboard = lazy(() => import("pages/Dashboard/index"))
-const LandingPage = lazy(() => import("pages/Landing/index"))
+const LandingPage = lazy(() => import("pages/homePage/Index"))
+const ServicesPage = lazy(() => import("pages/homePage/Services"))
+const WhyUsPage = lazy(() => import("pages/homePage/WhyUs"))
+const AboutUsPage = lazy(() => import("pages/homePage/AboutUs"))
+const MissionPage = lazy(() => import("pages/homePage/Mission"))
+const ContactPage = lazy(() => import("pages/homePage/ContactUs"))
 const OnboardPage = lazy(() => import("pages/Onboard/index"))
 const ApplicationPage = lazy(() => import("pages/Application/index"))
 
 const landingRoutes = {
   path: "/",
   name: "Landing",
-  component: LandingPage,
+  children: [
+    {
+      path: "/services",
+      name: "Services",
+      component: ServicesPage
+    },
+    {
+      path: "/whyus",
+      name: "Why Us",
+      component: WhyUsPage
+    },
+    {
+      path: "/mission",
+      name: "Our Mission",
+      component: MissionPage
+    },
+    {
+      path: "/about",
+      name: "About Us",
+      component: AboutUsPage
+    },
+    {
+      path: "/contact",
+      name: "Contact Us",
+      component: ContactPage
+    },
+    {
+      path: "/",
+      name: "Landing",
+      component: LandingPage
+    }
+  ]
 };
 
 

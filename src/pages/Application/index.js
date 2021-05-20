@@ -11,16 +11,17 @@ import Task from './Forms/Task';
 import PastJob from './Forms/PastJob';
 import Reference from './Forms/Reference';
 import Consent from './Forms/Consent';
-import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit } from './Application.run';
+import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail } from './Application.run';
+import FormOtp from './Forms/FormOtp';
 
 export default function Application() {
     let signatureRef = useRef(null)
-    const clearSignature = ()=>{
+    const clearSignature = () => {
         // console.log(signatureRef)
         // clear the canvas
         signatureRef.current.clear()
     }
-    let itemsArr =  [
+    let itemsArr = [
         { label: "Personal", step: 1 },
         { label: "Emergency Contact", step: 2 },
         { label: "Transportation", step: 3 },
@@ -34,8 +35,9 @@ export default function Application() {
     ]
     let [state, changeState] = useState({
         items: itemsArr,
-        activeItem: itemsArr[8],
-        formStep: 9,
+        activeItem: itemsArr[0],
+        formStep: 1,
+        otpStep: 1,
         showModal: false,
         showSuccess: false,
         formPersonal: {
@@ -44,6 +46,7 @@ export default function Application() {
             lastname: '',
             phone: '',
             workPhone: '',
+            otp: '',
             email: '',
             gender: '',
             howHear: '',
@@ -210,7 +213,7 @@ export default function Application() {
 
 
         let newList = []
-        for (let i = 0; i < state.formPastJob ?.list ?.length; i++) {
+        for (let i = 0; i < state.formPastJob?.list?.length; i++) {
             if (i != param2) {
                 const element = state.formPastJob.list[i];
                 newList.push(element)
@@ -249,7 +252,7 @@ export default function Application() {
 
     const tabChange = (e) => {
         let denyChange = false
-        if(e.value.step <=(Number(state.activeItem.step))){
+        if (e.value.step <= (Number(state.activeItem.step))) {
             changeState({ ...state, activeItem: e.value, formStep: e.value.step })
 
         }
@@ -267,7 +270,7 @@ export default function Application() {
         //         denyChange = checkProperties(state.formCriminal) || checkProperties(state.formQualification) || checkProperties(state.formAddress) || checkProperties(state.formBioData)
         //         break;
         // }
-        
+
 
         // if (!denyChange)
         //     changeState({ ...state, activeItem: e.value, formStep: e.value.step })
@@ -297,20 +300,20 @@ export default function Application() {
         onDropdownChange(e, state, changeState, formName)
     }
 
-    const handleSubmit = (fn, param1, param2)=>{
+    const handleSubmit = (fn, param1, param2) => {
         fn(param1, param2, state, changeState)
     }
 
-    const handleGoBack = ()=>{
-        if(state.formStep > 1){
+    const handleGoBack = () => {
+        if (state.formStep > 1) {
             let newFormstep = state.formStep - 1
             changeState({ ...state, activeItem: state.items[(newFormstep - 1)], formStep: newFormstep })
         }
     }
 
-    const onCaptchaChange = (value) =>{
+    const onCaptchaChange = (value) => {
         console.log("Captcha value:", value);
-      }
+    }
     return (
         <div className="p-d-flex p-flex-column application-page">
             {/* Application Page */}
@@ -324,137 +327,151 @@ export default function Application() {
                             <p>
                                 We are an equal opportunity employer, dedicated to a policy of non-discrimination in
                                 employment on any basis including race, color, national origin, age, sex, religion, disability status,
-                                 marital status, protected veteran status, or any other characteristic protected by law.
+                                marital status, protected veteran status, or any other characteristic protected by law.
                                 The following characters cannot be used on this form {`(%,&,/,?,>,<,|,{,})`}
                             </p>
                         </div>
                     </div>
                 </div>
-                <div className="p-col-12">
-                    <div className="p-grid p-justify-center p-px-3 p-mt-auto p-mb-auto">
-                        <div className="p-mb-3">
-                            <TabMenu className="application-tabs" model={state.items} activeItem={state.activeItem}
-                                onTabChange={tabChange}
-                            />
-                            {state.formStep == 1 &&
-                                <Personal
+                {state.otpStep < 3 ?
+                    <div className="p-col-4 p-mx-auto">
+                        <FormOtp
+                            onChange={handleChange}
+                            formName="formPersonal"
+                            formStep={state.otpStep}
+                            formControl={state.formPersonal}
+                            onSubmit={(values, formikProps) => handleSubmit(verifyEmail, values, formikProps)}
+                        />
+                    </div>
+                    :
+                    <div className="p-col-12">
+                        <div className="p-grid p-justify-center p-px-3 p-mt-auto p-mb-auto">
+
+                            <div className="p-mb-3">
+                                <TabMenu className="application-tabs" model={state.items} activeItem={state.activeItem}
+                                    onTabChange={tabChange}
+                                />
+                                {state.formStep == 1 &&
+                                    <Personal
+                                        onChange={handleChange}
+                                        formName="formPersonal"
+                                        formControl={state.formPersonal}
+                                        yesOrNoOptions={[
+                                            { name: 'Yes', code: 'yes' },
+                                            { name: 'No', code: 'no' }
+                                        ]}
+                                        handleDropdownChange={handleDropdownChange}
+                                        genderOptions={[
+                                            { name: 'Male', code: 'male' },
+                                            { name: 'Female', code: 'female' },
+                                            { name: 'I prefer not to say', code: 'not_say' }
+                                        ]}
+                                        onSubmit={(values, formikProps) => handleSubmit(personalSubmit, values, formikProps)}
+                                    />}
+
+                                {state.formStep == 2 &&
+                                    <Emergency
+                                        onChange={handleChange}
+                                        formName="formEmergency"
+                                        formControl={state.formEmergency}
+                                        handleGoBack={handleGoBack}
+                                        onSubmit={(values, formikProps) => handleSubmit(emergencySubmit, values, formikProps)}
+
+                                    />}
+
+                                {state.formStep == 3 && <Transportation
                                     onChange={handleChange}
-                                    formName="formPersonal"
-                                    formControl={state.formPersonal}
+                                    formName="formTransportation"
+                                    formControl={state.formTransportation}
                                     yesOrNoOptions={[
                                         { name: 'Yes', code: 'yes' },
                                         { name: 'No', code: 'no' }
                                     ]}
                                     handleDropdownChange={handleDropdownChange}
-                                    genderOptions={[
-                                        { name: 'Male', code: 'male' },
-                                        { name: 'Female', code: 'female' },
-                                        { name: 'I prefer not to say', code: 'not_say' }
-                                    ]}
-                                    onSubmit={(values, formikProps)=>handleSubmit(personalSubmit, values, formikProps)}
-                                />}
-
-                            {state.formStep == 2 &&
-                                <Emergency
-                                    onChange={handleChange}
-                                    formName="formEmergency"
-                                    formControl={state.formEmergency}
                                     handleGoBack={handleGoBack}
-                                    onSubmit={(values, formikProps)=>handleSubmit(emergencySubmit, values, formikProps)}
-                                    
+                                    onSubmit={(values, formikProps) => handleSubmit(transportationSubmit, values, formikProps)} />}
+
+
+                                {state.formStep == 4 && <Availability
+                                    onChange={handleChange}
+                                    formName="formAvailability"
+                                    formControl={state.formAvailability}
+                                    yesOrNoOptions={[
+                                        { name: 'Yes', code: 'yes' },
+                                        { name: 'No', code: 'no' }
+                                    ]}
+                                    handleDropdownChange={handleDropdownChange}
+                                    handleGoBack={handleGoBack}
+                                    onSubmit={(values, formikProps) => handleSubmit(transportationSubmit, values, formikProps)}
                                 />}
 
-                            {state.formStep == 3 && <Transportation
-                                onChange={handleChange}
-                                formName="formTransportation"
-                                formControl={state.formTransportation}
-                                yesOrNoOptions={[
-                                    { name: 'Yes', code: 'yes' },
-                                    { name: 'No', code: 'no' }
-                                ]}
-                                handleDropdownChange={handleDropdownChange} 
-                                handleGoBack={handleGoBack}
-                                onSubmit={(values, formikProps)=>handleSubmit(transportationSubmit, values, formikProps)}/>}
+                                {state.formStep == 5 && <Education
+                                    onChange={handleEducationChange}
+                                    formHighSchoolName="formHighSchool"
+                                    formCollegeName="formCollege"
+                                    formTradeName="formTrade"
+                                    formProfessionalName="formProfessional"
+                                    formControl={educationState}
+                                    countryOption={[
+                                        { name: 'Yes', code: 'yes' },
+                                        { name: 'No', code: 'no' }
+                                    ]}
+                                    handleDropdownChange={handleDropdownChange}
+                                    handleGoBack={handleGoBack}
+                                    onSubmit={(values, formikProps) => handleSubmit(transportationSubmit, values, formikProps)}
+                                />}
 
+                                {state.formStep == 6 && <Task
+                                    onChange={handleChange}
+                                    formName="formTask"
+                                    formControl={state.formTask}
+                                    yesOrNoOptions={[
+                                        { name: 'Yes', code: 'yes' },
+                                        { name: 'No', code: 'no' }
+                                    ]}
+                                    handleDropdownChange={handleDropdownChange}
+                                    handleGoBack={handleGoBack}
+                                    onSubmit={(values, formikProps) => handleSubmit(taskSubmit, values, formikProps)}
+                                />}
 
-                            {state.formStep == 4 && <Availability
-                                onChange={handleChange}
-                                formName="formAvailability"
-                                formControl={state.formAvailability}
-                                yesOrNoOptions={[
-                                    { name: 'Yes', code: 'yes' },
-                                    { name: 'No', code: 'no' }
-                                ]}
-                                handleDropdownChange={handleDropdownChange}
-                                handleGoBack={handleGoBack}
-                                onSubmit={(values, formikProps)=>handleSubmit(transportationSubmit, values, formikProps)}
-                            />}
+                                {state.formStep == 7 && <PastJob
+                                    onChange={handleChange}
+                                    formName="formPastJob"
+                                    formControl={state.formPastJob}
+                                    setPastjobField={setPastjobField}
+                                    onSubmit={updatePastJobList}
+                                    editPastJobList={editPastJobList}
+                                    handleGoBack={handleGoBack}
+                                    onFinish={(values, formikProps) => handleSubmit(pastJobSubmit, values, formikProps)}
+                                />}
 
-                            {state.formStep == 5 && <Education
-                                onChange={handleEducationChange}
-                                formHighSchoolName="formHighSchool"
-                                formCollegeName="formCollege"
-                                formTradeName="formTrade"
-                                formProfessionalName="formProfessional"
-                                formControl={educationState}
-                                countryOption={[
-                                    { name: 'Yes', code: 'yes' },
-                                    { name: 'No', code: 'no' }
-                                ]}
-                                handleDropdownChange={handleDropdownChange}
-                                handleGoBack={handleGoBack}
-                                onSubmit={(values, formikProps)=>handleSubmit(transportationSubmit, values, formikProps)}
-                            />}
-
-                            {state.formStep == 6 && <Task
-                                onChange={handleChange}
-                                formName="formTask"
-                                formControl={state.formTask}
-                                yesOrNoOptions={[
-                                    { name: 'Yes', code: 'yes' },
-                                    { name: 'No', code: 'no' }
-                                ]}
-                                handleDropdownChange={handleDropdownChange}
-                                handleGoBack={handleGoBack}
-                                onSubmit={(values, formikProps)=>handleSubmit(taskSubmit, values, formikProps)}
-                            />}
-
-                            {state.formStep == 7 && <PastJob
-                                onChange={handleChange}
-                                formName="formPastJob"
-                                formControl={state.formPastJob}
-                                setPastjobField={setPastjobField}
-                                onSubmit={updatePastJobList}
-                                editPastJobList={editPastJobList}
-                                handleGoBack={handleGoBack}
-                                onFinish={(values, formikProps)=>handleSubmit(pastJobSubmit, values, formikProps)}
-                            />}
-
-                            {state.formStep == 8 && <Reference
-                                onChange={handleReferenceChange}
-                                formReference1Name="formReference1"
-                                formReference2Name="formReference2"
-                                formReference3Name="formReference3"
-                                formControl={referenceState}
-                                countryOption={[
-                                    { name: 'Yes', code: 'yes' },
-                                    { name: 'No', code: 'no' }
-                                ]}
-                                handleDropdownChange={handleDropdownChange}
-                                handleGoBack={handleGoBack}
-                                onSubmit={(values, formikProps)=>handleSubmit(referenceSubmit, values, formikProps)}
-                            />}
-                            {state.formStep == 9 &&<Consent
-                                signatureRef={signatureRef}
-                                clearSignature={clearSignature} 
-                                personalDetails={state.formPersonal}
-                                onCaptchaChange={onCaptchaChange}
-                                handleGoBack={handleGoBack}
-                                onSubmit={(values, formikProps)=>handleSubmit(consentSubmit, values, formikProps)}/>
-                            }
+                                {state.formStep == 8 && <Reference
+                                    onChange={handleReferenceChange}
+                                    formReference1Name="formReference1"
+                                    formReference2Name="formReference2"
+                                    formReference3Name="formReference3"
+                                    formControl={referenceState}
+                                    countryOption={[
+                                        { name: 'Yes', code: 'yes' },
+                                        { name: 'No', code: 'no' }
+                                    ]}
+                                    handleDropdownChange={handleDropdownChange}
+                                    handleGoBack={handleGoBack}
+                                    onSubmit={(values, formikProps) => handleSubmit(referenceSubmit, values, formikProps)}
+                                />}
+                                {state.formStep == 9 && <Consent
+                                    signatureRef={signatureRef}
+                                    clearSignature={clearSignature}
+                                    personalDetails={state.formPersonal}
+                                    onCaptchaChange={onCaptchaChange}
+                                    handleGoBack={handleGoBack}
+                                    onSubmit={(values, formikProps) => handleSubmit(consentSubmit, values, formikProps)} />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+
             </div>
         </div>
     )

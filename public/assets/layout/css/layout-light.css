@@ -4472,7 +4472,7 @@ body {
 }
 
 .text-primary {
-  color: #50A656;
+  color: #50A656 !important;
 }
 
 .bg-primary {
