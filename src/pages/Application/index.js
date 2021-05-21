@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState,useContext, useRef } from 'react'
 import Logo from 'components/common/Logo'
 import { TabMenu } from 'primereact/components/tabmenu/TabMenu';
 import { checkProperties, onChange, onDropdownChange, guid, COMPANY_NAME } from 'utilities';
@@ -13,14 +13,24 @@ import Reference from './Forms/Reference';
 import Consent from './Forms/Consent';
 import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail } from './Application.run';
 import FormOtp from './Forms/FormOtp';
+import { ToastContext } from 'layout/PlainLayout';
 
 export default function Application() {
     let signatureRef = useRef(null)
+    let [message, setMessage] = useContext(ToastContext)
     const clearSignature = () => {
         // console.log(signatureRef)
         // clear the canvas
         signatureRef.current.clear()
     }
+
+
+    const addMessage = (severity, content, summary, detail) => {
+        setMessage({
+            severity, content, toggle: !message.toggle, summary, detail
+        })
+    };
+
     let itemsArr = [
         { label: "Personal", step: 1 },
         { label: "Emergency Contact", step: 2 },
@@ -301,7 +311,7 @@ export default function Application() {
     }
 
     const handleSubmit = (fn, param1, param2) => {
-        fn(param1, param2, state, changeState)
+        fn(param1, param2, state, changeState, addMessage)
     }
 
     const handleGoBack = () => {

@@ -76,8 +76,13 @@ export default function FormOtp({ formStep, formControl, onChange, formName, han
                                     </div>}
 
                                 <div className="p-grid">
-                                    <div className="p-col-12">
-                                        <Button label="Submit" className="width-100" />
+                                    <div className="p-col-6">
+                                        {formStep == 2 &&
+                                            <Button   disabled={isSubmitting} label="Resend OTP" type="button" role="button" className="width-100" />
+                                        }
+                                    </div>
+                                    <div className="p-col-6">
+                                        <Button  disabled={isSubmitting} label={`${isSubmitting? "Please wait..." :"Submit"}`} className="width-100" />
                                     </div>
                                 </div>
 
