@@ -253,6 +253,7 @@ export default function Personal(props) {
                                                 id="email"
                                                 name="email"
                                                 onBlur={handleBlur}
+                                                disabled={formControl.otp !== ""}
                                                 className={`width-100  ${errors.email && touched.email ? 'p-invalid' : ''}`}
                                                 value={values.email}
                                                 onChange={handleChange} />

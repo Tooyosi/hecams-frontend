@@ -5,7 +5,7 @@ import { getRefreshToken, logout } from './authService';
 const cookies = new Cookies();
 
 const instance = axios.create({
-  baseURL: "/api/v1"
+  baseURL: "/"
 });
 
 

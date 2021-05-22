@@ -10,7 +10,7 @@ const Header = () => {
             <div className="col-md-6">
             <h6 className="text-uppercase">Welcome to Ability Options LLC</h6>
                 <h2 className='field text-uppercase'> Helping find Solutions for Mental Health </h2> <br/>
-                <Link to="/login" className="field btn btn-success btn-lg">Staff Login</Link>
+                <a href="/login" className="field btn btn-success btn-lg">Staff Login</a>
             </div>
         </div>
     </div>

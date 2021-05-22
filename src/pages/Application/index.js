@@ -11,7 +11,7 @@ import Task from './Forms/Task';
 import PastJob from './Forms/PastJob';
 import Reference from './Forms/Reference';
 import Consent from './Forms/Consent';
-import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail } from './Application.run';
+import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail, sendResendOtp } from './Application.run';
 import FormOtp from './Forms/FormOtp';
 import { ToastContext } from 'layout/PlainLayout';
 
@@ -324,6 +324,11 @@ export default function Application() {
     const onCaptchaChange = (value) => {
         console.log("Captcha value:", value);
     }
+
+
+    const doResendOtp = (email, setSubmitting)=>{
+        sendResendOtp(email, addMessage, setSubmitting)
+    }
     return (
         <div className="p-d-flex p-flex-column application-page">
             {/* Application Page */}
@@ -333,7 +338,7 @@ export default function Application() {
 
                         <div className="p-col-12 p-lg-6 p-text-center">
                             <Logo />
-                            <h3 className="text-primary">{COMPANY_NAME} Applicaton Form</h3>
+                            <h3 className="text-primary">{COMPANY_NAME} Job Applicaton Form</h3>
                             <p>
                                 We are an equal opportunity employer, dedicated to a policy of non-discrimination in
                                 employment on any basis including race, color, national origin, age, sex, religion, disability status,
@@ -344,11 +349,12 @@ export default function Application() {
                     </div>
                 </div>
                 {state.otpStep < 3 ?
-                    <div className="p-col-4 p-mx-auto">
+                    <div className="p-col-12 p-lg-4 p-md-6 p-mx-auto">
                         <FormOtp
                             onChange={handleChange}
                             formName="formPersonal"
                             formStep={state.otpStep}
+                            sendResendOtp={doResendOtp}
                             formControl={state.formPersonal}
                             onSubmit={(values, formikProps) => handleSubmit(verifyEmail, values, formikProps)}
                         />

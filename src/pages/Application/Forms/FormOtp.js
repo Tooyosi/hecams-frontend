@@ -7,7 +7,7 @@ import * as Yup from "yup"
 import FormLayout from './Layout';
 import { EmailValidation, NumberLengthValidation, RequiredWithCharacterValidation } from 'utilities';
 
-export default function FormOtp({ formStep, formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, genderOptions, ...props }) {
+export default function FormOtp({ formStep, formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, genderOptions,sendResendOtp, ...props }) {
 
     let validationShape = {}
     if (formStep == 1) {
@@ -32,6 +32,7 @@ export default function FormOtp({ formStep, formControl, onChange, formName, han
                         handleBlur,
                         handleChange,
                         isSubmitting,
+                        setSubmitting,
                         handleSubmit } = props;
                     return (
                         <form onChange={onChange} onSubmit={handleSubmit} name={formName} >
@@ -78,11 +79,13 @@ export default function FormOtp({ formStep, formControl, onChange, formName, han
                                 <div className="p-grid">
                                     <div className="p-col-6">
                                         {formStep == 2 &&
-                                            <Button   disabled={isSubmitting} label="Resend OTP" type="button" role="button" className="width-100" />
+                                            <Button   disabled={isSubmitting}
+                                                onClick={()=> sendResendOtp(values.email, setSubmitting)}
+                                            label="Resend OTP" type="button" role="button" className="width-100" />
                                         }
                                     </div>
                                     <div className="p-col-6">
-                                        <Button  disabled={isSubmitting} label={`${isSubmitting? "Please wait..." :"Submit"}`} className="width-100" />
+                                        <Button  disabled={isSubmitting} label={`Submit`} className="width-100" />
                                     </div>
                                 </div>
 
