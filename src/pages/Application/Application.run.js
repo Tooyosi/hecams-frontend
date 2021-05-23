@@ -50,7 +50,7 @@ export const verifyEmail = async (values, formikProps, state, changeState, addMe
             // show the otp screen or application form screen
             changeState({
                 ...state,
-                otpStep: data.isJobApplicantExist ? 2 : 3
+                otpStep:  2
             })
 
         } catch (error) {
