@@ -36,7 +36,8 @@ export default function Personal(props) {
         state: RequiredWithCharacterValidation,
         ssn: Yup.string().required("Required")
             .matches(/[0-9]/g, "Social Security must be a number"),
-        cSsn: Yup.string().required("Required"),
+        cSsn: Yup.string().required("Required")
+            .oneOf([Yup.ref("ssn"), null], "Social Security dont match"),
         howLongAtAddress: RequiredWithCharacterValidation,
         capability: RequiredWithCharacterValidation,
         convicted: RequiredWithCharacterValidation,
@@ -449,10 +450,10 @@ export default function Personal(props) {
                                         <div className="p-field">
                                             {/* <label htmlFor="upload">Upload Driver’s Licence*</label> */}
                                             <label htmlFor="upload"
-                                                className={`${formControl.upload !== "" && formControl.upload !== null ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
+                                                className={`${formControl.upload !== "" && formControl.upload  ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
                                             >
 
-                                                <p>{formControl.upload !== "" && formControl.upload !== null ? formControl.upload.name : "Upload Identification card / Driver’s Licence*"}</p></label>
+                                                <p>{formControl.upload !== "" && formControl.upload  ? formControl.upload.name : "Upload Identification card / Driver’s Licence*"}</p></label>
                                             <InputText
                                                 type="file"
                                                 id="upload"

@@ -139,3 +139,7 @@ export const NumberLengthValidation = length => Yup.string()
 
 
 export const COMPANY_NAME = "Ability Options"
+
+export const checkNull = (param)=>{
+    return param? param : ''
+}
