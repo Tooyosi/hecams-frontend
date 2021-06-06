@@ -47,7 +47,7 @@ export default function Availability(props) {
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
 
-                                            <Dropdown
+                                            {/* <Dropdown
                                                 id="hours"
                                                 name="hours"
                                                 value={values.hours}
@@ -58,7 +58,16 @@ export default function Availability(props) {
                                                 options={yesOrNoOptions}
                                                 className={`width-100  ${errors.hours && touched.hours ? 'p-invalid' : ''}`}
                                                 optionLabel="name"
-                                            ></Dropdown>
+                                            ></Dropdown> */}
+                                            <InputText
+                                                type="number"
+                                                min="0"
+                                                id="hours"
+                                                name="hours"
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors.hours && touched.hours ? 'p-invalid' : ''}`}
+                                                value={values.hours}
+                                                onChange={handleChange} />
 
                                             <label htmlFor="hours">How many hours can you work weekly?*</label>
 
@@ -68,7 +77,6 @@ export default function Availability(props) {
                                     </div>
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
-
                                             <Dropdown
                                                 id="weekends"
                                                 name="weekends"

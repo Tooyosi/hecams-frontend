@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  solucreed-frontend:
+    container_name: solucreed-frontend
+    image: solucreed-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile-prod
+  solucreed-frontend-stage:
+    container_name: solucreed-frontend-stage
+    image: solucreed-frontend-stage
+    build:
+      context: .
+      dockerfile: Dockerfile-stage

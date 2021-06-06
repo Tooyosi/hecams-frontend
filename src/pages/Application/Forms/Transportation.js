@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import FormsWrapper, { showFieldError } from 'components/common/form/Formik'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,6 +6,8 @@ import { Dropdown } from 'primereact/dropdown';
 import * as Yup from "yup"
 import FormLayout from './Layout';
 import FormFooter from './FormFooter';
+import { Calendar } from 'primereact/calendar';
+import { DATE_FORMAT } from 'utilities';
 
 
 export default function Transportation(props) {
@@ -17,10 +19,14 @@ export default function Transportation(props) {
         expiration: Yup.string().required("Required")
     }
 
-    if(formControl.car !== "" && formControl.car.code == "no"){
+    if(formControl.car !== "" && formControl.car.code == false){
         validationShape.reason = Yup.string().required("Required")
     }
     const validation = Yup.object().shape(validationShape)
+
+    var today = new Date();
+
+    let [minDate, setMinDate] = useState(today)
     return (
         <FormsWrapper values={formControl}
             handleSubmit={props.onSubmit}
@@ -97,14 +103,27 @@ export default function Transportation(props) {
                                     </div>
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
-                                            <InputText
+                                            <Calendar
+                                                value={values.startDate}
+                                                className={`width-100  ${errors.expiration && touched.expiration ? 'p-invalid' : ''}`}
+                                                name="expiration"
+                                                id="expiration"
+                                                dateFormat={DATE_FORMAT}
+                                                value={values.expiration}
+                                                minDate={minDate}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    onChange(e, formName)
+                                                }}
+                                            />
+                                            {/* <InputText
                                                 type="text"
                                                 id="expiration"
                                                 name="expiration"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.expiration && touched.expiration ? 'p-invalid' : ''}`}
                                                 value={values.expiration}
-                                                onChange={handleChange} />
+                                                onChange={handleChange} /> */}
                                             <label htmlFor="expiration">Expiration</label>
 
                                         </span>

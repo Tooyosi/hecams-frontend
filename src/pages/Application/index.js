@@ -11,7 +11,7 @@ import Task from './Forms/Task';
 import PastJob from './Forms/PastJob';
 import Reference from './Forms/Reference';
 import Consent from './Forms/Consent';
-import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail, sendResendOtp, getPersonalData, getEmergencyData } from './Application.run';
+import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail, sendResendOtp, getPersonalData, getEmergencyData, availabilitySubmit, getTransportData, getAvailabilityData } from './Application.run';
 import FormOtp from './Forms/FormOtp';
 import { ToastContext } from 'layout/PlainLayout';
 import Loader from 'components/common/Loader';
@@ -76,6 +76,9 @@ export default function Application() {
             capability: '',
             convicted: '',
             upload: '',
+            fileUploadId: "",
+            fileUploadName: "",
+            fileUploadSize: "",
         },
         formEmergency: {
             fullName: '',
@@ -328,6 +331,12 @@ export default function Application() {
             case 2:
                 handleDataFetch(getEmergencyData)
             break;
+            case 3:
+                handleDataFetch(getTransportData)
+            break;
+            case 3:
+                handleDataFetch(getAvailabilityData)
+            break;
         }
     }
     return (
@@ -374,8 +383,8 @@ export default function Application() {
                                             formName="formPersonal"
                                             formControl={state.formPersonal}
                                             yesOrNoOptions={[
-                                                { name: 'yes', code: 'yes' },
-                                                { name: 'no', code: 'no' }
+                                                { name: 'Yes', code: true },
+                                                { name: 'No', code: false }
                                             ]}
                                             handleDropdownChange={handleDropdownChange}
                                             genderOptions={[
@@ -401,8 +410,8 @@ export default function Application() {
                                         formName="formTransportation"
                                         formControl={state.formTransportation}
                                         yesOrNoOptions={[
-                                            { name: 'Yes', code: 'yes' },
-                                            { name: 'No', code: 'no' }
+                                            { name: 'Yes', code: true },
+                                            { name: 'No', code: false }
                                         ]}
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}
@@ -414,12 +423,12 @@ export default function Application() {
                                         formName="formAvailability"
                                         formControl={state.formAvailability}
                                         yesOrNoOptions={[
-                                            { name: 'Yes', code: 'yes' },
-                                            { name: 'No', code: 'no' }
+                                            { name: 'Yes', code: true },
+                                            { name: 'No', code: false }
                                         ]}
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}
-                                        onSubmit={(values, formikProps) => handleSubmit(transportationSubmit, values, formikProps)}
+                                        onSubmit={(values, formikProps) => handleSubmit(availabilitySubmit, values, formikProps)}
                                     />}
 
                                     {state.formStep == 5 && <Education
@@ -430,8 +439,8 @@ export default function Application() {
                                         formProfessionalName="formProfessional"
                                         formControl={educationState}
                                         countryOption={[
-                                            { name: 'Yes', code: 'yes' },
-                                            { name: 'No', code: 'no' }
+                                            { name: 'Yes', code: true },
+                                            { name: 'No', code: false }
                                         ]}
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}
@@ -443,8 +452,8 @@ export default function Application() {
                                         formName="formTask"
                                         formControl={state.formTask}
                                         yesOrNoOptions={[
-                                            { name: 'Yes', code: 'yes' },
-                                            { name: 'No', code: 'no' }
+                                            { name: 'Yes', code: true },
+                                            { name: 'No', code: false }
                                         ]}
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}
@@ -469,8 +478,8 @@ export default function Application() {
                                         formReference3Name="formReference3"
                                         formControl={referenceState}
                                         countryOption={[
-                                            { name: 'Yes', code: 'yes' },
-                                            { name: 'No', code: 'no' }
+                                            { name: 'Yes', code: true },
+                                            { name: 'No', code: false }
                                         ]}
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}

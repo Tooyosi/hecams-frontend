@@ -28,7 +28,7 @@ export default function Personal(props) {
         gender: RequiredWithCharacterValidation,
         howHear: RequiredWithCharacterValidation,
         city: RequiredWithCharacterValidation,
-        workingWithDisablilties: RequiredWithCharacterValidation,
+        workingWithDisabilities: RequiredWithCharacterValidation,
         position: RequiredWithCharacterValidation,
         challanging: RequiredWithCharacterValidation,
         zip: Yup.string().required("Required")
@@ -42,7 +42,7 @@ export default function Personal(props) {
         capability: RequiredWithCharacterValidation,
         convicted: RequiredWithCharacterValidation,
     }
-    if (formControl.upload == "") {
+    if (formControl.upload == "" && formControl.fileUploadName == "") {
 
         validationShape.upload = Yup.mixed()
             .required("A file is required")
@@ -360,16 +360,16 @@ export default function Personal(props) {
                                         <span className="p-float-label">
                                             <InputText
                                                 type="text"
-                                                id="workingWithDisablilties"
-                                                name="workingWithDisablilties"
+                                                id="workingWithDisabilities"
+                                                name="workingWithDisabilities"
                                                 onBlur={handleBlur}
-                                                className={`width-100  ${errors.workingWithDisablilties && touched.workingWithDisablilties ? 'p-invalid' : ''}`}
-                                                value={values.workingWithDisablilties}
+                                                className={`width-100  ${errors.workingWithDisabilities && touched.workingWithDisabilities ? 'p-invalid' : ''}`}
+                                                value={values.workingWithDisabilities}
                                                 onChange={handleChange} />
-                                            <label htmlFor="workingWithDisablilties">What do you like most about working with the individuals with disabilities? *</label>
+                                            <label htmlFor="workingWithDisabilities">What do you like most about working with the individuals with disabilities? *</label>
 
                                         </span>
-                                        {showFieldError("workingWithDisablilties", errors, touched)}
+                                        {showFieldError("workingWithDisabilities", errors, touched)}
                                     </div>
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
@@ -450,10 +450,10 @@ export default function Personal(props) {
                                         <div className="p-field">
                                             {/* <label htmlFor="upload">Upload Driver’s Licence*</label> */}
                                             <label htmlFor="upload"
-                                                className={`${formControl.upload !== "" && formControl.upload  ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
+                                                className={`${(formControl.upload !== "" && formControl.upload) || (formControl.fileUploadName !== "")  ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
                                             >
 
-                                                <p>{formControl.upload !== "" && formControl.upload  ? formControl.upload.name : "Upload Identification card / Driver’s Licence*"}</p></label>
+                                                <p>{formControl.upload !== "" && formControl.upload  ? formControl.upload.name : formControl.fileUploadName !== ""? formControl.fileUploadName:  "Upload Identification card / Driver’s Licence*"}</p></label>
                                             <InputText
                                                 type="file"
                                                 id="upload"
@@ -464,7 +464,6 @@ export default function Personal(props) {
 
                                         </div>
                                         {showFieldError("upload", errors, touched)}
-
                                     </div>
                                 </div>
 

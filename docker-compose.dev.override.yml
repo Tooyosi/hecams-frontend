@@ -1,0 +1,21 @@
+version: '2.4' #3.7
+
+services:
+  solucreed-frontend:
+    container_name: solucreed-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+    env_file:
+      - .env
+    networks:
+      - frontend
+    ports:
+    - 8000:3000
+
+networks:
+  frontend:
+    name: frontend
