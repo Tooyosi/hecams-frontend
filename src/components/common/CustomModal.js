@@ -9,7 +9,8 @@ export default function CustomModal(props) {
             modal
             style={props.style}
             footer={props.footer}
-            onHide={props.toggle}>
+            onHide={props.toggle}
+            {...props}>
             {props.children}
         </Dialog>
 

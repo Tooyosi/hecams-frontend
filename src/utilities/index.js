@@ -11,6 +11,7 @@ export const onChange = (e, state, changeState, formName) => {
     const input = e.target;
     const form = formName ? { name: formName } : input.form
     const value = input.type === 'checkbox' ? input.checked : input.value;
+    console.log(value, input.type)
     if (input.files && input.files[0]) {
         changeState({
             ...state,

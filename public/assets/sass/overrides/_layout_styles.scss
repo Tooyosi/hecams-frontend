@@ -139,4 +139,11 @@
 
         }    
     }
+
+    svg{
+        width: 100% !important;
+    }
+}
+[class*="react-pdf"]{
+    width: 100% !important;
 }

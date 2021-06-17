@@ -1,4 +1,4 @@
-import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport } from "service/jobAppliationservice"
+import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference } from "service/jobAppliationservice"
 import { checkNull, DATE_FORMAT } from "utilities"
 import moment from "moment"
 
@@ -20,7 +20,7 @@ export const personalSubmit = async (values, formikProps, state, changeState, ad
         formData.append("gender", state.formPersonal.gender.code)
         formData.append("howYouHeardAboutUs", state.formPersonal.howHear)
         formData.append("yourChallengeWithDisabled", state.formPersonal.workingWithDisabilities)
-        formData.append("challenging", state.formPersonal.challenging)
+        formData.append("whatYouFindMostChallengingInThisJob", state.formPersonal.challenging)
         formData.append("address1", state.formPersonal.address1)
         formData.append("address2", state.formPersonal.address2)
         formData.append("city", state.formPersonal.city)
@@ -110,7 +110,8 @@ export const availabilitySubmit = async (values, formikProps, state, changeState
     try {
         let { data } = await addAvailability(state.formPersonal.email, formData)
 
-        // getAvailabilityData(state, changeState)
+        getEducationData(state, changeState)
+        formikProps.resetForm({})
     } catch (error) {
 
         catchError(error, addMessage)
@@ -120,18 +121,149 @@ export const availabilitySubmit = async (values, formikProps, state, changeState
 
 }
 
-export const taskSubmit = (values, formikProps, state, changeState) => {
-    changeState({ ...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
+
+export const educationSubmit = async (values, formikProps, state, changeState, addMessage) => {
+    // changeState({ ...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
+    let formData = new FormData()
+    formData.append("schoolType", state.formEducation.schoolType.code)
+    formData.append("schoolName", state.formEducation.schoolName)
+    formData.append("city", state.formEducation.city)
+    formData.append("stateName", state.formEducation.state)
+    formData.append("country", state.formEducation.country.code)
+    formData.append("levelCompleted", state.formEducation.level)
+    formData.append("degree", state.formEducation.degree)
+    formData.append("major", state.formEducation.major)
+
+    if (state.formEducation.certificate !== "") {
+        formData.append("certificateUploadMultiPart", state.formEducation.certificate)
+    }
+    try {
+        let { data } = await addEducation(state.formPersonal.email, formData)
+
+        getEducationData(state, changeState)
+    } catch (error) {
+
+        catchError(error, addMessage)
+    } finally {
+        formikProps.setSubmitting(false)
+    }
 
 }
 
-export const pastJobSubmit = (values, formikProps, state, changeState) => {
-    changeState({ ...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
+export const taskSubmit = async (values, formikProps, state, changeState, addMessage) => {
+    let formData = new FormData()
+    formData.append("bathing", state.formTask.bathing.code)
+    formData.append("dressing", state.formTask.dressing.code)
+    formData.append("personalHygiene", state.formTask.personalHygine.code)
+    formData.append("eating", state.formTask.eating.code)
+    formData.append("mealPlanning", state.formTask.mealPlanning.code)
+    formData.append("housekeeping", state.formTask.houseKeeping.code)
+    formData.append("mealPreparation", state.formTask.mealPreparation.code)
+    formData.append("improveIndependentLivingSkills", state.formTask.independentLivingSkills.code)
+    formData.append("communityIntegration", state.formTask.communityIntegration.code)
+    formData.append("devSocialValBehaviour", state.formTask.valuedBehaviours.code)
+    formData.append("useOfNaturalSupport", state.formTask.naturalSupports.code)
+    formData.append("participateInLeisureActivities", state.formTask.leisureActivities.code)
+    formData.append("ipSkillDevelopment", state.formTask.skillDevelopment.code)
+    formData.append("ambulationAndMobility", state.formTask.ambAndMobility.code)
+    formData.append("administrationOfMedication", state.formTask.medication.code)
+    formData.append("reinforcingSpecializedTherapies", state.formTask.specializedTheraphies.code)
+    formData.append("transportation", state.formTask.transportation.code)
+    formData.append("supervisingSafetyAndSecurity", state.formTask.safetyAdSecurity.code)
+    formData.append("supervisingSafetyAndSecurityNight", state.formTask.monitoringHealth.code)
+    formData.append("monitoringHealth", state.formTask.additionalSkills.code)
+    formData.append("additionalSkills", state.formTask.safetyAndSecurity.code)
+
+    try {
+        let { data } = await addTask(state.formPersonal.email, formData)
+
+        getPastJobData(state, changeState)
+    } catch (error) {
+
+        catchError(error, addMessage)
+    } finally {
+        formikProps.setSubmitting(false)
+    }
 
 }
 
-export const referenceSubmit = (values, formikProps, state, changeState) => {
-    changeState({ ...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
+export const pastJobSubmit = async (values, formikProps, state, changeState, addMessage) => {
+
+    // company: '',
+    //         reasonLeft: '',
+    //         from: '',
+    //         supervisor: '',
+    //         to: '',
+    //         phone: '',
+    //         jobTitle: '',
+    //         contact: ''
+    let formData = new FormData()
+    formData.append("companyName", state.formPastJob.company)
+    formData.append("workInCurrentCompany", state.formPastJob.workHere)
+    formData.append("fromDate", moment(state.formPastJob.from).format("MMM-DD-yyyy"))
+    formData.append("toDate", state.formPastJob.workHere ? moment(state.formPastJob.from).format("MMM-DD-yyyy") : moment(state.formPastJob.to).format("MMM-DD-yyyy"))
+    formData.append("jobTitle", state.formPastJob.jobTitle)
+    formData.append("reasonLeft", state.formPastJob.reasonLeft)
+    formData.append("supervisorName", state.formPastJob.supervisor)
+    formData.append("supervisorPhone", state.formPastJob.phone)
+    formData.append("mayWeContactSupervisor", true)
+
+
+
+
+
+    try {
+        let { data } = await addPastJob(state.formPersonal.email, formData)
+
+        getPastJobData(state, changeState)
+        formikProps.resetForm({})
+        formikProps.setFieldValue('formPastJob', '')
+        formikProps.setFieldValue('company', '')
+        formikProps.setFieldValue('reasonLeft', '')
+        formikProps.setFieldValue('from', '')
+        formikProps.setFieldValue('supervisor', '')
+        formikProps.setFieldValue('to', '')
+        formikProps.setFieldValue('phone', '')
+        formikProps.setFieldValue('jobTitle', '')
+        formikProps.setFieldValue('contact', '')
+
+
+    } catch (error) {
+
+        catchError(error, addMessage)
+        formikProps.setSubmitting(false)
+
+    } finally {
+        // formikProps.setSubmitting(false)
+    }
+
+}
+
+export const referenceSubmit = async (values, formikProps, state, changeState, addMessage) => {
+
+    let formData = new FormData()
+    formData.append("fullName", state.formReference.referenceName)
+    formData.append("relationship", state.formReference.relationship.code)
+    formData.append("NumberOfYearsKnown", state.formReference.years)
+    formData.append("phoneNumber", state.formReference.phone)
+
+    try {
+        let { data } = await addReference(state.formPersonal.email, formData)
+        getReferenceData(state, changeState)
+        formikProps.resetForm({})
+        formikProps.setFieldValue('referenceName', '')
+        formikProps.setFieldValue('relationship', '')
+        formikProps.setFieldValue('years', '')
+        formikProps.setFieldValue('phone', '')
+    } catch (error) {
+
+        catchError(error, addMessage)
+        formikProps.setSubmitting(false)
+
+    } finally {
+        // formikProps.setSubmitting(false)
+    }
+
 
 }
 export const consentSubmit = (values, formikProps, state, changeState) => {
@@ -227,7 +359,7 @@ export const getPersonalData = async (state, changeState) => {
                 gender: dropDownObject(data.gender),
                 howHear: checkNull(data.howYouHeardAboutUs),
                 workingWithDisabilities: checkNull(data.yourChallengeWithDisabled),
-                challenging: checkNull(data.challenging),
+                challenging: checkNull(data.whatYouFindMostChallengingInThisJob),
                 address1: checkNull(data.address1),
                 address2: checkNull(data.address2),
                 city: checkNull(data.city),
@@ -337,8 +469,163 @@ export const getAvailabilityData = async (state, changeState) => {
     }
 }
 
+export const getEducationData = async (state, changeState) => {
+    try {
+        let { data } = await getEducation(state.formPersonal.email)
+        changeState({
+            ...state,
+            formStep: 5,
+            activeItem: state.items[4],
+            loading: false,
+            formEducation: {
+                ...state.formEducation,
+                schoolType: '',
+                schoolName: '',
+                city: '',
+                state: '',
+                country: '',
+                level: '',
+                degree: '',
+                major: '',
+                certificate: '',
+                toggle: false,
+                list: [...data]
+            }
+        })
+    } catch (error) {
+        changeState({
+            ...state,
+            formStep: 5,
+            loading: false,
+            activeItem: state.items[4],
+            formEducation: {
+                ...state.formEducation,
+                toggle: false,
+            }
+        })
+    }
+}
+
+
+export const getTaskData = async (state, changeState) => {
+    try {
+        let { data } = await getTask(state.formPersonal.email)
+        changeState({
+            ...state,
+            formStep: 6,
+            activeItem: state.items[5],
+            loading: false,
+            formTask: {
+                ...state.formTask,
+                bathing: dropDownObject(data.bathing),
+                dressing: dropDownObject(data.dressing),
+                personalHygine: dropDownObject(data.personalHygiene),
+                eating: dropDownObject(data.eating),
+                mealPlanning: dropDownObject(data.mealPlanning),
+                houseKeeping: dropDownObject(data.housekeeping),
+                mealPreparation: dropDownObject(data.mealPreparation),
+                independentLivingSkills: dropDownObject(data.improveIndependentLivingSkills),
+                communityIntegration: dropDownObject(data.communityIntegration),
+                valuedBehaviours: dropDownObject(data.devSocialValBehaviour),
+                naturalSupports: dropDownObject(data.useOfNaturalSupport),
+                leisureActivities: dropDownObject(data.participateInLeisureActivities),
+                skillDevelopment: dropDownObject(data.ipSkillDevelopment),
+                ambAndMobility: dropDownObject(data.ambulationAndMobility),
+                medication: dropDownObject(data.administrationOfMedication),
+                specializedTheraphies: dropDownObject(data.reinforcingSpecializedTherapies),
+                transportation: dropDownObject(data.transportation),
+                safetyAdSecurity: dropDownObject(data.supervisingSafetyAndSecurity),
+                monitoringHealth: dropDownObject(data.supervisingSafetyAndSecurityNight),
+                additionalSkills: dropDownObject(data.monitoringHealth),
+                safetyAndSecurity: dropDownObject(data.additionalSkills)
+            }
+        })
+    } catch (error) {
+        changeState({
+            ...state,
+            formStep: 6,
+            activeItem: state.items[5],
+            loading: false
+        })
+    }
+}
+
+export const getPastJobData = async (state, changeState) => {
+    try {
+        let { data } = await getPastJob(state.formPersonal.email)
+        changeState({
+            ...state,
+            formStep: 7,
+            activeItem: state.items[6],
+            loading: false,
+            formPastJob: {
+                ...state.formPastJob,
+                company: "",
+                reasonLeft: "",
+                from: "",
+                supervisor: "",
+                to: "",
+                phone: "",
+                jobTitle: "",
+                contact: "",
+                list: data,
+                workHere: false
+            }
+        })
+    } catch (error) {
+        changeState({
+            ...state,
+            formStep: 7,
+            activeItem: state.items[6],
+            loading: false
+        })
+    }
+}
+
+export const getReferenceData = async (state, changeState) => {
+    try {
+        let { data } = await getReference(state.formPersonal.email)
+        changeState({
+            ...state,
+            formStep: 8,
+            activeItem: state.items[7],
+            loading: false,
+            formReference: {
+                ...state.formReference,
+                referenceName: '',
+                relationship: '',
+                years: '',
+                phone: '',
+                list: data._embedded.referenceVOList,
+                toggle: false,
+                workHere: false
+            }
+        })
+    } catch (error) {
+        changeState({
+            ...state,
+            formStep: 8,
+            activeItem: state.items[7],
+            loading: false,
+            formReference: {
+                ...state.formReference,
+                toggle: false,
+            }
+        })
+    }
+}
+
+export const getConsentData = async (state, changeState) => {
+    changeState({
+        ...state,
+        formStep: 9,
+        activeItem: state.items[8],
+        loading: false,
+    })
+}
+
 let dropDownObject = (param) => {
-    if (param == null || param == "") {return ''}
+    if (param == null || param == "") { return '' }
     return {
         name: param.toString().replace(/_/g, " "),
         code: param
@@ -346,9 +633,9 @@ let dropDownObject = (param) => {
 }
 
 let dropDownBoolean = (param) => {
-    if (typeof param !== "boolean") {return ''}
+    if (typeof param !== "boolean") { return '' }
     return {
-        name: param == true? "Yes" : "No",
+        name: param == true ? "Yes" : "No",
         code: param
     }
 }

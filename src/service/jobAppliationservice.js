@@ -24,6 +24,21 @@ export const getAvailability = (email)=> axios.get(`${jobPath}/jobApp/availabili
 
 export const addAvailability = (email, data)=> axios.post(`${jobPath}/jobApp/availability/${email}`, data)
 
+export const getEducation = (email)=> axios.get(`${jobPath}/jobApp/education/${email}`)
+
+export const addEducation = (email, data)=> axios.post(`${jobPath}/jobApp/education/${email}`, data)
+
+export const getTask = (email)=> axios.get(`${jobPath}/jobApp/taskReview/${email}`)
+
+export const addTask = (email, data)=> axios.post(`${jobPath}/jobApp/taskReview/${email}`, data)
+
+export const getPastJob = (email)=> axios.get(`${jobPath}/jobApp/pastJob/${email}`)
+
+export const addPastJob = (email, data)=> axios.post(`${jobPath}/jobApp/pastJob/${email}`, data)
+
+export const getReference = (email)=> axios.get(`${jobPath}/jobApp/reference/${email}`)
+
+export const addReference = (email, data)=> axios.post(`${jobPath}/jobApp/reference/${email}`, data)
 
 
 

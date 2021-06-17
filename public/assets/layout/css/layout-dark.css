@@ -4579,3 +4579,10 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 }
+.consent-form svg {
+  width: 100% !important;
+}
+
+[class*=react-pdf] {
+  width: 100% !important;
+}

@@ -8,31 +8,38 @@ import * as Yup from "yup"
 import FormLayout from './Layout';
 import { DATE_FORMAT } from 'utilities';
 import FormFooter from './FormFooter';
+import { RadioButton } from 'primereact/radiobutton';
 
-export const validation = Yup.object().shape({
-    company: Yup.string().required("Required"),
-    reasonLeft: Yup.string().required("Required"),
-    from: Yup.string().required("Required"),
-    supervisor: Yup.string().required("Required"),
-    to: Yup.string().required("Required"),
-    phone: Yup.string().required("Required"),
-    jobTitle: Yup.string().required("Required"),
-    contact: Yup.string().required("Required"),
 
-})
 
 export default function PastJob(props) {
-    let { formControl, onChange, formName,  editPastJobList, handleGoBack, onFinish } = props
+    let { formControl, onChange, formName, editPastJobList, handleGoBack, onFinish, toggleWorks } = props
     var today = new Date();
 
     let [minDate, setMinDate] = useState(today)
 
+    let validationShape = {
+        company: Yup.string().required("Required"),
+        reasonLeft: Yup.string().required("Required"),
+        from: Yup.string().required("Required"),
+        supervisor: Yup.string().required("Required"),
+        phone: Yup.string().required("Required"),
+        jobTitle: Yup.string().required("Required"),
+        contact: Yup.string().required("Required"),
+    
+    }
+    if(!formControl.workHere){
+        validationShape = {...validationShape, 
+            to: Yup.string().required("Required"),
+        }
+    }
+    const validation = Yup.object().shape(validationShape)
     return (
         <FormsWrapper values={formControl}
             handleSubmit={props.onSubmit}
             handleChange={onChange}
             validationSchema={validation}
-           >
+        >
             {
                 props => {
                     const {
@@ -64,6 +71,13 @@ export default function PastJob(props) {
 
                                         </span>
                                         {showFieldError("company", errors, touched)}
+                                        <div className="p-text-right">
+                                            <p> I currently work here
+                                        <RadioButton name="workHere" checked={formControl.workHere} onChange={(e) => {
+                                                    toggleWorks()
+                                                }} />
+                                            </p>
+                                        </div>
                                     </div>
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
 
@@ -100,12 +114,12 @@ export default function PastJob(props) {
                                                 }}
                                                 id="from"
                                             />
-                                                <label htmlFor="from">From*</label>
+                                            <label htmlFor="from">From*</label>
 
                                         </span>
                                         {showFieldError("from", errors, touched)}
                                     </div>
-                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
+                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
 
                                         <span className="p-float-label">
                                             <InputText
@@ -121,10 +135,11 @@ export default function PastJob(props) {
                                         </span>
                                         {showFieldError("supervisor", errors, touched)}
                                     </div>
+                                    
 
                                 </div>
                                 <div className="p-grid">
-                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
+                                {!formControl.workHere &&   <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
                                             <Calendar
                                                 value={values.to}
@@ -139,10 +154,11 @@ export default function PastJob(props) {
                                                 }}
                                                 id="to"
                                             />
-                                                <label htmlFor="to">To*</label>
+                                            <label htmlFor="to">To*</label>
                                         </span>
                                         {showFieldError("to", errors, touched)}
                                     </div>
+                                }
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
                                             <InputText
@@ -218,12 +234,12 @@ export default function PastJob(props) {
                                         <tbody>
                                             {formControl.list.map((data, i) => (
                                                 <tr key={i}>
-                                                    <td>{data.company}</td>
+                                                    <td>{data.companyName}</td>
                                                     <td>{data.jobTitle}</td>
-                                                    <td><Button type="button" role="button" onClick={(e)=>{
+                                                    {/* <td><Button type="button" role="button" onClick={(e)=>{
                                                         editPastJobList("edit", i, setValues)
-                                                    }} label="Edit" className="p-button-secondary" /></td>
-                                                    <td><Button type="button" role="button" onClick={(e)=>{
+                                                    }} label="Edit" className="p-button-secondary" /></td> */}
+                                                    <td><Button type="button" role="button" onClick={(e) => {
                                                         editPastJobList("delete", i, null)
                                                     }} label="Delete" className="p-button-danger" /></td>
                                                 </tr>
@@ -233,11 +249,11 @@ export default function PastJob(props) {
                                 </div>
                                 }
                             </FormLayout>
-                            <FormFooter    
+                            <FormFooter
                                 backText="Back"
                                 nextText="Next"
                                 goBack={handleGoBack}
-                                proceed={formControl.list.length < 1? handleSubmit : onFinish}
+                                proceed={formControl.list.length < 1 ? handleSubmit : onFinish}
                                 disabled={isSubmitting}
                             />
                         </form>

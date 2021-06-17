@@ -30,7 +30,7 @@ export default function Personal(props) {
         city: RequiredWithCharacterValidation,
         workingWithDisabilities: RequiredWithCharacterValidation,
         position: RequiredWithCharacterValidation,
-        challanging: RequiredWithCharacterValidation,
+        challenging: RequiredWithCharacterValidation,
         zip: Yup.string().required("Required")
             .matches(/[0-9]/g, "Zip Code must be a number"),
         state: RequiredWithCharacterValidation,
@@ -394,16 +394,16 @@ export default function Personal(props) {
                                         <span className="p-float-label">
                                             <InputText
                                                 type="text"
-                                                id="challanging"
-                                                name="challanging"
+                                                id="challenging"
+                                                name="challenging"
                                                 onBlur={handleBlur}
-                                                className={`width-100  ${errors.challanging && touched.challanging ? 'p-invalid' : ''}`}
-                                                value={values.challanging}
+                                                className={`width-100  ${errors.challenging && touched.challenging ? 'p-invalid' : ''}`}
+                                                value={values.challenging}
                                                 onChange={handleChange} />
-                                            <label htmlFor="challanging">What do you find most challenging in this type of work *</label>
+                                            <label htmlFor="challenging">What do you find most challenging in this type of work *</label>
 
                                         </span>
-                                        {showFieldError("challanging", errors, touched)}
+                                        {showFieldError("challenging", errors, touched)}
                                     </div>
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">

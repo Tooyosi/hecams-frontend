@@ -5,9 +5,18 @@ import SignaturePad from 'react-signature-canvas'
 import { COMPANY_NAME } from 'utilities';
 import FormFooter from './FormFooter';
 import ReCAPTCHA from "react-google-recaptcha";
+import { Document, Page, pdfjs } from 'react-pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc =
+    `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default function Consent(props) {
     let [allowSubmit, setAllowSubmit] = useState(true)
+    const [numPages, setNumPages] = useState(null);
+
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+    }
     return (
         <>
             <FormLayout>
@@ -17,7 +26,7 @@ export default function Consent(props) {
                         <p className="p-my-3">By signing and submitting this form, you acknowledge agree to the terms of the consent form</p>
                     </div>
                     <div className="consent-form p-my-3">
-                        <p>
+                        {/* <p>
                             Note:  If you are hired for a position, which requires driving, you must keep us informed of any changes in driving record. <br /><br />
 
 
@@ -46,6 +55,19 @@ export default function Consent(props) {
 
 
                         </p>
+                     */}
+
+                        <Document
+                            file={"https://cors-anywhere.herokuapp.com/https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=4544200&transid=46412909&transcode=UHQQVJBI"}
+                            // options={{ workerSrc: "/pdf.worker.js" }}
+                            onLoadSuccess={onDocumentLoadSuccess}
+                            renderMode="svg"
+                            style={{width: "100%"}}
+                        >
+                            {Array.from(new Array(numPages), (el, index) => (
+                                <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+                            ))}
+                        </Document>
                     </div>
                 </div>
                 {/* The form content */}
@@ -67,7 +89,7 @@ export default function Consent(props) {
                     <ReCAPTCHA
                         sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
                         // onChange={props.onCaptchaChange}
-                        onChange={()=> setAllowSubmit(!allowSubmit)}
+                        onChange={() => setAllowSubmit(!allowSubmit)}
                         theme="light"
                     />
                 </div>

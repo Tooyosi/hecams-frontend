@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import FormsWrapper, { showFieldError } from 'components/common/form/Formik'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -7,10 +7,11 @@ import *  as Yup from "yup"
 import FormLayout from './Layout';
 import { PDF_OR_WORD } from 'utilities';
 import FormFooter from './FormFooter';
+import CustomModal from 'components/common/CustomModal';
 
 
 
-let validationFn = (formName)=>{
+let validationFn = (formName) => {
     return {
         [`${formName}Name`]: Yup.string().required("Required"),
         [`${formName}City`]: Yup.string().required("Required"),
@@ -23,7 +24,7 @@ let validationFn = (formName)=>{
     }
 }
 
-const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, showFieldError, withLevel, formControl, header }) => {
+const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, withLevel, formControl, header }) => {
     let doChange = (e) => {
         handleChange(e)
         onChange(e, formName)
@@ -79,23 +80,23 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                         </span>
                         {showFieldError(`${formName}State`, errors, touched)}
                     </div>
-                     <div className="p-col-12">
-                     <span className="p-float-label">
+                    <div className="p-col-12">
+                        <span className="p-float-label">
 
-                        <Dropdown
-                            id={`${formName}Country`}
-                            name={`${formName}Country`}
-                            value={values[`${formName}Country`]}
-                            onChange={(e) => {
-                                doChange(e)
-                                handleDropdownChange(e, formName)
-                            }}
-                            options={countryOption}
-                            className={`width-100  ${errors[`${formName}Country`] && touched[`${formName}Country`] ? 'p-invalid' : ''}`}
-                            optionLabel="name"
+                            <Dropdown
+                                id={`${formName}Country`}
+                                name={`${formName}Country`}
+                                value={values[`${formName}Country`]}
+                                onChange={(e) => {
+                                    doChange(e)
+                                    handleDropdownChange(e, formName)
+                                }}
+                                options={countryOption}
+                                className={`width-100  ${errors[`${formName}Country`] && touched[`${formName}Country`] ? 'p-invalid' : ''}`}
+                                optionLabel="name"
                             ></Dropdown>
                             <label htmlFor={`${formName}Country`}>Country</label>
-                            </span>
+                        </span>
 
                         {showFieldError(`${formName}Country`, errors, touched)}
                     </div>
@@ -173,168 +174,279 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
     )
 }
 
+const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption ,countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, withLevel, formControl, header, ...props }) => {
+    let validation = Yup.object().shape({
+        schoolName: Yup.string().required("Required"),
+        schoolType: Yup.string().required("Required"),
+        city: Yup.string().required("Required"),
+        state: Yup.string().required("Required"),
+        country: Yup.string().required("Required"),
+        level: Yup.string().required("Required"),
+        degree: Yup.string().required("Required"),
+        major: Yup.string().required("Required"),
+        certificate: Yup.string().required("Required")
+
+    })
+    return (
+        <CustomModal
+            header="Add Education"
+            visible={showModal}
+            closeOnEscape={false}
+            style={{ maxWidth: '500px' }}
+            toggle={toggleModal}>
+            <FormsWrapper values={{ ...formControl }}
+                handleSubmit={props.onSubmit}
+                handleChange={onChange}
+                validationSchema={validation}>
+                {
+                    props => {
+                        const {
+                            values,
+                            touched,
+                            errors,
+                            handleBlur,
+                            handleChange,
+                            isSubmitting,
+                            handleSubmit } = props;
+                        return (
+                            <form onSubmit={handleSubmit} onChange={onChange} name={formName} >
+                                <div className="p-grid p-my-2">
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+                                        <Dropdown
+                                                id={`schoolType`}
+                                                name={`schoolType`}
+                                                value={values[`schoolType`]}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={schoolTypeOption}
+                                                className={`width-100  ${errors[`schoolType`] && touched[`schoolType`] ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor={`schoolType`}>School Type</label>
+                                     
+                                        </span>
+                                        {showFieldError(`schoolType`, errors, touched)}
+
+                                    </div>
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id="schoolName"
+                                                name="schoolName"
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors.schoolName && touched.schoolName ? 'p-invalid' : ''}`}
+                                                value={values.schoolName}
+                                                onChange={handleChange} />
+                                            <label htmlFor="schoolName">Name </label>
+                                        </span>
+                                        {showFieldError(`schoolName`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id={`city`}
+                                                name={`city`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`city`] && touched[`city`] ? 'p-invalid' : ''}`}
+                                                value={values[`city`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`city`}>City </label>
+                                        </span>
+                                        {showFieldError(`city`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id={`state`}
+                                                name={`state`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`state`] && touched[`state`] ? 'p-invalid' : ''}`}
+                                                value={values[`state`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`state`}>State </label>
+
+                                        </span>
+                                        {showFieldError(`state`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+
+                                            <Dropdown
+                                                id={`country`}
+                                                name={`country`}
+                                                value={values[`country`]}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={countryOption}
+                                                className={`width-100  ${errors[`country`] && touched[`country`] ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor={`country`}>Country</label>
+                                        </span>
+
+                                        {showFieldError(`country`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id={`level`}
+                                                name={`level`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`level`] && touched[`level`] ? 'p-invalid' : ''}`}
+                                                value={values[`level`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`level`}>Level Completed </label>
+
+                                        </span>
+                                        {showFieldError(`level`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id={`degree`}
+                                                name={`degree`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`degree`] && touched[`degree`] ? 'p-invalid' : ''}`}
+                                                value={values[`degree`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`degree`}>Degree</label>
+
+                                        </span>
+                                        {showFieldError(`degree`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id={`major`}
+                                                name={`major`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`major`] && touched[`major`] ? 'p-invalid' : ''}`}
+                                                value={values[`major`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`major`}>Major</label>
+
+                                        </span>
+                                        {showFieldError(`major`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-12">
+                                        <div className="p-field">
+                                            <label htmlFor={`certificate`}
+                                                className={`${formControl.certificate !== "" && formControl.certificate !== null ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
+                                            >
+
+                                                <p>{formControl[`certificate`] !== "" && formControl[`certificate`] !== null ? formControl[`certificate`].name : "Load certificate"}</p></label>
+
+                                            <span className="p-float-label">
+                                                <InputText
+                                                    type="file"
+                                                    id={`certificate`}
+                                                    name={`certificate`}
+                                                    onBlur={handleBlur}
+                                                    accept={PDF_OR_WORD}
+                                                    className={`p-d-none  ${errors[`certificate`] && touched[`certificate`] ? 'p-invalid' : ''}`}
+                                                    // value={values[`certificate`]}
+                                                    onChange={handleChange} />
+
+                                            </span>
+                                            {showFieldError(`certificate`, errors, touched)}
+                                        </div>
+                                    </div>
+                                    <div className="p-col-12 p-text-right">
+                                        <Button type="submit" role="submit" disabled={isSubmitting}  className="p-mr-2" label="Submit"/>
+                                        <Button type="button" role="button" disabled={isSubmitting} label="Cancel" onClick={toggleModal} className="p-button-danger" />
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        )
+                    }
+                }
+            </FormsWrapper>
+
+        </CustomModal>)
+}
 
 export default function Education(props) {
-    let { formControl, onChange, formHighSchoolName, countryOption, handleGoBack, formCollegeName, formTradeName, formProfessionalName, handleDropdownChange } = props
-
-    let validationShape = {
-        ...validationFn(formHighSchoolName)
-    }
-
-    let collegeValues = Object.values(formControl[formCollegeName])
-    let tradeValues = Object.values(formControl[formTradeName])
-    let professionalValues = Object.values(formControl[formProfessionalName])
-
-
-    const notEmpty = (array)=>{
-        let response = false
-        for (let i = 0; i < array.length; i++) {
-            const element = array[i];
-            if(element !== ""){
-                response = true
-            }
-            
-        }
-
-        return response
-    }
-
-    // check if each form sets are empty
-    let hasCollegeField = notEmpty(collegeValues)
-    let hasTradeField = notEmpty(tradeValues)
-    let hasProfessionalField = notEmpty(professionalValues)
-    if(hasCollegeField){
-        validationShape = {
-            ...validationShape,
-        ...validationFn(formCollegeName)
-        }
-    }
-    if(hasTradeField){
-        validationShape = {
-            ...validationShape,
-        ...validationFn(formTradeName)
-        }
-    }
-    if(hasProfessionalField){
-        validationShape = {
-            ...validationShape,
-        ...validationFn(formProfessionalName)
-        }
-    }
-
-    const validation = Yup.object().shape(validationShape)
+    // let { formControl, onChange, formHighSchoolName, countryOption, handleGoBack, formCollegeName, formTradeName, formProfessionalName, handleDropdownChange } = props
+    let [toggle, setToggle] = useState(false)
+    const doToggleModal = () => setToggle(!toggle)
     return (
-        <FormsWrapper values={{ ...formControl.formHighSchool, ...formControl.formCollege, ...formControl.formTrade, ...formControl.formProfessional }}
-            handleSubmit={props.onSubmit}
-            handleChange={onChange}
-            validationSchema={validation}>
-            {
-                props => {
-                    const {
-                        values,
-                        touched,
-                        errors,
-                        handleBlur,
-                        handleChange,
-                        isSubmitting,
-                        handleSubmit } = props;
-                    return (
-                        <form onSubmit={handleSubmit} >
-                            <FormLayout>
+        <>
+            <FormLayout className>
+                {/* <button onClick={doToggleModal}>Add</button> */}
+                <div className="p-d-flex p-jc-end">
 
-                                <div className="p-grid">
-                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
-                                        <FormDisplay
-                                            formName={formHighSchoolName}
-                                            countryOption={countryOption}
-                                            handleChange={handleChange}
-                                            withLevel={true}
-                                            values={values}
-                                            handleDropdownChange={handleDropdownChange}
-                                            errors={errors}
-                                            onChange={onChange}
-                                            touched={touched}
-                                            header="High School / Equivalent*"
-                                            handleBlur={handleBlur}
-                                            formControl={formControl.formHighSchool}
-                                            showFieldError={showFieldError} />
-                                    </div>
+                    <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
+                </div>
+                {props.formControl.list.length > 0 && <div className="p-grid company-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <td>Type</td>
+                                                <td>School Name</td>
+                                                <td>Country</td>
+                                                <td>State</td>
+                                                <td>City</td>
+                                                <td>Degree</td>
+                                                <td>Major</td>
+                                                <td>Certificate</td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {props.formControl.list.map((data, i) => (
+                                                <tr key={i}>
+                                                    <td>{data.schoolType}</td>
+                                                    <td>{data.name}</td>
+                                                    <td>{data.country}</td>
+                                                    <td>{data.stateName}</td>
+                                                    <td>{data.city}</td>
+                                                    <td>{data.degree}</td>
+                                                    <td>{data.major}</td>
+                                                    <td>{data.fileUploadName}</td>
 
-                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
-                                        <FormDisplay
-                                            formName={formCollegeName}
-                                            countryOption={countryOption}
-                                            handleChange={handleChange}
-                                            withLevel={false}
-                                            values={values}
-                                            handleDropdownChange={handleDropdownChange}
-                                            errors={errors}
-                                            onChange={onChange}
-                                            touched={touched}
-                                            header="College"
-                                            handleBlur={handleBlur}
-                                            formControl={formControl.formCollege}
-                                            showFieldError={showFieldError} />
-                                    </div>
-
+                                                    <td><Button type="button" role="button" 
+                                                    // onClick={(e)=>{
+                                                    //     editPastJobList("delete", i, null)
+                                                    // }}
+                                                     label="Delete" className="p-button-danger" /></td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
                                 </div>
+                                }
 
-                                <div className="p-grid">
-                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
-                                        <FormDisplay
-                                            formName={formTradeName}
-                                            countryOption={countryOption}
-                                            handleChange={handleChange}
-                                            withLevel={false}
-                                            values={values}
-                                            errors={errors}
-                                            onChange={onChange}
-                                            touched={touched}
-                                            header="Bus or Trade School "
-                                            handleBlur={handleBlur}
-                                            handleDropdownChange={handleDropdownChange}
-                                            formControl={formControl.formTrade}
-                                            showFieldError={showFieldError} />
-                                    </div>
-
-                                    <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
-                                        <FormDisplay
-                                            formName={formProfessionalName}
-                                            countryOption={countryOption}
-                                            handleChange={handleChange}
-                                            withLevel={false}
-                                            values={values}
-                                            errors={errors}
-                                            handleDropdownChange={handleDropdownChange}
-                                            onChange={onChange}
-                                            touched={touched}
-                                            header="Professional"
-                                            handleBlur={handleBlur}
-                                            formControl={formControl.formProfessional}
-                                            showFieldError={showFieldError} />
-                                    </div>
-
-                                </div>
-
-
-
-                            </FormLayout>
-                            {/* <div className="p-grid p-justify-end">
+                 <AddModal
+                    showModal={props.formControl.toggle}
+                    toggleModal={props.doToggleModal}
+                    {...props}
+                />
+            </FormLayout>
+            {/* <div className="p-grid p-justify-end">
                                 <div className="p-col-12 p-lg-6 p-md-6 p-sm-6-6">
                                     <Button label={isSubmitting ? 'Loading...please wait' : `Next`} disabled={isSubmitting} className="width-100 button-white" icon="pi pi-arrow-right" iconPos="right" ></Button>
                                 </div>
                             </div> */}
-                             <FormFooter    
-                                backText="Back"
-                                nextText="Next"
-                                goBack={handleGoBack}
-                                proceed={handleSubmit}
-                                disabled={isSubmitting}
-                            />
-                        </form>
-                    )
-                }
-            }
-        </FormsWrapper>
+            <FormFooter
+                backText="Back"
+                nextText="Next"
+            goBack={props.handleGoBack}
+            proceed={props.handleNext}
+            disabledSubmit={props.formControl.list < 1}
+            />
+        </>
     )
 }

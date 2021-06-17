@@ -6,11 +6,12 @@ import { Dropdown } from 'primereact/dropdown';
 import *  as Yup from "yup"
 import FormLayout from './Layout';
 import FormFooter from './FormFooter';
+import CustomModal from 'components/common/CustomModal';
 
 
 
 
-let validationFn = (formName)=>{
+let validationFn = (formName) => {
     return {
         [`${formName}Name`]: Yup.string().required("Required"),
         [`${formName}Relationship`]: Yup.string().required("Required"),
@@ -47,22 +48,22 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
                 {showFieldError(`${formName}Name`, errors, touched)}
             </div>
             <div className="p-col-6 p-lg-3  p-md-6 p-sm-6">
-            <span className="p-float-label">
+                <span className="p-float-label">
 
-                <Dropdown
-                    id={`${formName}Relationship`}
-                    name={`${formName}Relationship`}
-                    value={values[`${formName}Relationship`]}
-                    onChange={(e) => {
-                        doChange(e)
-                        handleDropdownChange(e, formName)
-                    }}
-                    options={countryOption}
-                    className={`width-100  ${errors[`${formName}Relationship`] && touched[`${formName}Relationship`] ? 'p-invalid' : ''}`}
-                    optionLabel="name"
+                    <Dropdown
+                        id={`${formName}Relationship`}
+                        name={`${formName}Relationship`}
+                        value={values[`${formName}Relationship`]}
+                        onChange={(e) => {
+                            doChange(e)
+                            handleDropdownChange(e, formName)
+                        }}
+                        options={countryOption}
+                        className={`width-100  ${errors[`${formName}Relationship`] && touched[`${formName}Relationship`] ? 'p-invalid' : ''}`}
+                        optionLabel="name"
                     ></Dropdown>
                     <label htmlFor={`${formName}Relationship`}>Relationship</label>
-                    </span>
+                </span>
 
                 {showFieldError(`${formName}Relationship`, errors, touched)}
             </div>
@@ -104,100 +105,258 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
 }
 
 
-export default function Reference(props) {
-    let { formControl, onChange, formReference1Name,handleGoBack, countryOption, formReference2Name, formReference3Name, handleDropdownChange } = props
-    const validation = Yup.object().shape({
-       ...validationFn(formReference1Name),
-       ...validationFn(formReference2Name),
-       ...validationFn(formReference3Name)
+const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption, countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, withLevel, formControl, header, ...props }) => {
+    let validation = Yup.object().shape({
+        referenceName: Yup.string().required("Required"),
+        relationship: Yup.string().required("Required"),
+        years: Yup.string().required("Required"),
+        phone: Yup.string().required("Required"),
+
     })
+    return (
+        <CustomModal
+            header="Add Reference"
+            visible={showModal}
+            closeOnEscape={false}
+            style={{ maxWidth: '500px' }}
+            toggle={toggleModal}>
+            <FormsWrapper values={{ ...formControl }}
+                handleSubmit={props.onSubmit}
+                handleChange={onChange}
+                validationSchema={validation}>
+                {
+                    props => {
+                        const {
+                            values,
+                            touched,
+                            errors,
+                            handleBlur,
+                            handleChange,
+                            isSubmitting,
+                            handleSubmit } = props;
+                        return (
+                            <form onSubmit={handleSubmit} onChange={onChange} name={formName}>
+                                <div className="p-grid p-my-2">
+                                    <div className="p-col-6   p-md-6 p-sm-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id={`referenceName`}
+                                                name={`referenceName`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`referenceName`] && touched[`referenceName`] ? 'p-invalid' : ''}`}
+                                                value={values[`referenceName`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`referenceName`}>Name </label>
+
+                                        </span>
+                                        {showFieldError(`referenceName`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6   p-md-6 p-sm-6">
+                                        <span className="p-float-label">
+
+                                            <Dropdown
+                                                id={`relationship`}
+                                                name={`relationship`}
+                                                value={values[`relationship`]}
+                                                onChange={(e) => {
+                                                    handleChange(e)
+                                                    handleDropdownChange(e, formName)
+                                                }}
+                                                options={countryOption}
+                                                className={`width-100  ${errors[`relationship`] && touched[`relationship`] ? 'p-invalid' : ''}`}
+                                                optionLabel="name"
+                                            ></Dropdown>
+                                            <label htmlFor={`relationship`}>Relationship</label>
+                                        </span>
+
+                                        {showFieldError(`relationship`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6   p-md-6 p-sm-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="number"
+                                                id={`years`}
+                                                name={`years`}
+                                                onBlur={handleBlur}
+                                                min="0"
+                                                className={`width-100  ${errors[`years`] && touched[`years`] ? 'p-invalid' : ''}`}
+                                                value={values[`years`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`years`}>Years Known</label>
+
+                                        </span>
+                                        {showFieldError(`years`, errors, touched)}
+                                    </div>
+                                    <div className="p-col-6   p-md-6 p-sm-6">
+                                        <span className="p-float-label">
+                                            <InputText
+                                                type="text"
+                                                id={`phone`}
+                                                name={`phone`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`phone`] && touched[`phone`] ? 'p-invalid' : ''}`}
+                                                value={values[`phone`]}
+                                                onChange={handleChange} />
+                                            <label htmlFor={`phone`}>Phone *</label>
+
+                                        </span>
+                                        {showFieldError(`phone`, errors, touched)}
+                                    </div>
+                                </div>
+                                <div className="p-col-12 p-text-right">
+                                    <Button type="submit" role="submit" disabled={isSubmitting} className="p-mr-2" label="Submit" />
+                                    <Button type="button" role="button" disabled={isSubmitting} label="Cancel" onClick={toggleModal} className="p-button-danger" />
+                                </div>
+                            </form>
+                        )
+                    }
+                }
+            </FormsWrapper>
+
+        </CustomModal>)
+}
+
+
+export default function Reference(props) {
 
     return (
-        <FormsWrapper values={{ ...formControl.formReference1, ...formControl.formReference2, ...formControl.formReference3 }}
-            handleSubmit={props.onSubmit}
-            handleChange={onChange}
-            validationSchema={validation}>
-            {
-                props => {
-                    const {
-                        values,
-                        touched,
-                        errors,
-                        handleBlur,
-                        handleChange,
-                        isSubmitting,
-                        handleSubmit } = props;
-                    return (
-                        <form onSubmit={handleSubmit} >
-                            <FormLayout>
+        // <FormsWrapper values={{ ...formControl.formReference1, ...formControl.formReference2, ...formControl.formReference3 }}
+        //     handleSubmit={props.onSubmit}
+        //     handleChange={onChange}
+        //     validationSchema={validation}>
+        //     {
+        //         props => {
+        //             const {
+        //                 values,
+        //                 touched,
+        //                 errors,
+        //                 handleBlur,
+        //                 handleChange,
+        //                 isSubmitting,
+        //                 handleSubmit } = props;
+        //             return (
+        //                 <form onSubmit={handleSubmit} >
+        //                     <FormLayout>
 
-                                <div className="p-col-12">
-                                    <FormDisplay
-                                        formName={formReference1Name}
-                                        countryOption={countryOption}
-                                        handleChange={handleChange}
-                                        withLevel={true}
-                                        handleDropdownChange={handleDropdownChange}
-                                        values={values}
-                                        errors={errors}
-                                        onChange={onChange}
-                                        touched={touched}
-                                        header="Reference 1*"
-                                        handleBlur={handleBlur}
-                                        formControl={formControl.formReference1}
-                                        showFieldError={showFieldError} />
-                                </div>
+        //                         <div className="p-col-12">
+        //                             <FormDisplay
+        //                                 formName={formReference1Name}
+        //                                 countryOption={countryOption}
+        //                                 handleChange={handleChange}
+        //                                 withLevel={true}
+        //                                 handleDropdownChange={handleDropdownChange}
+        //                                 values={values}
+        //                                 errors={errors}
+        //                                 onChange={onChange}
+        //                                 touched={touched}
+        //                                 header="Reference 1*"
+        //                                 handleBlur={handleBlur}
+        //                                 formControl={formControl.formReference1}
+        //                                 showFieldError={showFieldError} />
+        //                         </div>
 
-                                <div className="p-col-12">
-                                    <FormDisplay
-                                        formName={formReference2Name}
-                                        countryOption={countryOption}
-                                        handleChange={handleChange}
-                                        withLevel={false}
-                                        handleDropdownChange={handleDropdownChange}
-                                        values={values}
-                                        errors={errors}
-                                        onChange={onChange}
-                                        touched={touched}
-                                        header="Reference 2*"
-                                        handleBlur={handleBlur}
-                                        formControl={formControl.formReference2}
-                                        showFieldError={showFieldError} />
-                                </div>
+        //                         <div className="p-col-12">
+        //                             <FormDisplay
+        //                                 formName={formReference2Name}
+        //                                 countryOption={countryOption}
+        //                                 handleChange={handleChange}
+        //                                 withLevel={false}
+        //                                 handleDropdownChange={handleDropdownChange}
+        //                                 values={values}
+        //                                 errors={errors}
+        //                                 onChange={onChange}
+        //                                 touched={touched}
+        //                                 header="Reference 2*"
+        //                                 handleBlur={handleBlur}
+        //                                 formControl={formControl.formReference2}
+        //                                 showFieldError={showFieldError} />
+        //                         </div>
 
-                                <div className="p-col-12">
-                                    <FormDisplay
-                                        formName={formReference3Name}
-                                        countryOption={countryOption}
-                                        handleChange={handleChange}
-                                        handleDropdownChange={handleDropdownChange}
-                                        withLevel={false}
-                                        values={values}
-                                        errors={errors}
-                                        onChange={onChange}
-                                        touched={touched}
-                                        header="Reference 3*"
-                                        handleBlur={handleBlur}
-                                        formControl={formControl.formReference3}
-                                        showFieldError={showFieldError} />
-                                </div>
-
-
+        //                         <div className="p-col-12">
+        //                             <FormDisplay
+        //                                 formName={formReference3Name}
+        //                                 countryOption={countryOption}
+        //                                 handleChange={handleChange}
+        //                                 handleDropdownChange={handleDropdownChange}
+        //                                 withLevel={false}
+        //                                 values={values}
+        //                                 errors={errors}
+        //                                 onChange={onChange}
+        //                                 touched={touched}
+        //                                 header="Reference 3*"
+        //                                 handleBlur={handleBlur}
+        //                                 formControl={formControl.formReference3}
+        //                                 showFieldError={showFieldError} />
+        //                         </div>
 
 
 
-                            </FormLayout>
-                            <FormFooter    
-                                backText="Back"
-                                nextText="Next"
-                                goBack={handleGoBack}
-                                proceed={handleSubmit}
-                                disabled={isSubmitting}
-                            />
-                        </form>
-                    )
+
+
+        //                     </FormLayout>
+        //                     <FormFooter
+        //                         backText="Back"
+        //                         nextText="Next"
+        //                         goBack={handleGoBack}
+        //                         proceed={handleSubmit}
+        //                         disabled={isSubmitting}
+        //                     />
+        //                 </form>
+        //             )
+        //         }
+        //     }
+        // </FormsWrapper>
+        <>
+            <FormLayout>
+
+                <div className="p-d-flex p-jc-end">
+
+                    <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
+                </div>
+                {props.formControl.list.length > 0 && <div className="p-grid company-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Name</td>
+                                <td>Relationship</td>
+                                <td>Years</td>
+                                <td>Phone No</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {props.formControl.list.map((data, i) => (
+                                <tr key={i}>
+                                    <td>{data.fullName}</td>
+                                    <td>{data.relationship}</td>
+                                    <td>{data.numberOfYearsKnown}</td>
+                                    <td>{data.phoneNumber}</td>
+
+                                    <td><Button type="button" role="button"
+                                        // onClick={(e)=>{
+                                        //     editPastJobList("delete", i, null)
+                                        // }}
+                                        label="Delete" className="p-button-danger" /></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 }
-            }
-        </FormsWrapper>
+                <AddModal
+                    showModal={props.formControl.toggle}
+                    toggleModal={props.doToggleModal}
+                    {...props}
+                />
+            </FormLayout>
+            <FormFooter
+                backText="Back"
+                nextText="Next"
+                goBack={props.handleGoBack}
+                proceed={props.handleNext}
+                disableSubmit={props.formControl.list.length < 4}
+            />
+        </>
     )
 }
