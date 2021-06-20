@@ -21,7 +21,9 @@ export default function Application() {
     let signatureRef = useRef(null)
     let [message, setMessage] = useContext(ToastContext)
     const clearSignature = () => {
-        // console.log(signatureRef)
+        console.log(signatureRef.current)
+        console.log(signatureRef.current.getTrimmedCanvas().toDataURL('blob'))
+
         // clear the canvas
         signatureRef.current.clear()
     }
@@ -162,6 +164,10 @@ export default function Application() {
             years:'',
             phone: '',
             toggle: false
+        },
+        formConsent: {
+            file:'',
+            fileType: ''
         }
     })
     let educationFields = (formName) => {
@@ -557,10 +563,11 @@ export default function Application() {
                                     {state.formStep == 9 && <Consent
                                         signatureRef={signatureRef}
                                         clearSignature={clearSignature}
+                                        formControl={state.formConsent}
                                         personalDetails={state.formPersonal}
                                         onCaptchaChange={onCaptchaChange}
                                         handleGoBack={handleGoBack}
-                                        onSubmit={(values, formikProps) => handleSubmit(consentSubmit, values, formikProps)} />
+                                        onSubmit={() => handleSubmit(consentSubmit, signatureRef.current.getTrimmedCanvas().toDataURL('image/png'), null )} />
                                     }
                                 </div>
                             </div>

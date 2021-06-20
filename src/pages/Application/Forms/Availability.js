@@ -167,7 +167,15 @@ export default function Availability(props) {
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
 
-                                            <Dropdown
+                                        <InputText
+                                                type="text"
+                                                id="notavailableToWork"
+                                                name="notavailableToWork"
+                                                value={values.notavailableToWork}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors.notavailableToWork && touched.notavailableToWork ? 'p-invalid' : ''}`}
+                                                onChange={handleChange} />
+                                            {/* <Dropdown
                                                 id="notavailableToWork"
                                                 name="notavailableToWork"
                                                 value={values.notavailableToWork}
@@ -177,7 +185,7 @@ export default function Availability(props) {
                                                 }}
                                                 options={yesOrNoOptions}
                                                 className={`width-100  ${errors.notavailableToWork && touched.notavailableToWork ? 'p-invalid' : ''}`}
-                                                optionLabel="name"></Dropdown>
+                                                optionLabel="name"></Dropdown> */}
 
                                             <label htmlFor="notavailableToWork">Are there any times you are not available to work?*</label>
                                         </span>
@@ -189,7 +197,15 @@ export default function Availability(props) {
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
                                         <span className="p-float-label">
 
-                                            <Dropdown
+                                            <InputText
+                                                type="text"
+                                                id="employmentDesired"
+                                                name="employmentDesired"
+                                                value={values.employmentDesired}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors.employmentDesired && touched.employmentDesired ? 'p-invalid' : ''}`}
+                                                onChange={handleChange} />
+                                            {/* <Dropdown
                                                 id="employmentDesired"
                                                 name="employmentDesired"
                                                 value={values.employmentDesired}
@@ -199,7 +215,7 @@ export default function Availability(props) {
                                                 }}
                                                 options={yesOrNoOptions}
                                                 className={`width-100  ${errors.employmentDesired && touched.employmentDesired ? 'p-invalid' : ''}`}
-                                                optionLabel="name"></Dropdown>
+                                                optionLabel="name"></Dropdown> */}
 
                                             <label htmlFor="employmentDesired">Employment Desired*</label>
                                         </span>

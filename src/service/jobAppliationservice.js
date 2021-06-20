@@ -40,5 +40,12 @@ export const getReference = (email)=> axios.get(`${jobPath}/jobApp/reference/${e
 
 export const addReference = (email, data)=> axios.post(`${jobPath}/jobApp/reference/${email}`, data)
 
+export const downloadConsent = (email)=> axios.get(`${jobPath}/jobApp/consent/download/${email}`, {
+    responseType: 'blob'
+})
+
+export const addConsentSignature = (email, data)=> axios.post(`${jobPath}/jobApp/consent/${email}`, data)
+
+
 
 

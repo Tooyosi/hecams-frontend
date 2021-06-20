@@ -1,9 +1,9 @@
-import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference } from "service/jobAppliationservice"
-import { checkNull, DATE_FORMAT } from "utilities"
+import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference, downloadConsent, addConsentSignature } from "service/jobAppliationservice"
+import { checkNull, DATE_FORMAT, dataURLToBlob } from "utilities"
 import moment from "moment"
 
 const catchError = (error, addMessage) => {
-    addMessage("error", `${error ?.response ?.data ?.error || "Failed"}`, `${error ?.response ?.data ?.message || "An Error occured"}`, `${error ?.response ?.data ?.debugMessage || "An Error occured"}`)
+    addMessage("error", `${error ?.response ?.data ?.error || "Failed"}`, `${error ?.response ?.data ?.message || "An Error occured"}`, `${error ?.response ?.data ?.errors? error ?.response ?.data ?.errors[0] : "An Error occured"}`)
 
 }
 
@@ -105,8 +105,8 @@ export const availabilitySubmit = async (values, formikProps, state, changeState
     formData.append("canYouWorkWeekend", state.formAvailability.weekends.code)
     formData.append("availableToStartDate", moment(state.formAvailability.startDate).format("MMM-DD-yyyy"))
     formData.append("areYouAllowedToWorkInTheUS", state.formAvailability.allowedToWork.code)
-    formData.append("whenAreUnAvailableToWork", state.formAvailability.notavailableToWork.code)
-    formData.append("employmentDesired", state.formAvailability.employmentDesired.name)
+    formData.append("whenAreUnAvailableToWork", state.formAvailability.notavailableToWork)
+    formData.append("employmentDesired", state.formAvailability.employmentDesired)
     try {
         let { data } = await addAvailability(state.formPersonal.email, formData)
 
@@ -266,8 +266,21 @@ export const referenceSubmit = async (values, formikProps, state, changeState, a
 
 
 }
-export const consentSubmit = (values, formikProps, state, changeState) => {
-    changeState({ ...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
+export const consentSubmit = async(image, param2, state, changeState, addMessage) => {
+    // changeState({ ...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
+    try {
+            let dataToSend = new FormData()
+            let blob = dataURLToBlob(image)
+            dataToSend.append("consentSignData", blob)
+
+            let {data} = await addConsentSignature(state.formPersonal.email, dataToSend)
+            // if(data.isActionSuccessful){
+                addMessage("success", `Success`, `Successful`, `Successful`)
+            
+            // }
+    } catch (error) {
+        catchError(error, addMessage)
+    }
 
 }
 
@@ -453,7 +466,7 @@ export const getAvailabilityData = async (state, changeState) => {
                 hours: checkNull(data.numHoursYouCanWorkWeekly),
                 night: dropDownBoolean(data.canYouWorkAtNight),
                 weekends: dropDownBoolean(data.canYouWorkWeekend),
-                startDate: checkNull(data.availableToStartDate),
+                startDate: data.availableToStartDate&& data.availableToStartDate !== ""? new Date(data.availableToStartDate) : checkNull(data.availableToStartDate),
                 allowedToWork: dropDownBoolean(data.areYouAllowedToWorkInTheUS),
                 notavailableToWork: checkNull(data.whenAreUnAvailableToWork),
                 employmentDesired: checkNull(data.employmentDesired)
@@ -616,12 +629,39 @@ export const getReferenceData = async (state, changeState) => {
 }
 
 export const getConsentData = async (state, changeState) => {
-    changeState({
-        ...state,
-        formStep: 9,
-        activeItem: state.items[8],
-        loading: false,
-    })
+    try{
+        let {data} = await downloadConsent(state.formPersonal.email || "")
+
+        // var reader = new FileReader();
+        // reader.readAsDataURL(data); 
+        // reader.onloadend = function() {
+        //     var base64data = reader.result;                
+        //     console.log({base64data});
+        // }
+        let url = URL.createObjectURL(data)
+        // window.open(url)
+        // blobToBase64(data, (param)=>{
+        //     console.log({param})
+        // })
+        changeState({
+            ...state,
+            formStep: 9,
+            formConsent: {
+                ...state.formConsent,
+                file: url,
+                fileType: data.type
+            },
+            activeItem: state.items[8],
+            loading: false,
+        })
+    }catch (error){
+        changeState({
+            ...state,
+            formStep: 9,
+            activeItem: state.items[8],
+            loading: false,
+        })
+    }
 }
 
 let dropDownObject = (param) => {
@@ -639,3 +679,14 @@ let dropDownBoolean = (param) => {
         code: param
     }
 }
+
+
+var blobToBase64 = function(blob, callback) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var dataUrl = reader.result;
+        var base64 = dataUrl.split(',')[1];
+        callback(base64);
+    };
+    reader.readAsDataURL(blob);
+};

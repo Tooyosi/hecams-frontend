@@ -6,11 +6,16 @@ import { COMPANY_NAME } from 'utilities';
 import FormFooter from './FormFooter';
 import ReCAPTCHA from "react-google-recaptcha";
 import { Document, Page, pdfjs } from 'react-pdf';
-
+import FileViewer from 'react-file-viewer';
 pdfjs.GlobalWorkerOptions.workerSrc =
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default function Consent(props) {
+    let { formControl: { file, fileType } } = props
+    // var index = file.lastIndexOf(".");
+    //     var type = file.substr(index + 1);
+    // console.log({index, type})
+    let type = fileType.includes("officedocument") ? "docx" : fileType.includes("pdf") ? "pdf" : file.type
     let [allowSubmit, setAllowSubmit] = useState(true)
     const [numPages, setNumPages] = useState(null);
 
@@ -57,8 +62,9 @@ export default function Consent(props) {
                         </p>
                      */}
 
-                        <Document
-                            file={"https://cors-anywhere.herokuapp.com/https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=4544200&transid=46412909&transcode=UHQQVJBI"}
+                        {/* <Document
+                            // file={"https://cors-anywhere.herokuapp.com/https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=4544200&transid=46412909&transcode=UHQQVJBI"}
+                            file={file}
                             // options={{ workerSrc: "/pdf.worker.js" }}
                             onLoadSuccess={onDocumentLoadSuccess}
                             renderMode="svg"
@@ -67,7 +73,16 @@ export default function Consent(props) {
                             {Array.from(new Array(numPages), (el, index) => (
                                 <Page key={`page_${index + 1}`} pageNumber={index + 1} />
                             ))}
-                        </Document>
+                        </Document> */}
+                        <FileViewer
+                            fileType={type}
+                            filePath={file}
+                            onError={(err) => {
+                                console.log(err)
+                            }}
+                        // errorComponent={Error}
+                        // unsupportedComponent={Error}
+                        />
                     </div>
                 </div>
                 {/* The form content */}
