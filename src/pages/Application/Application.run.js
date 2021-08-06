@@ -1,9 +1,9 @@
-import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference, downloadConsent, addConsentSignature } from "service/jobAppliationservice"
+import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference, downloadConsent, addConsentSignature, deleteEducation, deletePastJob } from "service/jobAppliationservice"
 import { checkNull, DATE_FORMAT, dataURLToBlob } from "utilities"
 import moment from "moment"
 
 const catchError = (error, addMessage) => {
-    addMessage("error", `${error ?.response ?.data ?.error || "Failed"}`, `${error ?.response ?.data ?.message || "An Error occured"}`, `${error ?.response ?.data ?.errors? error ?.response ?.data ?.errors[0] : "An Error occured"}`)
+    addMessage("error", `${error ?.response ?.data ?.error || "Failed"}`, `${error ?.response ?.data ?.message || "An Error occured"}`, `${error ?.response ?.data ?.errors ? error ?.response ?.data ?.errors[0] : "An Error occured"}`)
 
 }
 
@@ -29,7 +29,7 @@ export const personalSubmit = async (values, formikProps, state, changeState, ad
         formData.append("positionAppliedFor", state.formPersonal.position)
         formData.append("ssn", state.formPersonal.ssn)
         formData.append("howLongAtAddress", state.formPersonal.howLongAtAddress)
-        formData.append("capability", state.formPersonal.capability.code)
+        formData.append("capabilityForTheJob", state.formPersonal.capability.code)
         formData.append("convicted", state.formPersonal.convicted.code)
         formData.append("fileUploadId", state.formPersonal.fileUploadId)
         formData.append("fileUploadSize", state.formPersonal.fileUploadSize)
@@ -266,18 +266,19 @@ export const referenceSubmit = async (values, formikProps, state, changeState, a
 
 
 }
-export const consentSubmit = async(image, param2, state, changeState, addMessage) => {
+export const consentSubmit = async (image, param2, state, changeState, addMessage) => {
     // changeState({ ...state, formStep: state.formStep + 1, activeItem: state.items[state.formStep] })
     try {
-            let dataToSend = new FormData()
-            let blob = dataURLToBlob(image)
-            dataToSend.append("consentSignData", blob)
+        let dataToSend = new FormData()
+        let blob = dataURLToBlob(image)
+        dataToSend.append("consentSignData", blob)
 
-            let {data} = await addConsentSignature(state.formPersonal.email, dataToSend)
-            // if(data.isActionSuccessful){
-                addMessage("success", `Success`, `Successful`, `Successful`)
-            
-            // }
+        let { data } = await addConsentSignature(state.formPersonal.email, dataToSend)
+        // if(data.isActionSuccessful){
+        addMessage("success", `Success`, `Successful`, `Successful`)
+        window.location.href = '/'
+
+        // }
     } catch (error) {
         catchError(error, addMessage)
     }
@@ -466,7 +467,7 @@ export const getAvailabilityData = async (state, changeState) => {
                 hours: checkNull(data.numHoursYouCanWorkWeekly),
                 night: dropDownBoolean(data.canYouWorkAtNight),
                 weekends: dropDownBoolean(data.canYouWorkWeekend),
-                startDate: data.availableToStartDate&& data.availableToStartDate !== ""? new Date(data.availableToStartDate) : checkNull(data.availableToStartDate),
+                startDate: data.availableToStartDate && data.availableToStartDate !== "" ? new Date(data.availableToStartDate) : checkNull(data.availableToStartDate),
                 allowedToWork: dropDownBoolean(data.areYouAllowedToWorkInTheUS),
                 notavailableToWork: checkNull(data.whenAreUnAvailableToWork),
                 employmentDesired: checkNull(data.employmentDesired)
@@ -516,6 +517,18 @@ export const getEducationData = async (state, changeState) => {
                 toggle: false,
             }
         })
+    }
+}
+
+
+export const removeEducation = async (id, state, changeState, addMessage) => {
+    try {
+        let { data } = await deleteEducation(state.formPersonal.email, id)
+        getEducationData(state, changeState)
+        addMessage("success", `Success`, `Successful`, `Successful`)
+
+    } catch (error) {
+        catchError(error, addMessage)
     }
 }
 
@@ -595,6 +608,17 @@ export const getPastJobData = async (state, changeState) => {
     }
 }
 
+
+export const removePastJob = async (id, state, changeState, addMessage) => {
+    try {
+        let { data } = await deletePastJob(state.formPersonal.email, id)
+        getPastJobData(state, changeState)
+        addMessage("success", `Success`, `Successful`, `Successful`)
+
+    } catch (error) {
+        catchError(error, addMessage)
+    }
+}
 export const getReferenceData = async (state, changeState) => {
     try {
         let { data } = await getReference(state.formPersonal.email)
@@ -629,8 +653,8 @@ export const getReferenceData = async (state, changeState) => {
 }
 
 export const getConsentData = async (state, changeState) => {
-    try{
-        let {data} = await downloadConsent(state.formPersonal.email || "")
+    try {
+        let { data } = await downloadConsent(state.formPersonal.email || "")
 
         // var reader = new FileReader();
         // reader.readAsDataURL(data); 
@@ -638,8 +662,12 @@ export const getConsentData = async (state, changeState) => {
         //     var base64data = reader.result;                
         //     console.log({base64data});
         // }
+        var binaryData = [];
+        // binaryData.push(data.consentDataAndTemplateMerged);
+        // window.URL.createObjectURL(new Blob(binaryData, { type: "application/zip" }))
         let url = URL.createObjectURL(data)
         // window.open(url)
+        // console.log({ url }, "url")
         // blobToBase64(data, (param)=>{
         //     console.log({param})
         // })
@@ -654,7 +682,7 @@ export const getConsentData = async (state, changeState) => {
             activeItem: state.items[8],
             loading: false,
         })
-    }catch (error){
+    } catch (error) {
         changeState({
             ...state,
             formStep: 9,
@@ -681,9 +709,9 @@ let dropDownBoolean = (param) => {
 }
 
 
-var blobToBase64 = function(blob, callback) {
+var blobToBase64 = function (blob, callback) {
     var reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
         var dataUrl = reader.result;
         var base64 = dataUrl.split(',')[1];
         callback(base64);

@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 const JobForm = () => {
     const { register, handleSubmit } = useForm();
-    // const onSubmit = (data) => console.log(data)
     const onSubmit = (data) => Axios.post(`https://45.79.51.132:443/authenticate`, data)
     .then(res=>toaster.notify(res.data.token))
     .catch(e=>toaster.warning('Something went wrong'))

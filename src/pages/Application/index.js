@@ -11,19 +11,18 @@ import Task from './Forms/Task';
 import PastJob from './Forms/PastJob';
 import Reference from './Forms/Reference';
 import Consent from './Forms/Consent';
-import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail, sendResendOtp, getPersonalData, getEmergencyData, availabilitySubmit, getTransportData, getAvailabilityData, educationSubmit, getEducationData, getTaskData, getReferenceData, getPastJobData, getConsentData } from './Application.run';
+import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail, sendResendOtp, getPersonalData, getEmergencyData, availabilitySubmit, getTransportData, getAvailabilityData, educationSubmit, getEducationData, getTaskData, getReferenceData, getPastJobData, getConsentData, removeEducation, removePastJob } from './Application.run';
 import FormOtp from './Forms/FormOtp';
 import { ToastContext } from 'layout/PlainLayout';
 import Loader from 'components/common/Loader';
+import DocViewer from "react-doc-viewer";
 import { getPastJob, getReference } from 'service/jobAppliationservice';
 
 export default function Application() {
     let signatureRef = useRef(null)
+    let captchaRef = useRef(null)
     let [message, setMessage] = useContext(ToastContext)
     const clearSignature = () => {
-        console.log(signatureRef.current)
-        console.log(signatureRef.current.getTrimmedCanvas().toDataURL('blob'))
-
         // clear the canvas
         signatureRef.current.clear()
     }
@@ -368,8 +367,12 @@ export default function Application() {
         }
     }
 
-    const onCaptchaChange = (value) => {
-        console.log("Captcha value:", value);
+    const onCaptchaChange = (value, param) => {
+        if(!signatureRef.current.isEmpty()){
+            param()
+        }else{
+            captchaRef.current.reset()
+        }
     }
 
 
@@ -518,6 +521,7 @@ export default function Application() {
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}
                                         handleNext={() => fetchData(6)}
+                                        onDelete={(id)=> removeEducation(id, state, changeState, addMessage)}
                                         onSubmit={(values, formikProps) => handleSubmit(educationSubmit, values, formikProps)}
                                     />}
 
@@ -542,6 +546,7 @@ export default function Application() {
                                         onSubmit={(values, formikProps) => handleSubmit(pastJobSubmit, values, formikProps)}
                                         editPastJobList={editPastJobList}
                                         handleGoBack={handleGoBack}
+                                        onDelete={(id)=> removePastJob(id, state, changeState, addMessage)}
                                         toggleWorks={()=> changeState({...state, formPastJob: {...state.formPastJob,workHere: !state.formPastJob.workHere }})}
                                         onFinish={() => fetchData(8)}
                                     />}
@@ -562,11 +567,13 @@ export default function Application() {
                                     />}
                                     {state.formStep == 9 && <Consent
                                         signatureRef={signatureRef}
+                                        captchaRef={captchaRef}
                                         clearSignature={clearSignature}
                                         formControl={state.formConsent}
                                         personalDetails={state.formPersonal}
                                         onCaptchaChange={onCaptchaChange}
                                         handleGoBack={handleGoBack}
+                                        doReload={()=> getConsentData(state, changeState)}
                                         onSubmit={() => handleSubmit(consentSubmit, signatureRef.current.getTrimmedCanvas().toDataURL('image/png'), null )} />
                                     }
                                 </div>

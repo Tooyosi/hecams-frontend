@@ -8,12 +8,11 @@ import * as Yup from "yup"
 import FormLayout from './Layout';
 import { DATE_FORMAT } from 'utilities';
 import FormFooter from './FormFooter';
-import { RadioButton } from 'primereact/radiobutton';
-
+import { Checkbox } from 'primereact/checkbox';
 
 
 export default function PastJob(props) {
-    let { formControl, onChange, formName, editPastJobList, handleGoBack, onFinish, toggleWorks } = props
+    let { formControl, onChange, formName, editPastJobList, handleGoBack, onFinish, toggleWorks, onDelete } = props
     var today = new Date();
 
     let [minDate, setMinDate] = useState(today)
@@ -57,7 +56,8 @@ export default function PastJob(props) {
                             <FormLayout>
                                 <div className="p-grid">
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
-
+                                        <div className="">
+                                            <div className="width-100">
                                         <span className="p-float-label">
                                             <InputText
                                                 type="text"
@@ -71,12 +71,15 @@ export default function PastJob(props) {
 
                                         </span>
                                         {showFieldError("company", errors, touched)}
-                                        <div className="p-text-right">
-                                            <p> I currently work here
-                                        <RadioButton name="workHere" checked={formControl.workHere} onChange={(e) => {
+                                        </div>
+                                        <div className="">
+                                            <p>
+                                        <Checkbox name="workHere" className="p-mr-2" checked={formControl.workHere} onChange={(e) => {
                                                     toggleWorks()
                                                 }} />
+                                                work here
                                             </p>
+                                        </div>
                                         </div>
                                     </div>
                                     <div className="p-col-12 p-lg-6 p-md-6 p-sm-6">
@@ -227,7 +230,7 @@ export default function PastJob(props) {
                                             <tr>
                                                 <td>Company</td>
                                                 <td>Job Title</td>
-                                                <td>Edit</td>
+                                                {/* <td>Edit</td> */}
                                                 <td>Delete</td>
                                             </tr>
                                         </thead>
@@ -240,7 +243,7 @@ export default function PastJob(props) {
                                                         editPastJobList("edit", i, setValues)
                                                     }} label="Edit" className="p-button-secondary" /></td> */}
                                                     <td><Button type="button" role="button" onClick={(e) => {
-                                                        editPastJobList("delete", i, null)
+                                                        onDelete(data.id)
                                                     }} label="Delete" className="p-button-danger" /></td>
                                                 </tr>
                                             ))}

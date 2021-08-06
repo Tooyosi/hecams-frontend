@@ -21,7 +21,6 @@ export default function PlainLayout({ children }) {
 
     }, [message.toggle])
     const addMessage = (severity, content, summary, detail) => {
-        console.log({severity, content, summary, detail})
 
         // toast.current.show({ severity,  summary,content, detail: detail });
         toast.current.show({ severity: severity, summary: summary, detail: detail });

@@ -174,7 +174,7 @@ const FormDisplay = ({ formName, countryOption, handleChange, onChange, handleBl
     )
 }
 
-const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption ,countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, withLevel, formControl, header, ...props }) => {
+const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption, countryOption, handleChange, onChange, handleBlur, errors, values, handleDropdownChange, touched, withLevel, formControl, header, ...props }) => {
     let validation = Yup.object().shape({
         schoolName: Yup.string().required("Required"),
         schoolType: Yup.string().required("Required"),
@@ -213,7 +213,7 @@ const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption ,countryO
                                 <div className="p-grid p-my-2">
                                     <div className="p-col-6">
                                         <span className="p-float-label">
-                                        <Dropdown
+                                            <Dropdown
                                                 id={`schoolType`}
                                                 name={`schoolType`}
                                                 value={values[`schoolType`]}
@@ -226,7 +226,7 @@ const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption ,countryO
                                                 optionLabel="name"
                                             ></Dropdown>
                                             <label htmlFor={`schoolType`}>School Type</label>
-                                     
+
                                         </span>
                                         {showFieldError(`schoolType`, errors, touched)}
 
@@ -363,7 +363,7 @@ const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption ,countryO
                                         </div>
                                     </div>
                                     <div className="p-col-12 p-text-right">
-                                        <Button type="submit" role="submit" disabled={isSubmitting}  className="p-mr-2" label="Submit"/>
+                                        <Button type="submit" role="submit" disabled={isSubmitting} className="p-mr-2" label="Submit" />
                                         <Button type="button" role="button" disabled={isSubmitting} label="Cancel" onClick={toggleModal} className="p-button-danger" />
                                     </div>
 
@@ -386,50 +386,56 @@ export default function Education(props) {
         <>
             <FormLayout className>
                 {/* <button onClick={doToggleModal}>Add</button> */}
-                <div className="p-d-flex p-jc-end">
+                <div className="p-grid p-my-2">
+                    <div className="p-col-8">
 
-                    <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
+
+                            <h3>Enter information on school and colleges attended</h3>
+                    </div>
+                        <div className="p-col-4 p-d-flex p-jc-end">
+
+                            <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
+                        </div>
                 </div>
                 {props.formControl.list.length > 0 && <div className="p-grid company-table">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <td>Type</td>
-                                                <td>School Name</td>
-                                                <td>Country</td>
-                                                <td>State</td>
-                                                <td>City</td>
-                                                <td>Degree</td>
-                                                <td>Major</td>
-                                                <td>Certificate</td>
-                                                <td></td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {props.formControl.list.map((data, i) => (
-                                                <tr key={i}>
-                                                    <td>{data.schoolType}</td>
-                                                    <td>{data.name}</td>
-                                                    <td>{data.country}</td>
-                                                    <td>{data.stateName}</td>
-                                                    <td>{data.city}</td>
-                                                    <td>{data.degree}</td>
-                                                    <td>{data.major}</td>
-                                                    <td>{data.fileUploadName}</td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Type</td>
+                                <td>School Name</td>
+                                <td>Country</td>
+                                <td>State</td>
+                                <td>City</td>
+                                <td>Degree</td>
+                                <td>Major</td>
+                                <td>Certificate</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {props.formControl.list.map((data, i) => (
+                                <tr key={i}>
+                                    <td>{data.schoolType}</td>
+                                    <td>{data.name}</td>
+                                    <td>{data.country}</td>
+                                    <td>{data.stateName}</td>
+                                    <td>{data.city}</td>
+                                    <td>{data.degree}</td>
+                                    <td>{data.major}</td>
+                                    <td>{data.fileUploadName}</td>
 
-                                                    <td><Button type="button" role="button" 
-                                                    // onClick={(e)=>{
-                                                    //     editPastJobList("delete", i, null)
-                                                    // }}
-                                                     label="Delete" className="p-button-danger" /></td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                }
+                                    <td><Button type="button" role="button"
+                                        onClick={(e)=>{
+                                            props.onDelete(data.id)
+                                        }}
+                                        label="Delete" className="p-button-danger" /></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>}
 
-                 <AddModal
+                <AddModal
                     showModal={props.formControl.toggle}
                     toggleModal={props.doToggleModal}
                     {...props}
@@ -443,9 +449,9 @@ export default function Education(props) {
             <FormFooter
                 backText="Back"
                 nextText="Next"
-            goBack={props.handleGoBack}
-            proceed={props.handleNext}
-            disabledSubmit={props.formControl.list < 1}
+                goBack={props.handleGoBack}
+                proceed={props.handleNext}
+                disabledSubmit={props.formControl.list < 1}
             />
         </>
     )

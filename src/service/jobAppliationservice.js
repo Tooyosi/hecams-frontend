@@ -26,6 +26,8 @@ export const addAvailability = (email, data)=> axios.post(`${jobPath}/jobApp/ava
 
 export const getEducation = (email)=> axios.get(`${jobPath}/jobApp/education/${email}`)
 
+export const deleteEducation = (email, id)=> axios.delete(`${jobPath}/jobApp/education/${email}/${id}`)
+
 export const addEducation = (email, data)=> axios.post(`${jobPath}/jobApp/education/${email}`, data)
 
 export const getTask = (email)=> axios.get(`${jobPath}/jobApp/taskReview/${email}`)
@@ -34,17 +36,20 @@ export const addTask = (email, data)=> axios.post(`${jobPath}/jobApp/taskReview/
 
 export const getPastJob = (email)=> axios.get(`${jobPath}/jobApp/pastJob/${email}`)
 
+export const deletePastJob = (email, id)=> axios.delete(`${jobPath}/jobApp/pastJob/${email}/${id}`)
+
+
 export const addPastJob = (email, data)=> axios.post(`${jobPath}/jobApp/pastJob/${email}`, data)
 
 export const getReference = (email)=> axios.get(`${jobPath}/jobApp/reference/${email}`)
 
 export const addReference = (email, data)=> axios.post(`${jobPath}/jobApp/reference/${email}`, data)
 
-export const downloadConsent = (email)=> axios.get(`${jobPath}/jobApp/consent/download/${email}`, {
+export const downloadConsent = (email)=> axios.get(`${jobPath}/jobApp/consent/initTemplateWithData/${email}`, {
     responseType: 'blob'
 })
 
-export const addConsentSignature = (email, data)=> axios.post(`${jobPath}/jobApp/consent/${email}`, data)
+export const addConsentSignature = (email, data)=> axios.post(`${jobPath}/jobApp/consent/addConsent/${email}`, data)
 
 
 

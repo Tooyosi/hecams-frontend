@@ -309,10 +309,16 @@ export default function Reference(props) {
         // </FormsWrapper>
         <>
             <FormLayout>
+                <div className="p-grid p-my-2">
+                    <div className="p-col-8">
 
-                <div className="p-d-flex p-jc-end">
 
-                    <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
+                        <h3>Enter Reference Information</h3>
+                    </div>
+                    <div className="p-col-4 p-d-flex p-jc-end">
+
+                        <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
+                    </div>
                 </div>
                 {props.formControl.list.length > 0 && <div className="p-grid company-table">
                     <table>
