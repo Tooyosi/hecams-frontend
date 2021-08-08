@@ -1,5 +1,7 @@
 import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference, downloadConsent, addConsentSignature, deleteEducation, deletePastJob } from "service/jobAppliationservice"
 import { checkNull, DATE_FORMAT, dataURLToBlob } from "utilities"
+import { showLoading, swalClose } from 'utilities/utility_alert.js';
+
 import moment from "moment"
 
 const catchError = (error, addMessage) => {
@@ -272,12 +274,19 @@ export const consentSubmit = async (image, param2, state, changeState, addMessag
         let dataToSend = new FormData()
         let blob = dataURLToBlob(image)
         dataToSend.append("consentSignData", blob)
-
+        changeState({
+            ...state,
+            formConsent: {
+                ...state.formConsent,
+                submitting: true
+            }
+        })
         let { data } = await addConsentSignature(state.formPersonal.email, dataToSend)
         // if(data.isActionSuccessful){
+            
         addMessage("success", `Success`, `Successful`, `Successful`)
-        window.location.href = '/'
-
+        // window.location.href = '/'
+        getConsentData(state, changeState, true)
         // }
     } catch (error) {
         catchError(error, addMessage)
@@ -397,6 +406,9 @@ export const getPersonalData = async (state, changeState) => {
             loading: false,
             otpStep: 3,
         })
+    } finally{
+        swalClose()
+
     }
 }
 
@@ -420,6 +432,7 @@ export const getEmergencyData = async (state, changeState) => {
                 state: checkNull(data.stateName)
             }
         })
+
     } catch (error) {
         changeState({
             ...state,
@@ -427,6 +440,9 @@ export const getEmergencyData = async (state, changeState) => {
             loading: false,
             activeItem: state.items[1]
         })
+    }finally{
+        swalClose()
+
     }
 }
 
@@ -452,6 +468,9 @@ export const getTransportData = async (state, changeState) => {
             loading: false,
             activeItem: state.items[2]
         })
+    }finally{
+        swalClose()
+
     }
 }
 
@@ -480,6 +499,9 @@ export const getAvailabilityData = async (state, changeState) => {
             loading: false,
             activeItem: state.items[3]
         })
+    }finally{
+        swalClose()
+
     }
 }
 
@@ -517,18 +539,24 @@ export const getEducationData = async (state, changeState) => {
                 toggle: false,
             }
         })
+    }finally{
+        swalClose()
+
     }
 }
 
 
 export const removeEducation = async (id, state, changeState, addMessage) => {
     try {
+        showLoading()
         let { data } = await deleteEducation(state.formPersonal.email, id)
         getEducationData(state, changeState)
         addMessage("success", `Success`, `Successful`, `Successful`)
 
     } catch (error) {
         catchError(error, addMessage)
+    }finally{
+        swalClose()
     }
 }
 
@@ -573,6 +601,9 @@ export const getTaskData = async (state, changeState) => {
             activeItem: state.items[5],
             loading: false
         })
+    }finally{
+        swalClose()
+
     }
 }
 
@@ -605,18 +636,24 @@ export const getPastJobData = async (state, changeState) => {
             activeItem: state.items[6],
             loading: false
         })
+    }finally{
+        swalClose()
+
     }
 }
 
 
 export const removePastJob = async (id, state, changeState, addMessage) => {
     try {
+        showLoading()
         let { data } = await deletePastJob(state.formPersonal.email, id)
         getPastJobData(state, changeState)
         addMessage("success", `Success`, `Successful`, `Successful`)
 
     } catch (error) {
         catchError(error, addMessage)
+    }finally{
+        swalClose()
     }
 }
 export const getReferenceData = async (state, changeState) => {
@@ -649,10 +686,13 @@ export const getReferenceData = async (state, changeState) => {
                 toggle: false,
             }
         })
+    }finally{
+        swalClose()
+
     }
 }
 
-export const getConsentData = async (state, changeState) => {
+export const getConsentData = async (state, changeState, isSubmitted = false) => {
     try {
         let { data } = await downloadConsent(state.formPersonal.email || "")
 
@@ -677,7 +717,9 @@ export const getConsentData = async (state, changeState) => {
             formConsent: {
                 ...state.formConsent,
                 file: url,
-                fileType: data.type
+                fileType: data.type,
+                isSubmitted: state.formConsent.isSubmitted == true? true : isSubmitted,
+                submitting: false
             },
             activeItem: state.items[8],
             loading: false,
@@ -689,6 +731,9 @@ export const getConsentData = async (state, changeState) => {
             activeItem: state.items[8],
             loading: false,
         })
+    }finally{
+        swalClose()
+
     }
 }
 

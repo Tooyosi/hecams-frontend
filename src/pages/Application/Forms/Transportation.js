@@ -15,12 +15,16 @@ export default function Transportation(props) {
 
     let validationShape = {
         car: Yup.string().required("Required"),
-        license: Yup.string().required("Required"),
-        expiration: Yup.string().required("Required")
+        // license: Yup.string().required("Required"),
+        // expiration: Yup.string().required("Required")
     }
 
     if(formControl.car !== "" && formControl.car.code == false){
         validationShape.reason = Yup.string().required("Required")
+    }else{
+        validationShape.license = Yup.string().required("Required")
+        validationShape.expiration = Yup.string().required("Required").nullable()
+
     }
     const validation = Yup.object().shape(validationShape)
 

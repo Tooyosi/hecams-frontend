@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef } from 'react'
 import Logo from 'components/common/Logo'
 import { TabMenu } from 'primereact/components/tabmenu/TabMenu';
 import { checkProperties, onChange, onDropdownChange, guid, COMPANY_NAME } from 'utilities';
+import { showLoading } from 'utilities/utility_alert.js';
 import Personal from './Forms/Personal';
 import Emergency from './Forms/Emergency';
 import Transportation from './Forms/Transportation';
@@ -25,6 +26,7 @@ export default function Application() {
     const clearSignature = () => {
         // clear the canvas
         signatureRef.current.clear()
+        captchaRef.current.reset()
     }
 
 
@@ -108,7 +110,7 @@ export default function Application() {
             notavailableToWork: "",
             employmentDesired: ""
         },
-        formEducation:{
+        formEducation: {
             schoolType: '',
             schoolName: '',
             city: '',
@@ -158,121 +160,19 @@ export default function Application() {
         },
         formReference: {
             list: [],
-            referenceName:'',
+            referenceName: '',
             relationship: '',
-            years:'',
+            years: '',
             phone: '',
             toggle: false
         },
         formConsent: {
-            file:'',
-            fileType: ''
+            file: '',
+            fileType: '',
+            isSubmitted: false,
+            submitting: false
         }
     })
-    let educationFields = (formName) => {
-        return {
-            [`${formName}Name`]: '',
-            [`${formName}City`]: '',
-            [`${formName}State`]: '',
-            [`${formName}Country`]: '',
-            [`${formName}Level`]: '',
-            [`${formName}Degree`]: '',
-            [`${formName}Major`]: '',
-            [`${formName}Certificate`]: ''
-        }
-    }
-
-    let referenceFields = (formName) => {
-        return {
-            [`${formName}Name`]: '',
-            [`${formName}Relationship`]: '',
-            [`${formName}Years`]: '',
-            [`${formName}Phone`]: ''
-        }
-    }
-    // let [educationState, changeEducationState] = useState({
-    //     formHighSchool: {
-    //         ...educationFields("formHighSchool")
-    //     },
-    //     formCollege: {
-    //         ...educationFields("formCollege")
-    //     },
-    //     formTrade: {
-    //         ...educationFields("formTrade")
-    //     },
-    //     formProfessional: {
-    //         ...educationFields("formProfessional")
-    //     },
-    //     formEducation:{
-    //         name: '',
-    //         city: '',
-    //         state: '',
-    //         country: '',
-    //         level: '',
-    //         degree: '',
-    //         major: '',
-    //         certificate: ''
-    //     },
-    //     list: []
-    // })
-
-    let [educationState, changeEducationState] = useState({
-        formEducation:{
-            schoolName: '',
-            city: '',
-            state: '',
-            country: '',
-            level: '',
-            degree: '',
-            major: '',
-            certificate: '',
-            list: []
-        },
-        list: []
-    })
-
-    let [referenceState, changeReferenceState] = useState({
-        formReference1: {
-            ...referenceFields("formReference1")
-        },
-        formReference2: {
-            ...referenceFields("formReference2")
-        },
-        formReference3: {
-            ...referenceFields("formReference3")
-        }
-    })
-
-    let updatePastJobList = (values, { setFieldValue, resetForm, ...params }, a, b) => {
-
-        delete values.list
-        //  reset the form fields
-        resetForm({})
-        changeState({
-            ...state,
-            formPastJob: {
-                company: "",
-                reasonLeft: "",
-                from: "",
-                supervisor: "",
-                to: "",
-                phone: "",
-                jobTitle: "",
-                contact: "",
-                list: [...state.formPastJob.list, { id: guid(), ...values }]
-            }
-        })
-        setFieldValue('formPastJob', '')
-        setFieldValue('company', '')
-        setFieldValue('reasonLeft', '')
-        setFieldValue('from', '')
-        setFieldValue('supervisor', '')
-        setFieldValue('to', '')
-        setFieldValue('phone', '')
-        setFieldValue('jobTitle', '')
-        setFieldValue('contact', '')
-
-    }
 
     let editPastJobList = (param1, param2, param3) => {
         // let item = state.formPastJob.list.filter((a)=> a.id == param2)[0]
@@ -333,29 +233,23 @@ export default function Application() {
     }
 
 
-
-    const handleEducationChange = (e, formName) => {
-        onChange(e, educationState, changeEducationState, formName)
-    }
-
-
-    const handleReferenceChange = (e, formName) => {
-        onChange(e, referenceState, changeReferenceState, formName)
-    }
-
     const handleDropdownChange = (e, formName) => {
         onDropdownChange(e, state, changeState, formName)
     }
 
-    const handleSubmit = (fn, param1, param2) => {
+    const handleSubmit = (fn, param1, param2, showLoader = true) => {
+        if (showLoader) {
+            showLoading({ title: "Saving..." })
+        }
         fn(param1, param2, state, changeState, addMessage)
     }
 
     const handleDataFetch = (fn, stateObj = state, changeStateFn = changeState) => {
-        changeState({
-            ...state,
-            loading: true
-        })
+        // changeState({
+        //     ...state,
+        //     loading: true
+        // })
+        showLoading()
         fn(stateObj, changeStateFn)
     }
 
@@ -368,9 +262,9 @@ export default function Application() {
     }
 
     const onCaptchaChange = (value, param) => {
-        if(!signatureRef.current.isEmpty()){
-            param()
-        }else{
+        if (!signatureRef.current.isEmpty()) {
+            param(true)
+        } else {
             captchaRef.current.reset()
         }
     }
@@ -384,31 +278,35 @@ export default function Application() {
         switch (step) {
             case 1:
                 handleDataFetch(getPersonalData)
-            break;
+                break;
             case 2:
                 handleDataFetch(getEmergencyData)
-            break;
+                break;
             case 3:
                 handleDataFetch(getTransportData)
-            break;
+                break;
             case 4:
                 handleDataFetch(getAvailabilityData)
-            break;
+                break;
             case 5:
                 handleDataFetch(getEducationData)
-            break;
+                break;
             case 6:
                 handleDataFetch(getTaskData)
-            break;
+                break;
             case 7:
                 handleDataFetch(getPastJobData)
-            break;
+                break;
             case 8:
                 handleDataFetch(getReferenceData)
-            break;
+                break;
             case 9:
-                handleDataFetch(getConsentData)
-            break;
+                // handleDataFetch(getConsentData)
+                changeState({
+                    ...state,
+                    formStep: 9
+                })
+                break;
         }
     }
     return (
@@ -438,7 +336,7 @@ export default function Application() {
                             formStep={state.otpStep}
                             sendResendOtp={doResendOtp}
                             formControl={state.formPersonal}
-                            onSubmit={(values, formikProps) => handleSubmit(verifyEmail, values, formikProps)}
+                            onSubmit={(values, formikProps) => handleSubmit(verifyEmail, values, formikProps, false)}
                         />
                     </div>
                     : state.loading ? <Loader /> :
@@ -517,11 +415,11 @@ export default function Application() {
                                             { name: 'Bus or Trade School ', code: "Bus or Trade School" },
                                             { name: 'Professional', code: "Professional" },
                                         ]}
-                                        doToggleModal={()=>changeState({...state, formEducation: {...state.formEducation, toggle: !state.formEducation.toggle}})}
+                                        doToggleModal={() => changeState({ ...state, formEducation: { ...state.formEducation, toggle: !state.formEducation.toggle } })}
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}
                                         handleNext={() => fetchData(6)}
-                                        onDelete={(id)=> removeEducation(id, state, changeState, addMessage)}
+                                        onDelete={(id) => removeEducation(id, state, changeState, addMessage)}
                                         onSubmit={(values, formikProps) => handleSubmit(educationSubmit, values, formikProps)}
                                     />}
 
@@ -546,8 +444,8 @@ export default function Application() {
                                         onSubmit={(values, formikProps) => handleSubmit(pastJobSubmit, values, formikProps)}
                                         editPastJobList={editPastJobList}
                                         handleGoBack={handleGoBack}
-                                        onDelete={(id)=> removePastJob(id, state, changeState, addMessage)}
-                                        toggleWorks={()=> changeState({...state, formPastJob: {...state.formPastJob,workHere: !state.formPastJob.workHere }})}
+                                        onDelete={(id) => removePastJob(id, state, changeState, addMessage)}
+                                        toggleWorks={() => changeState({ ...state, formPastJob: { ...state.formPastJob, workHere: !state.formPastJob.workHere } })}
                                         onFinish={() => fetchData(8)}
                                     />}
 
@@ -562,7 +460,7 @@ export default function Application() {
                                         handleDropdownChange={handleDropdownChange}
                                         handleGoBack={handleGoBack}
                                         handleNext={() => fetchData(9)}
-                                        doToggleModal={()=>changeState({...state, formReference: {...state.formReference, toggle: !state.formReference.toggle}})}
+                                        doToggleModal={() => changeState({ ...state, formReference: { ...state.formReference, toggle: !state.formReference.toggle } })}
                                         onSubmit={(values, formikProps) => handleSubmit(referenceSubmit, values, formikProps)}
                                     />}
                                     {state.formStep == 9 && <Consent
@@ -573,8 +471,8 @@ export default function Application() {
                                         personalDetails={state.formPersonal}
                                         onCaptchaChange={onCaptchaChange}
                                         handleGoBack={handleGoBack}
-                                        doReload={()=> getConsentData(state, changeState)}
-                                        onSubmit={() => handleSubmit(consentSubmit, signatureRef.current.getTrimmedCanvas().toDataURL('image/png'), null )} />
+                                        doReload={() => getConsentData(state, changeState)}
+                                        onSubmit={() => handleSubmit(consentSubmit, signatureRef.current.getTrimmedCanvas().toDataURL('image/png'), null)} />
                                     }
                                 </div>
                             </div>
