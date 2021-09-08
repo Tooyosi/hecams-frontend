@@ -4584,3 +4584,36 @@ body {
 [class*=react-pdf] {
   width: 100% !important;
 }
+
+.menu-wrapper {
+  top: 0;
+  height: 100vh;
+}
+
+.layout-topbar .layout-topbar-left .layout-menu-button {
+  left: -15px;
+}
+
+ul[role=menu] li a {
+  text-decoration: none;
+}
+ul[role=menu] li a .layout-menuitem-text {
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.layout-topbar-green .layout-topbar, .layout-topbar-left {
+  background-color: #1B1C33 !important;
+}
+
+.layout-menu-button {
+  background-color: #fff !important;
+}
+.layout-menu-button .pi {
+  color: #50A656 !important;
+}

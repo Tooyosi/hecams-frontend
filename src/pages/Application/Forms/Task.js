@@ -32,7 +32,7 @@ export const validation = Yup.object().shape({
 })
 
 export default function Task(props) {
-    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack } = props
+    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack, readOnly } = props
 
     return (
         <FormsWrapper values={formControl}
@@ -60,6 +60,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="bathing"
                                                 name="bathing"
                                                 value={values.bathing}
@@ -82,6 +83,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="dressing"
                                                 name="dressing"
                                                 value={values.dressing}
@@ -102,6 +104,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="personalHygine"
                                                 name="personalHygine"
                                                 value={values.personalHygine}
@@ -122,6 +125,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="eating"
                                                 name="eating"
                                                 value={values.eating}
@@ -147,6 +151,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="mealPlanning"
                                                 name="mealPlanning"
                                                 value={values.mealPlanning}
@@ -168,6 +173,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="houseKeeping"
                                                 name="houseKeeping"
                                                 value={values.houseKeeping}
@@ -189,6 +195,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="mealPreparation"
                                                 name="mealPreparation"
                                                 value={values.mealPreparation}
@@ -216,6 +223,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="independentLivingSkills"
                                                 name="independentLivingSkills"
                                                 value={values.independentLivingSkills}
@@ -236,6 +244,7 @@ export default function Task(props) {
 
                                         <span className="p-float-label">
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="communityIntegration"
                                                 name="communityIntegration"
                                                 value={values.communityIntegration}
@@ -256,6 +265,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="valuedBehaviours"
                                                 name="valuedBehaviours"
                                                 value={values.valuedBehaviours}
@@ -276,6 +286,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="naturalSupports"
                                                 name="naturalSupports"
                                                 value={values.naturalSupports}
@@ -300,6 +311,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="leisureActivities"
                                                 name="leisureActivities"
                                                 value={values.leisureActivities}
@@ -321,6 +333,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="skillDevelopment"
                                                 name="skillDevelopment"
                                                 value={values.skillDevelopment}
@@ -349,6 +362,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="ambAndMobility"
                                                 name="ambAndMobility"
                                                 value={values.ambAndMobility}
@@ -369,6 +383,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="medication"
                                                 name="medication"
                                                 value={values.medication}
@@ -389,6 +404,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="specializedTheraphies"
                                                 name="specializedTheraphies"
                                                 value={values.specializedTheraphies}
@@ -409,6 +425,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="transportation"
                                                 name="transportation"
                                                 value={values.transportation}
@@ -434,6 +451,7 @@ export default function Task(props) {
                                     <span className="p-float-label">
 
                                         <Dropdown
+                                                disabled={readOnly}
                                             id="safetyAndSecurity"
                                             name="safetyAndSecurity"
                                             value={values.safetyAndSecurity}
@@ -461,6 +479,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="safetyAdSecurity"
                                                 name="safetyAdSecurity"
                                                 value={values.safetyAdSecurity}
@@ -480,6 +499,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="monitoringHealth"
                                                 name="monitoringHealth"
                                                 value={values.monitoringHealth}
@@ -500,6 +520,7 @@ export default function Task(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="additionalSkills"
                                                 name="additionalSkills"
                                                 value={values.additionalSkills}

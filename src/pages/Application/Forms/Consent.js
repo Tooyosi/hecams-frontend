@@ -13,7 +13,7 @@ import Loader from 'components/common/Loader';
 pdfjs.GlobalWorkerOptions.workerSrc =
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const ViewForm = ({ showModal, toggleModal, type, file, setViewForm, setAllowSubmit, allowSubmit, isSubmitted,submitting, ...props }) => {
+const ViewForm = ({ showModal, toggleModal, type, file, setViewForm, setAllowSubmit, allowSubmit, isSubmitted, submitting, readOnly, ...props }) => {
 
     return (
         <CustomModal
@@ -22,7 +22,7 @@ const ViewForm = ({ showModal, toggleModal, type, file, setViewForm, setAllowSub
             closeOnEscape={false}
             // style={{ maxWidth: '500px' }}
             toggle={toggleModal}>
-            {file == "" || submitting? <Loader /> :
+            {file == "" || submitting ? <Loader /> :
                 <FileViewer
                     fileType={type}
                     filePath={file}
@@ -37,11 +37,11 @@ const ViewForm = ({ showModal, toggleModal, type, file, setViewForm, setAllowSub
                     <div className="p-col-12">
                         <Button className="width-100" onClick={() => {
                             window.location.href = '/'
-                        }} label="Go Home"/>
+                        }} label="Go Home" />
                     </div>
                     :
                     <>
-                        {file !== "" && !submitting && <div className="p-mt-2">
+                        {!readOnly && file !== "" && !submitting && <div className="p-mt-2">
                             <div className="signature-box">
                                 <SignaturePad
                                     canvasProps={{
@@ -59,6 +59,7 @@ const ViewForm = ({ showModal, toggleModal, type, file, setViewForm, setAllowSub
                                     </div>
                                 </div>
                             </div>
+
                             <ReCAPTCHA
                                 sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
                                 // onChange={props.onCaptchaChange}
@@ -67,6 +68,7 @@ const ViewForm = ({ showModal, toggleModal, type, file, setViewForm, setAllowSub
                                 theme="light"
                             />
                             <Button disabled={!allowSubmit} onClick={props.onSubmit}>Submit</Button>
+
                         </div>
                         }
                     </>
@@ -77,7 +79,7 @@ const ViewForm = ({ showModal, toggleModal, type, file, setViewForm, setAllowSub
 }
 
 export default function Consent(props) {
-    let { formControl: { file, fileType, isSubmitted, submitting } } = props
+    let { formControl: { file, fileType, isSubmitted, submitting }, readOnly } = props
     // var index = file.lastIndexOf(".");
     //     var type = file.substr(index + 1);
     let type = fileType.includes("officedocument") ? "docx" : fileType.includes("msword") ? "docx" : fileType.includes("pdf") ? "pdf" : "docx"
@@ -98,9 +100,9 @@ export default function Consent(props) {
                         <h3>Consent forms</h3>
                         <p className="p-my-3">By signing and submitting this form, you acknowledge agree to the terms of the consent form</p>
                         <Button onClick={() => {
-                        setViewForm(true)
-                        props.doReload()
-                    }}>{viewForm ? `Reload` : 'Load'} Form</Button>
+                            setViewForm(true)
+                            props.doReload()
+                        }}>{viewForm ? `Reload` : 'Load'} Form</Button>
                     </div>
                     {/* <div className="consent-form p-my-3 d-none ">
 
@@ -135,6 +137,7 @@ export default function Consent(props) {
                         setAllowSubmit={setAllowSubmit}
                         allowSubmit={allowSubmit}
                         isSubmitted={isSubmitted}
+                        readOnly
                         submitting={submitting}
                         {...props}
                     />
@@ -145,7 +148,7 @@ export default function Consent(props) {
             </FormLayout>
             <div className="p-grid">
                 <div className="p-col-6 p-lg-8 p-md-6 p-sm-6-6">
-                   
+
                 </div>
                 {/* <div className="p-col-6 p-lg-4 p-md-6 p-sm-6-6 p-jc-end">
                     <div className="signature-box">
@@ -175,7 +178,7 @@ export default function Consent(props) {
                 goBack={props.handleGoBack}
                 proceed={props.onSubmit}
                 backText="Back"
-                // nextText="Submit"
+            // nextText="Submit"
             />
         </>
     )

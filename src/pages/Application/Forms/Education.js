@@ -386,17 +386,17 @@ export default function Education(props) {
         <>
             <FormLayout className>
                 {/* <button onClick={doToggleModal}>Add</button> */}
-                <div className="p-grid p-my-2">
+                {!props.readOnly && <div className="p-grid p-my-2">
                     <div className="p-col-8">
 
 
-                            <h3>Enter information on school and colleges attended</h3>
+                        <h3>Enter information on school and colleges attended</h3>
                     </div>
-                        <div className="p-col-4 p-d-flex p-jc-end">
+                    <div className="p-col-4 p-d-flex p-jc-end">
 
-                            <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
-                        </div>
-                </div>
+                        <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
+                    </div>
+                </div>}
                 {props.formControl.list.length > 0 && <div className="p-grid company-table">
                     <table>
                         <thead>
@@ -409,7 +409,7 @@ export default function Education(props) {
                                 <td>Degree</td>
                                 <td>Major</td>
                                 <td>Certificate</td>
-                                <td></td>
+                                {!props.readOnly && <td></td>}
                             </tr>
                         </thead>
                         <tbody>
@@ -424,11 +424,11 @@ export default function Education(props) {
                                     <td>{data.major}</td>
                                     <td>{data.fileUploadName}</td>
 
-                                    <td><Button type="button" role="button"
-                                        onClick={(e)=>{
+                                    {!props.readOnly && <td><Button type="button" role="button"
+                                        onClick={(e) => {
                                             props.onDelete(data.id)
                                         }}
-                                        label="Delete" className="p-button-danger" /></td>
+                                        label="Delete" className="p-button-danger" /></td>}
                                 </tr>
                             ))}
                         </tbody>

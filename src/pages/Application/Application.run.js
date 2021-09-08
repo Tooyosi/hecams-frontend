@@ -1,12 +1,12 @@
 import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference, downloadConsent, addConsentSignature, deleteEducation, deletePastJob } from "service/jobAppliationservice"
-import { checkNull, DATE_FORMAT, dataURLToBlob } from "utilities"
-import { showLoading, swalClose } from 'utilities/utility_alert.js';
+import { checkNull, DATE_FORMAT, dataURLToBlob, VIEW_DATE_FORMAT } from "utilities"
+import { showLoading, swalClose, showError } from 'utilities/utility_alert.js';
 
 import moment from "moment"
 
 const catchError = (error, addMessage) => {
     addMessage("error", `${error ?.response ?.data ?.error || "Failed"}`, `${error ?.response ?.data ?.message || "An Error occured"}`, `${error ?.response ?.data ?.errors ? error ?.response ?.data ?.errors[0] : "An Error occured"}`)
-
+    swalClose()
 }
 
 export const personalSubmit = async (values, formikProps, state, changeState, addMessage) => {
@@ -105,7 +105,7 @@ export const availabilitySubmit = async (values, formikProps, state, changeState
     formData.append("numHoursYouCanWorkWeekly", state.formAvailability.hours)
     formData.append("canYouWorkAtNight", state.formAvailability.night.code)
     formData.append("canYouWorkWeekend", state.formAvailability.weekends.code)
-    formData.append("availableToStartDate", moment(state.formAvailability.startDate).format("MMM-DD-yyyy"))
+    formData.append("availableToStartDate", moment(state.formAvailability.startDate).format(VIEW_DATE_FORMAT))
     formData.append("areYouAllowedToWorkInTheUS", state.formAvailability.allowedToWork.code)
     formData.append("whenAreUnAvailableToWork", state.formAvailability.notavailableToWork)
     formData.append("employmentDesired", state.formAvailability.employmentDesired)
@@ -283,7 +283,7 @@ export const consentSubmit = async (image, param2, state, changeState, addMessag
         })
         let { data } = await addConsentSignature(state.formPersonal.email, dataToSend)
         // if(data.isActionSuccessful){
-            
+
         addMessage("success", `Success`, `Successful`, `Successful`)
         // window.location.href = '/'
         getConsentData(state, changeState, true)
@@ -400,14 +400,24 @@ export const getPersonalData = async (state, changeState) => {
                 fileUploadSize: checkNull(data.fileUploadSize),
             }
         })
-    } catch (error) {
-        changeState({
-            ...state,
-            loading: false,
-            otpStep: 3,
-        })
-    } finally{
         swalClose()
+    } catch (error) {
+        if (error ?.response ?.data ?.errors[0] ?.includes("Not Found")) {
+            showError(error ?.response ?.data ?.errors[0], {
+                allowOutsideClick: false, willClose: () => {
+                    window.history.back()
+                }
+            })
+        } else {
+            changeState({
+                ...state,
+                loading: false,
+                otpStep: 3,
+            })
+            swalClose()
+        }
+    } finally {
+        // swalClose()
 
     }
 }
@@ -440,7 +450,7 @@ export const getEmergencyData = async (state, changeState) => {
             loading: false,
             activeItem: state.items[1]
         })
-    }finally{
+    } finally {
         swalClose()
 
     }
@@ -468,7 +478,7 @@ export const getTransportData = async (state, changeState) => {
             loading: false,
             activeItem: state.items[2]
         })
-    }finally{
+    } finally {
         swalClose()
 
     }
@@ -499,7 +509,7 @@ export const getAvailabilityData = async (state, changeState) => {
             loading: false,
             activeItem: state.items[3]
         })
-    }finally{
+    } finally {
         swalClose()
 
     }
@@ -539,7 +549,7 @@ export const getEducationData = async (state, changeState) => {
                 toggle: false,
             }
         })
-    }finally{
+    } finally {
         swalClose()
 
     }
@@ -555,7 +565,7 @@ export const removeEducation = async (id, state, changeState, addMessage) => {
 
     } catch (error) {
         catchError(error, addMessage)
-    }finally{
+    } finally {
         swalClose()
     }
 }
@@ -601,7 +611,7 @@ export const getTaskData = async (state, changeState) => {
             activeItem: state.items[5],
             loading: false
         })
-    }finally{
+    } finally {
         swalClose()
 
     }
@@ -636,7 +646,7 @@ export const getPastJobData = async (state, changeState) => {
             activeItem: state.items[6],
             loading: false
         })
-    }finally{
+    } finally {
         swalClose()
 
     }
@@ -652,7 +662,7 @@ export const removePastJob = async (id, state, changeState, addMessage) => {
 
     } catch (error) {
         catchError(error, addMessage)
-    }finally{
+    } finally {
         swalClose()
     }
 }
@@ -686,7 +696,7 @@ export const getReferenceData = async (state, changeState) => {
                 toggle: false,
             }
         })
-    }finally{
+    } finally {
         swalClose()
 
     }
@@ -718,7 +728,7 @@ export const getConsentData = async (state, changeState, isSubmitted = false) =>
                 ...state.formConsent,
                 file: url,
                 fileType: data.type,
-                isSubmitted: state.formConsent.isSubmitted == true? true : isSubmitted,
+                isSubmitted: state.formConsent.isSubmitted == true ? true : isSubmitted,
                 submitting: false
             },
             activeItem: state.items[8],
@@ -731,7 +741,7 @@ export const getConsentData = async (state, changeState, isSubmitted = false) =>
             activeItem: state.items[8],
             loading: false,
         })
-    }finally{
+    } finally {
         swalClose()
 
     }

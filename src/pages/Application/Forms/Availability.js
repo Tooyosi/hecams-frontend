@@ -20,7 +20,7 @@ export const validation = Yup.object().shape({
 })
 
 export default function Availability(props) {
-    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack } = props
+    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack, readOnly } = props
     var today = new Date();
 
     let [minDate, setMinDate] = useState(today)
@@ -63,6 +63,7 @@ export default function Availability(props) {
                                                 type="number"
                                                 min="0"
                                                 id="hours"
+                                                readOnly={readOnly}
                                                 name="hours"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.hours && touched.hours ? 'p-invalid' : ''}`}
@@ -80,6 +81,7 @@ export default function Availability(props) {
                                             <Dropdown
                                                 id="weekends"
                                                 name="weekends"
+                                                disabled={readOnly}
                                                 value={formControl.weekends}
                                                 onChange={(e) => {
                                                     handleChange(e)
@@ -104,6 +106,7 @@ export default function Availability(props) {
                                         <span className="p-float-label">
 
                                             <Dropdown
+                                                disabled={readOnly}
                                                 id="night"
                                                 name="night"
                                                 value={values.night}
@@ -129,6 +132,7 @@ export default function Availability(props) {
                                                 value={values.startDate}
                                                 className={`width-100  ${errors.startDate ? 'p-invalid' : ''}`}
                                                 name="startDate"
+                                                disabled={readOnly}
                                                 id="startDate"
                                                 dateFormat={DATE_FORMAT}
                                                 value={values.startDate}
@@ -149,6 +153,7 @@ export default function Availability(props) {
 
                                             <Dropdown
                                                 id="allowedToWork"
+                                                disabled={readOnly}
                                                 name="allowedToWork"
                                                 value={values.allowedToWork}
                                                 onChange={(e) => {
@@ -172,6 +177,7 @@ export default function Availability(props) {
                                                 id="notavailableToWork"
                                                 name="notavailableToWork"
                                                 value={values.notavailableToWork}
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.notavailableToWork && touched.notavailableToWork ? 'p-invalid' : ''}`}
                                                 onChange={handleChange} />
@@ -202,6 +208,7 @@ export default function Availability(props) {
                                                 id="employmentDesired"
                                                 name="employmentDesired"
                                                 value={values.employmentDesired}
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.employmentDesired && touched.employmentDesired ? 'p-invalid' : ''}`}
                                                 onChange={handleChange} />

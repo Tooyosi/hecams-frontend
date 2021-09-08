@@ -10,7 +10,7 @@ import FormFooter from './FormFooter';
 
 
 export default function Personal(props) {
-    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, genderOptions } = props
+    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, genderOptions, readOnly } = props
     let inputValidateCall = inputValidate()
 
     let validationShape = {
@@ -19,7 +19,7 @@ export default function Personal(props) {
         phone: RequiredWithCharacterValidation,
         middlename: Yup.string().test("fileFormat",
             "Invalid Character",
-            value => !value?.match(/[&\/\\#,+()~%.'":*?<>{}!|]/g)
+            value => !value ?.match(/[&\/\\#,+()~%.'":*?<>{}!|]/g)
         ),
         workPhone: RequiredWithCharacterValidation,
         address1: RequiredWithCharacterValidation,
@@ -57,8 +57,8 @@ export default function Personal(props) {
                 value => value && value.includes("pdf")
             )
     }
-
-    let validation = Yup.object().shape(validationShape)
+    // if readonly, no validation
+    let validation = Yup.object().shape(readOnly ? {} : validationShape)
     return (
         <FormsWrapper values={formControl}
             handleSubmit={props.onSubmit}
@@ -85,6 +85,7 @@ export default function Personal(props) {
                                                 type="text"
                                                 id="firstname"
                                                 name="firstname"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.firstname && touched.firstname ? 'p-invalid' : ''}`}
                                                 value={values.firstname}
@@ -100,6 +101,7 @@ export default function Personal(props) {
                                                 type="text"
                                                 id="address1"
                                                 name="address1"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.address1 && touched.address1 ? 'p-invalid' : ''}`}
                                                 value={values.address1}
@@ -118,6 +120,7 @@ export default function Personal(props) {
                                                 type="text"
                                                 id="middlename"
                                                 name="middlename"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.middlename && touched.middlename ? 'p-invalid' : ''}`}
                                                 value={values.middlename}
@@ -133,6 +136,7 @@ export default function Personal(props) {
                                                 type="text"
                                                 id="address2"
                                                 name="address2"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.address2 && touched.address2 ? 'p-invalid' : ''}`}
                                                 value={values.address2}
@@ -154,6 +158,7 @@ export default function Personal(props) {
                                                 name="lastname"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.lastname && touched.lastname ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.lastname}
                                                 onChange={handleChange} />
                                             <label htmlFor="lastname">Last name *</label>
@@ -169,6 +174,7 @@ export default function Personal(props) {
                                                 name="city"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.city && touched.city ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.city}
                                                 onChange={handleChange} />
                                             <label htmlFor="city">City *</label>
@@ -188,6 +194,7 @@ export default function Personal(props) {
                                                 name="phone"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.phone && touched.phone ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.phone}
                                                 onChange={handleChange} />
                                             <label htmlFor="phone">Phone Number *</label>
@@ -203,6 +210,7 @@ export default function Personal(props) {
                                                 name="state"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.state && touched.state ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.state}
                                                 onChange={handleChange} />
                                             <label htmlFor="state">State *</label>
@@ -221,6 +229,7 @@ export default function Personal(props) {
                                                 name="workPhone"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.workPhone && touched.workPhone ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.workPhone}
                                                 onChange={handleChange} />
                                             <label htmlFor="workPhone">Work Phone Number *</label>
@@ -236,6 +245,7 @@ export default function Personal(props) {
                                                 name="zip"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.zip && touched.zip ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.zip}
                                                 onChange={handleChange} />
                                             <label htmlFor="zip">Zip Code *</label>
@@ -256,6 +266,7 @@ export default function Personal(props) {
                                                 onBlur={handleBlur}
                                                 disabled={formControl.otp !== ""}
                                                 className={`width-100  ${errors.email && touched.email ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.email}
                                                 onChange={handleChange} />
                                             <label htmlFor="email">Email *</label>
@@ -271,6 +282,7 @@ export default function Personal(props) {
                                                 name="position"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.position && touched.position ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.position}
                                                 onChange={handleChange} />
                                             <label htmlFor="position">Position applying for*</label>
@@ -289,6 +301,7 @@ export default function Personal(props) {
                                                 id="gender"
                                                 name="gender"
                                                 value={formControl.gender}
+                                                disabled={readOnly}
                                                 onChange={(e) => {
                                                     handleChange(e)
                                                     handleDropdownChange(e, formName)
@@ -309,6 +322,7 @@ export default function Personal(props) {
                                                 type="text"
                                                 id="ssn"
                                                 name="ssn"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.ssn && touched.ssn ? 'p-invalid' : ''}`}
                                                 value={values.ssn}
@@ -326,6 +340,7 @@ export default function Personal(props) {
                                         <span className="p-float-label">
                                             <InputText
                                                 type="text"
+                                                readOnly={readOnly}
                                                 id="howHear"
                                                 name="howHear"
                                                 onBlur={handleBlur}
@@ -344,6 +359,7 @@ export default function Personal(props) {
                                                 id="cSsn"
                                                 name="cSsn"
                                                 onBlur={handleBlur}
+                                                readOnly={readOnly}
                                                 className={`width-100  ${errors.cSsn && touched.cSsn ? 'p-invalid' : ''}`}
                                                 value={values.cSsn}
                                                 onChange={handleChange} />
@@ -362,6 +378,7 @@ export default function Personal(props) {
                                                 type="text"
                                                 id="workingWithDisabilities"
                                                 name="workingWithDisabilities"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.workingWithDisabilities && touched.workingWithDisabilities ? 'p-invalid' : ''}`}
                                                 value={values.workingWithDisabilities}
@@ -377,6 +394,7 @@ export default function Personal(props) {
                                                 type="text"
                                                 id="howLongAtAddress"
                                                 name="howLongAtAddress"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.howLongAtAddress && touched.howLongAtAddress ? 'p-invalid' : ''}`}
                                                 value={values.howLongAtAddress}
@@ -398,6 +416,7 @@ export default function Personal(props) {
                                                 name="challenging"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.challenging && touched.challenging ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.challenging}
                                                 onChange={handleChange} />
                                             <label htmlFor="challenging">What do you find most challenging in this type of work *</label>
@@ -415,6 +434,7 @@ export default function Personal(props) {
                                                     handleChange(e)
                                                     handleDropdownChange(e, formName)
                                                 }}
+                                                disabled={readOnly}
                                                 options={yesOrNoOptions}
                                                 className={`width-100  ${errors.capability && touched.capability ? 'p-invalid' : ''}`}
                                                 optionLabel="name"
@@ -439,6 +459,7 @@ export default function Personal(props) {
                                                 }}
                                                 options={yesOrNoOptions}
                                                 className={`width-100  ${errors.convicted && touched.convicted ? 'p-invalid' : ''}`}
+                                                disabled={readOnly}
                                                 optionLabel="name"
                                             ></Dropdown>
 
@@ -450,14 +471,15 @@ export default function Personal(props) {
                                         <div className="p-field">
                                             {/* <label htmlFor="upload">Upload Driver’s Licence*</label> */}
                                             <label htmlFor="upload"
-                                                className={`${(formControl.upload !== "" && formControl.upload) || (formControl.fileUploadName !== "")  ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
+                                                className={`${(formControl.upload !== "" && formControl.upload) || (formControl.fileUploadName !== "") ? 'bg-primary ' : ''}upload-div width-100 p-border-none p-p-2`}
                                             >
 
-                                                <p>{formControl.upload !== "" && formControl.upload  ? formControl.upload.name : formControl.fileUploadName !== ""? formControl.fileUploadName:  "Upload Identification card / Driver’s Licence*"}</p></label>
+                                                <p>{formControl.upload !== "" && formControl.upload ? formControl.upload.name : formControl.fileUploadName !== "" ? formControl.fileUploadName : "Upload Identification card / Driver’s Licence*"}</p></label>
                                             <InputText
                                                 type="file"
                                                 id="upload"
                                                 name="upload"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`p-d-none  ${errors.upload && touched.upload ? 'p-invalid' : ''}`}
                                                 onChange={handleChange} />

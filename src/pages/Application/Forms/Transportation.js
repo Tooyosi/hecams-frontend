@@ -11,7 +11,7 @@ import { DATE_FORMAT } from 'utilities';
 
 
 export default function Transportation(props) {
-    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack } = props
+    let { formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, handleGoBack, readOnly } = props
 
     let validationShape = {
         car: Yup.string().required("Required"),
@@ -61,6 +61,7 @@ export default function Transportation(props) {
                                                 handleChange(e)
                                                 handleDropdownChange(e, formName)
                                             }}
+                                            disabled={readOnly}
                                             options={yesOrNoOptions}
                                             className={`width-100  ${errors.car && touched.car ? 'p-invalid' : ''}`}
                                             optionLabel="name"
@@ -78,6 +79,7 @@ export default function Transportation(props) {
                                                 name="reason"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.reason && touched.reason ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.reason}
                                                 onChange={handleChange} />
                                             <label htmlFor="reason">If you don’t have a car how do you get to work?</label>
@@ -98,6 +100,7 @@ export default function Transportation(props) {
                                                 name="license"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.license && touched.license ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.license}
                                                 onChange={handleChange} />
                                             <label htmlFor="license">Driver Driver’s Liense #</label>
@@ -114,6 +117,7 @@ export default function Transportation(props) {
                                                 id="expiration"
                                                 dateFormat={DATE_FORMAT}
                                                 value={values.expiration}
+                                                readOnly={readOnly}
                                                 minDate={minDate}
                                                 onChange={(e) => {
                                                     handleChange(e)

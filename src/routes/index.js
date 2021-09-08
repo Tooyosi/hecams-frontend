@@ -12,6 +12,8 @@ const MissionPage = lazy(() => import("pages/homePage/Mission"))
 const ContactPage = lazy(() => import("pages/homePage/ContactUs"))
 const OnboardPage = lazy(() => import("pages/Onboard/index"))
 const ApplicationPage = lazy(() => import("pages/Application/index"))
+const ViewApplicationPage = lazy(() => import("pages/Application/Preview"))
+const HrDashboard = lazy(() => import("pages/HrDashboard/index"))
 
 const landingRoutes = {
   path: "/",
@@ -77,9 +79,28 @@ const dashboardRoutes = {
   path: "/dashboard",
   name: "Dashboard",
   items: [
-    { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard', badge: '4', badgeClassName: 'p-badge-info' },
+    {
+      label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard',
+      // badge: '4',
+      badgeClassName: 'p-badge-info'
+    },
   ],
   component: Dashboard,
+};
+
+
+
+const hrDashboardRoutes = {
+  path: "/hr-dashboard",
+  name: "Dashboard",
+  items: [
+    {
+      label: 'Hr Dashboard', icon: 'pi pi-fw pi-home', to: '/hr-dashboard',
+      // badge: '4',
+      badgeClassName: 'p-badge-info'
+    },
+  ],
+  component: HrDashboard,
 };
 
 
@@ -87,7 +108,7 @@ const onboardRoutes = {
   path: "/onboard",
   name: "Onboard",
   items: [
-    { label: 'Onboard', icon: 'pi pi-fw pi-user-edit', to: '/onboard'},
+    { label: 'Onboard', icon: 'pi pi-fw pi-user-edit', to: '/onboard' },
   ],
   component: OnboardPage,
 };
@@ -96,7 +117,24 @@ const onboardRoutes = {
 const applicationRoutes = {
   path: "/apply",
   name: "Job Application",
-  component: ApplicationPage,
+  children: [
+    // {
+    //   path: "/apply/:id",
+    //   name: "Job Application",
+    //   component: ViewApplicationPage
+    // },
+    {
+      path: "/apply",
+      name: "Job Application",
+      component: ApplicationPage
+    }
+  ]
+};
+
+const applicationViewRoutes = {
+  path: "/apply/:id",
+  name: "Job Application",
+  component: ViewApplicationPage
 };
 
 
@@ -110,15 +148,18 @@ export const landing = [
 ]
 export const dashboard = [
   dashboardRoutes,
-  onboardRoutes
+  onboardRoutes,
+  hrDashboardRoutes,
+  applicationViewRoutes
 ]
 
-export const application =[
+export const application = [
   applicationRoutes
 ]
 
 
 export default [
   dashboardRoutes,
-  onboardRoutes
+  onboardRoutes,
+  hrDashboardRoutes
 ]

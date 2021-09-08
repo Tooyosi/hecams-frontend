@@ -12,6 +12,7 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import DashboardGuard from 'routes/guards/DashboardGuard';
 import AppBreadcrumb from 'components/common/AppBreadcrumb';
+import Logo from 'components/common/Logo';
 
 
 export const RTLContext = React.createContext();
@@ -314,10 +315,17 @@ const DashboardLayout = ({ children }) => {
                             onMenuButtonClick={onMenuButtonClick}
                             onTopbarItemClick={onTopbarItemClick}
                             onMobileTopbarButtonClick={onMobileTopbarButtonClick} mobileTopbarActive={mobileTopbarActive}
-                            searchActive={searchActive} onSearch={onSearch} />
+                            searchActive={searchActive} onSearch={onSearch}
+                            // i passed in this guys
+                            desktopMenuActive={desktopMenuActive}
+                        />
 
                         <div className="menu-wrapper" onClick={onMenuClick}>
                             <div className="layout-menu-container">
+                                <div className="p-d-flex">
+                                    <Logo style={{ width: "100px" }} />
+                                    {/* <p className="p-text-primary">ABILITY OPTIONS LLC</p> */}
+                                </div>
                                 <AppMenu onMenuItemClick={onMenuItemClick} onRootMenuItemClick={onRootMenuItemClick}
                                     menuMode={menuMode} active={menuActive} />
                             </div>
