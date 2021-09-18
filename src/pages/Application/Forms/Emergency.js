@@ -21,7 +21,7 @@ export const validation = Yup.object().shape({
 })
 
 export default function Emergency(props) {
-    let { formControl, onChange, formName, handleGoBack } = props
+    let { formControl, onChange, formName, handleGoBack, readOnly } = props
 
     return (
         <FormsWrapper values={formControl}
@@ -49,6 +49,7 @@ export default function Emergency(props) {
                                                 type="text"
                                                 id="fullName"
                                                 name="fullName"
+                                                readOnly={readOnly}
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.fullName && touched.fullName ? 'p-invalid' : ''}`}
                                                 value={values.fullName}
@@ -66,6 +67,7 @@ export default function Emergency(props) {
                                                 name="address"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.address && touched.address ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.address}
                                                 onChange={handleChange} />
                                             <label htmlFor="address">Address *</label>
@@ -85,6 +87,7 @@ export default function Emergency(props) {
                                                 name="phone"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.phone && touched.phone ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.phone}
                                                 onChange={handleChange} />
                                             <label htmlFor="phone">Phone Number *</label>
@@ -100,6 +103,7 @@ export default function Emergency(props) {
                                                 name="city"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.city && touched.city ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.city}
                                                 onChange={handleChange} />
                                             <label htmlFor="city">City *</label>
@@ -121,6 +125,7 @@ export default function Emergency(props) {
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.alternativePhone && touched.alternativePhone ? 'p-invalid' : ''}`}
                                                 value={values.alternativePhone}
+                                                readOnly={readOnly}
                                                 onChange={handleChange} />
                                             <label htmlFor="alternativePhone">Alternative Phone Number *</label>
 
@@ -136,6 +141,7 @@ export default function Emergency(props) {
                                                 name="state"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.state && touched.state ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.state}
                                                 onChange={handleChange} />
                                             <label htmlFor="state">State *</label>
@@ -154,6 +160,7 @@ export default function Emergency(props) {
                                                 name="relationship"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.relationship && touched.relationship ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.relationship}
                                                 onChange={handleChange} />
                                             <label htmlFor="relationship">Relationship</label>
@@ -169,6 +176,7 @@ export default function Emergency(props) {
                                                 name="zip"
                                                 onBlur={handleBlur}
                                                 className={`width-100  ${errors.zip && touched.zip ? 'p-invalid' : ''}`}
+                                                readOnly={readOnly}
                                                 value={values.zip}
                                                 onChange={handleChange} />
                                             <label htmlFor="zip">Zip Code *</label>

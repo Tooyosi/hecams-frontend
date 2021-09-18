@@ -44,7 +44,7 @@
     "web-vitals": "^1.1.1",
     "yup": "^0.29.1"
   },
-  "proxy": "https://45.79.51.132:8443",
+  "proxy": "https://3.143.7.223:8443",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

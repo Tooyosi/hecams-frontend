@@ -36,18 +36,18 @@ const AppTopbar = (props) => {
     };
 
     return (
-        <div className="layout-topbar p-shadow-4">
+        <div className="layout-topbar p-shadow-4" style={{marginLeft: `${props.desktopMenuActive? '17rem': '0'}`, width: `${props.desktopMenuActive? 'calc(100% - 17rem)': '100%'}`}}>
             <div className="layout-topbar-left">
-                <button type="button" style={{ cursor: 'pointer' }} className="layout-topbar-logo p-link" onClick={() => history.push('/')}>
-                    {/* <img id="app-logo" src="assets/layout/images/logo-light.svg" alt="ultima-layout" style={{ height: '2.25rem' }} /> */}
+                {/* <button type="button" style={{ cursor: 'pointer' }} className="layout-topbar-logo p-link" onClick={() => history.push('/')}>
                     <Logo style={{width: "100px"}}/>
-                </button>
+                </button> */}
                 <button type="button" className="layout-menu-button p-shadow-6 p-link" onClick={props.onMenuButtonClick}>
                     <i className="pi pi-chevron-right"></i>
                 </button>
                 <button type="button" className="layout-topbar-mobile-button p-link">
                     <i className="pi pi-ellipsis-v fs-large" onClick={props.onMobileTopbarButtonClick}></i>
                 </button>
+                <p>Welcome </p>
             </div>
 
             <div className={classNames('layout-topbar-right', { 'layout-topbar-mobile-active': props.mobileTopbarActive })}>
@@ -69,9 +69,14 @@ const AppTopbar = (props) => {
                                 </div>
                             </CSSTransition>
                         </li>
+                        <li className="layout-topbar-item layout-search-item">
+                            <Button type="button" label="Check In" className="p-button-rounded">
+                                
+                            </Button>
+                        </li>
                          <li className="layout-topbar-item">
                             <button className="layout-topbar-action p-d-flex p-dir-row p-jc-center p-ai-center p-px-2 rounded-circle p-link" onClick={(event) => props.onTopbarItemClick({ originalEvent: event, item: 'profile' })}>
-                                <img src="assets/demo/images/avatar/amyelsner.png" alt="avatar" style={{ width: '32px', height: '32px' }} />
+                                <img src="/assets/demo/images/avatar/amyelsner.png" alt="avatar" style={{ width: '32px', height: '32px' }} />
                             </button>
 
                             <CSSTransition classNames="p-toggleable" timeout={{ enter: 1000, exit: 450 }} in={props.activeTopbarItem === 'profile'} unmountOnExit>

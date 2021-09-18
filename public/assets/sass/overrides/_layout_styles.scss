@@ -147,3 +147,45 @@
 [class*="react-pdf"]{
     width: 100% !important;
 }
+
+
+.menu-wrapper{
+    top: 0;
+    height: 100vh;
+    // z-index: 1000;
+}
+
+.layout-topbar .layout-topbar-left .layout-menu-button{
+    left: -15px;
+}
+
+
+ul[role="menu"]{
+    li{
+
+        a{
+            text-decoration: none;
+            .layout-menuitem-text{
+                font-family: Nunito;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 22px;
+                letter-spacing: 0em;
+                text-align: left;
+            }
+        }
+    }
+}
+
+
+// topbar
+.layout-topbar-green .layout-topbar, .layout-topbar-left{
+    background-color: $headers-bg !important;
+}
+.layout-menu-button{
+    background-color: $white !important;
+    .pi{
+        color: $primaryColor !important;
+    }
+}

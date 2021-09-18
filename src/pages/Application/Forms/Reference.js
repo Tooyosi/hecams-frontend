@@ -317,7 +317,7 @@ export default function Reference(props) {
         // </FormsWrapper>
         <>
             <FormLayout>
-                <div className="p-grid p-my-2">
+                {!props.readOnly && <div className="p-grid p-my-2">
                     <div className="p-col-8">
 
 
@@ -327,7 +327,7 @@ export default function Reference(props) {
 
                         <Button type="submit" onClick={props.doToggleModal} className="p-button-rounded p-my-4" icon="pi pi-plus" iconPos="center" ></Button>
                     </div>
-                </div>
+                </div>}
                 {props.formControl.list.length > 0 && <div className="p-grid company-table">
                     <table>
                         <thead>
@@ -336,7 +336,7 @@ export default function Reference(props) {
                                 <td>Relationship</td>
                                 <td>Years</td>
                                 <td>Phone No</td>
-                                <td></td>
+                                {!props.readOnly && <td></td>}
                             </tr>
                         </thead>
                         <tbody>
@@ -347,11 +347,11 @@ export default function Reference(props) {
                                     <td>{data.numberOfYearsKnown}</td>
                                     <td>{data.phoneNumber}</td>
 
-                                    <td><Button type="button" role="button"
+                                    {!props.readOnly && <td><Button type="button" role="button"
                                         // onClick={(e)=>{
                                         //     editPastJobList("delete", i, null)
                                         // }}
-                                        label="Delete" className="p-button-danger" /></td>
+                                        label="Delete" className="p-button-danger" /></td>}
                                 </tr>
                             ))}
                         </tbody>
