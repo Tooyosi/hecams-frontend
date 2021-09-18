@@ -51,6 +51,9 @@ export const downloadConsent = (email)=> axios.get(`${jobPath}/jobApp/consent/in
 
 export const addConsentSignature = (email, data)=> axios.post(`${jobPath}/jobApp/consent/addConsent/${email}`, data)
 
+export const getAllApplications = (pageNo, pageSize)=> axios.get(`${jobPath}/jobApp/jobProcess/${pageNo}/${pageSize}`)
+
+export const getAllApplicationTypes = ()=> axios.get(`${jobPath}/jobApp/jobProcessTypes`)
 
 
 

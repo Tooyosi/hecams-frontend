@@ -6,6 +6,7 @@ import { Button } from 'primereact/button';
 import moment from "moment"
 import { VIEW_DATE_FORMAT } from 'utilities';
 import {Link} from "react-router-dom"
+import { getAllApplications, getAllApplicationTypes } from 'service/jobAppliationservice';
 
 export default function HrDashboard() {
     const [selectedCustomers1, setSelectedCustomers1] = useState(null);
@@ -26,9 +27,33 @@ export default function HrDashboard() {
            ],
         limit: 10,
         page: 1,
-        totalCount:   300
-    })
+        totalCount:   300,
+        jobTypes: [],
+        formFilter: {
 
+        }
+    })
+    const fetchTypes = async ()=>{
+        try {
+            let {data} = await getAllApplicationTypes(state.page, state.limit)
+            console.log({data})
+        } catch (error) {
+            
+        }
+    }
+
+    const fetchApplication = async()=>{
+        try {
+            let {data} = await getAllApplications(state.page, state.limit)
+            // console.log({data})
+        } catch (error) {
+            
+        }
+    }
+    useEffect(()=>{
+        fetchApplication()
+        fetchTypes()
+    }, [])
 
     const viewTemplate = (data, props) => {
         return (

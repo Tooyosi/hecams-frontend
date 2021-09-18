@@ -137,7 +137,7 @@ export default function Consent(props) {
                         setAllowSubmit={setAllowSubmit}
                         allowSubmit={allowSubmit}
                         isSubmitted={isSubmitted}
-                        readOnly
+                        readOnly={readOnly}
                         submitting={submitting}
                         {...props}
                     />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import FormsWrapper, { showFieldError } from 'components/common/form/Formik'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -8,7 +8,25 @@ import FormLayout from './Layout';
 import { EmailValidation, NumberLengthValidation, RequiredWithCharacterValidation } from 'utilities';
 
 export default function FormOtp({ formStep, formControl, onChange, formName, handleDropdownChange, yesOrNoOptions, genderOptions,sendResendOtp, ...props }) {
+    let [state, setState] = useState({
+        isButtonDisabled: false,
+        clicked: false
+    })
 
+
+    const onSendOtp =  (email, setSubmitting)=> {
+        sendResendOtp(email, setSubmitting)
+        setState({
+            ...state,
+            isButtonDisabled: true,
+            clicked: true
+        });
+    
+        // **** here's the timeout ****
+        setTimeout(() => setState({ ...state, isButtonDisabled: false, clicked: true }), 10000);
+    
+    
+    }
     let validationShape = {}
     if (formStep == 1) {
 
@@ -79,9 +97,9 @@ export default function FormOtp({ formStep, formControl, onChange, formName, han
                                 <div className="p-grid">
                                     <div className="p-col-6">
                                         {formStep == 2 &&
-                                            <Button   disabled={isSubmitting}
-                                                onClick={()=> sendResendOtp(values.email, setSubmitting)}
-                                            label="Resend OTP" type="button" role="button" className="width-100" />
+                                            <Button   disabled={isSubmitting || state.isButtonDisabled}
+                                                onClick={()=> onSendOtp(values.email, setSubmitting)}
+                                            label={`${state.clicked? "Resend OTP" : "Send Otp"}`} type="button" role="button" className="width-100" />
                                         }
                                     </div>
                                     <div className="p-col-6">
