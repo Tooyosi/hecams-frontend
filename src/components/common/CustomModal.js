@@ -7,6 +7,7 @@ export default function CustomModal(props) {
             header={props.header}
             visible={props.visible}
             modal
+            className="p-md-6 p-sm-12"
             style={props.style}
             footer={props.footer}
             onHide={props.toggle}

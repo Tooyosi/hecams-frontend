@@ -18,6 +18,7 @@ import { ToastContext } from 'layout/PlainLayout';
 import Loader from 'components/common/Loader';
 import DocViewer from "react-doc-viewer";
 import { getPastJob, getReference } from 'service/jobAppliationservice';
+import countryList from '../../utilities/countryList';
 
 export default function Application() {
     let signatureRef = useRef(null)
@@ -405,10 +406,7 @@ export default function Application() {
                                         onChange={handleChange}
                                         formControl={state.formEducation}
                                         formName="formEducation"
-                                        countryOption={[
-                                            { name: 'Yes', code: "Yes" },
-                                            { name: 'No', code: "No" }
-                                        ]}
+                                        countryOption={countryList}
                                         schoolTypeOption={[
                                             { name: 'High School/Equivalent', code: "High School" },
                                             { name: 'College', code: "College" },

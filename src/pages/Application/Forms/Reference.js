@@ -154,8 +154,16 @@ const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption, countryO
                                     </div>
                                     <div className="p-col-6   p-md-6 p-sm-6">
                                         <span className="p-float-label">
-
-                                            <Dropdown
+                                        <InputText
+                                                type="text"
+                                                id={`relationship`}
+                                                name={`relationship`}
+                                                onBlur={handleBlur}
+                                                className={`width-100  ${errors[`relationship`] && touched[`relationship`] ? 'p-invalid' : ''}`}
+                                                value={values[`relationship`]}
+                                                onChange={handleChange} />
+                                           
+                                            {/* <Dropdown
                                                 id={`relationship`}
                                                 name={`relationship`}
                                                 value={values[`relationship`]}
@@ -166,7 +174,7 @@ const AddModal = ({ formName, showModal, toggleModal, schoolTypeOption, countryO
                                                 options={countryOption}
                                                 className={`width-100  ${errors[`relationship`] && touched[`relationship`] ? 'p-invalid' : ''}`}
                                                 optionLabel="name"
-                                            ></Dropdown>
+                                            ></Dropdown> */}
                                             <label htmlFor={`relationship`}>Relationship</label>
                                         </span>
 

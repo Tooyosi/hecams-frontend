@@ -131,7 +131,7 @@ export const educationSubmit = async (values, formikProps, state, changeState, a
     formData.append("schoolName", state.formEducation.schoolName)
     formData.append("city", state.formEducation.city)
     formData.append("stateName", state.formEducation.state)
-    formData.append("country", state.formEducation.country.code)
+    formData.append("country", state.formEducation.country.name)
     formData.append("levelCompleted", state.formEducation.level)
     formData.append("degree", state.formEducation.degree)
     formData.append("major", state.formEducation.major)
@@ -245,7 +245,7 @@ export const referenceSubmit = async (values, formikProps, state, changeState, a
 
     let formData = new FormData()
     formData.append("fullName", state.formReference.referenceName)
-    formData.append("relationship", state.formReference.relationship.code)
+    formData.append("relationship", state.formReference.relationship)
     formData.append("NumberOfYearsKnown", state.formReference.years)
     formData.append("phoneNumber", state.formReference.phone)
 
