@@ -78,6 +78,7 @@ export const SUPPORTED_FORMATS = [
 
 export const DATE_FORMAT = "MM/dd/yy"
 export const VIEW_DATE_FORMAT = "MMM-DD-yyyy"
+export const VIEW_DATETIME_FORMAT = "MMM-DD-yyyy hh:mm:ss"
 export const PDF_OR_WORD = "application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 
 export function checkProperties(obj) {

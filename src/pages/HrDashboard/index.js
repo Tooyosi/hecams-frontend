@@ -4,8 +4,8 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import moment from "moment"
-import { VIEW_DATE_FORMAT } from 'utilities';
-import {Link} from "react-router-dom"
+import { VIEW_DATETIME_FORMAT } from 'utilities';
+import { Link } from "react-router-dom"
 import { getAllApplications, getAllApplicationTypes } from 'service/jobAppliationservice';
 
 export default function HrDashboard() {
@@ -13,44 +13,57 @@ export default function HrDashboard() {
     const [globalFilter1, setGlobalFilter1] = useState('');
     const [loading1, setLoading1] = useState(false);
     const [state, changeState] = useState({
-        applicants:  [
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-            {name: "Test Name", role: "Test Role", status: "Test Status",email: "tuc0476@gmail.com", date: moment(Date.now()).format(VIEW_DATE_FORMAT)},
-           ],
+        loading: false,
+        applicants: [],
         limit: 10,
         page: 1,
-        totalCount:   300,
+        totalCount: 0,
         jobTypes: [],
         formFilter: {
 
         }
     })
-    const fetchTypes = async ()=>{
+    const fetchTypes = async () => {
         try {
-            let {data} = await getAllApplicationTypes(state.page, state.limit)
-            console.log({data})
+            let { data } = await getAllApplicationTypes(state.page, state.limit)
+
+            let newData = Object.entries(data).map((a) => {
+                return { name: a[0], value: a[1] }
+            })
+
+            changeState({
+                ...state,
+                jobTypes: newData
+            })
         } catch (error) {
-            
+            console.log(error)
         }
     }
 
-    const fetchApplication = async()=>{
+    const fetchApplication = async (page = state.page, limit = state.limit) => {
+        changeState({
+            ...state,
+            loading: true
+        })
         try {
-            let {data} = await getAllApplications(state.page, state.limit)
-            // console.log({data})
+            let { data } = await getAllApplications(page, limit)
+
+            changeState({
+                ...state,
+                loading: false,
+                totalCount: data.jobApplicationTotalCount || 0,
+                applicants: data.jobProcessedList || []
+
+            })
         } catch (error) {
-            
+            changeState({
+                ...state,
+                loading: false,
+            })
+
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         fetchApplication()
         fetchTypes()
     }, [])
@@ -58,7 +71,7 @@ export default function HrDashboard() {
     const viewTemplate = (data, props) => {
         return (
             <>
-              
+
                 <Link to={`/apply/${data[props.field]}`} className="p-button p-component">View</Link>
             </>
         )
@@ -68,7 +81,9 @@ export default function HrDashboard() {
         return (
             <>
                 {/* <span className="p-column-title">{props.header}</span> */}
-                {data[props.field]}
+                {props.header == "Date"? moment(data[props.field]).format(VIEW_DATETIME_FORMAT):
+                <>{data[props.field]} {props.field2 && data[props.field2]} </>
+            }
             </>
         );
     };
@@ -76,7 +91,7 @@ export default function HrDashboard() {
     const statusBodyTemplate = (data) => {
         return (
             <>
-                <span className={`customer-badge status-${data.status}`}>{data.status}</span>
+                <span className={`customer-badge status-${data.processStatus}`}>{data.processStatus}</span>
             </>
         )
     };
@@ -109,7 +124,7 @@ export default function HrDashboard() {
                 rows={state.limit}
                 // rowsPerPageOptions={[...Array((state.totalCount/state.limit))]}
                 lazy={true}
-                onLazyLoad={(e)=>{ 
+                onLazyLoad={(e) => {
                     console.log(e)
                 }}
                 dataKey="id"
@@ -117,22 +132,25 @@ export default function HrDashboard() {
                 totalRecords={state.totalCount}
                 selection={selectedCustomers1}
                 onSelectionChange={(e) => {
-                    // console.log(e)
+                    console.log(e)
                     setSelectedCustomers1(e.value)
                 }}
-                globalFilter={globalFilter1} 
-                emptyMessage="No Applicants." 
-                loading={loading1} 
-                onPage={(e)=>{
+                globalFilter={globalFilter1}
+                emptyMessage="No Applicants."
+                loading={state.loading}
+                onPage={(e) => {
                     console.log(e)
+                    if((e.page + 1) !== state.page){
+                        fetchApplication((e.page + 1), state.limit)
+                    }
                 }}
                 header={customer1TableHeader}>
                 <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
-                <Column field="name" header="Applicant Name" sortable ></Column>
-                <Column field="role" header="Role" sortable body={countryBodyTemplate}></Column>
-                <Column field="status" header="Status" sortable body={statusBodyTemplate}></Column>
-                <Column field="date" header="Date" sortable body={bodyTemplate}></Column>
-                <Column field="email"  body={viewTemplate}></Column>
+                <Column field="firstName" field2="lastName" header="Applicant Name" body={bodyTemplate} sortable ></Column>
+                {/* <Column field="role" header="Role" sortable body={countryBodyTemplate}></Column> */}
+                <Column field="processStatus" header="Status" sortable body={statusBodyTemplate}></Column>
+                <Column field="jobAppSubmittedDate" header="Date" sortable body={bodyTemplate}></Column>
+                <Column field="emailAddress" body={viewTemplate}></Column>
             </DataTable>
         </div>
     )
