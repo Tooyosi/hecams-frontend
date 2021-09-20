@@ -15,7 +15,7 @@ export default function HrDashboard() {
     const [state, changeState] = useState({
         loading: false,
         applicants: [],
-        limit: 10,
+        limit: 2,
         page: 1,
         totalCount: 0,
         jobTypes: [],
@@ -52,7 +52,8 @@ export default function HrDashboard() {
                 ...state,
                 loading: false,
                 totalCount: data.jobApplicationTotalCount || 0,
-                applicants: data.jobProcessedList || []
+                applicants: data.jobProcessedList || [],
+                page: page
 
             })
         } catch (error) {

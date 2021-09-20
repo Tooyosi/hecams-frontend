@@ -1,11 +1,16 @@
 import axios from 'axios'
 import { Cookies } from 'react-cookie';
 import { getRefreshToken, logout } from './authService';
+import https from "https"
 
 const cookies = new Cookies();
 
 const instance = axios.create({
-  baseURL: "/"
+  // baseURL: "/"
+  httpsAgent: new https.Agent({  
+    rejectUnauthorized: false
+  }),
+  baseURL: "https://18.188.135.202:8443"
 });
 
 
@@ -63,7 +68,11 @@ instance.interceptors.response.use(
 export default instance
 
 export const loginInstance = axios.create({
-  baseURL: "/"
+  // baseURL: "/"
+  httpsAgent: new https.Agent({  
+    rejectUnauthorized: false
+  }),
+  baseURL: "https://18.188.135.202:8443"
 });
 
 

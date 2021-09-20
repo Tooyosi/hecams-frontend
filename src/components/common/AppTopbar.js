@@ -47,7 +47,7 @@ const AppTopbar = (props) => {
                 <button type="button" className="layout-topbar-mobile-button p-link">
                     <i className="pi pi-ellipsis-v fs-large" onClick={props.onMobileTopbarButtonClick}></i>
                 </button>
-                <p>Welcome </p>
+                <p className="p-pl-5">Welcome </p>
             </div>
 
             <div className={classNames('layout-topbar-right', { 'layout-topbar-mobile-active': props.mobileTopbarActive })}>
