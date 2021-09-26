@@ -1,4 +1,4 @@
-import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference, downloadConsent, addConsentSignature, deleteEducation, deletePastJob } from "service/jobAppliationservice"
+import { verifyJobEmail, refreshOtp, validateOtp, getPersonal, addPersonal, getEmergency, addEmergency, addTransport, getAvailability, addAvailability, getTransport, getEducation, addEducation, getTask, addTask, getPastJob, addPastJob, addReference, getReference, downloadConsent, addConsentSignature, deleteEducation, deletePastJob, updateStatus } from "service/jobAppliationservice"
 import { checkNull, DATE_FORMAT, dataURLToBlob, VIEW_DATE_FORMAT } from "utilities"
 import { showLoading, swalClose, showError } from 'utilities/utility_alert.js';
 
@@ -744,6 +744,17 @@ export const getConsentData = async (state, changeState, isSubmitted = false) =>
     } finally {
         swalClose()
 
+    }
+}
+
+export const submitStatus = async(email, status, addMessage)=>{
+    try{
+        showLoading()
+        let {data} = await updateStatus(email, status)
+        addMessage("success", `Success`, `Successful`, `Successful`)
+        swalClose()
+    }catch (e){
+        catchError(e, addMessage)
     }
 }
 

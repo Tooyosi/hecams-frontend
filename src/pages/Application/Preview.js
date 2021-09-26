@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
 import Logo from 'components/common/Logo'
 import { TabMenu } from 'primereact/components/tabmenu/TabMenu';
-import { COMPANY_NAME } from 'utilities';
+import { COMPANY_NAME, onDropdownChange } from 'utilities';
 import { showLoading } from 'utilities/utility_alert.js';
 import Personal from './Forms/Personal';
 import Emergency from './Forms/Emergency';
@@ -12,26 +12,50 @@ import Task from './Forms/Task';
 import PastJob from './Forms/PastJob';
 import Reference from './Forms/Reference';
 import Consent from './Forms/Consent';
-import { emergencySubmit, personalSubmit, taskSubmit, transportationSubmit, pastJobSubmit, referenceSubmit, consentSubmit, verifyEmail, sendResendOtp, getPersonalData, getEmergencyData, availabilitySubmit, getTransportData, getAvailabilityData, educationSubmit, getEducationData, getTaskData, getReferenceData, getPastJobData, getConsentData, removeEducation, removePastJob } from './Application.run';
-// import { ToastContext } from 'layout/PlainLayout';
+import {  consentSubmit, getPersonalData, getEmergencyData,  getTransportData, getAvailabilityData,  getEducationData, getTaskData, getReferenceData, getPastJobData, getConsentData, removeEducation, removePastJob, submitStatus } from './Application.run';
+import { ToastContext } from 'routes/guards/DashboardGuard';
 import Loader from 'components/common/Loader';
+import { getAllApplicationTypes } from 'service/jobAppliationservice';
+import StatusForm from './Forms/StatusForm';
+
 
 export default function ApplicationView(props) {
-    const { match: { params: { id } } } = props
+    const { match: { params: { id } }, location: {search} } = props
+    let searchTerm = new URLSearchParams(search)
+    let searchVal = searchTerm.get("status")
+
     let signatureRef = useRef(null)
     let captchaRef = useRef(null)
-    // let [message, setMessage] = useContext(ToastContext)
+    let [message, setMessage] = useContext(ToastContext)
     const clearSignature = () => {
         // clear the canvas
         signatureRef.current.clear()
         captchaRef.current.reset()
     }
+    const [applicationTypes, setApplicationTypes] = useState([])
+
+    const fetchTypes = async () => {
+        try {
+            let { data } = await getAllApplicationTypes(state.page, state.limit)
+
+            let newData = Object.entries(data).map((a) => {
+                return { name: a[0], value: a[1] }
+            })
+
+            setApplicationTypes([
+                ...applicationTypes,
+                ...newData
+            ])
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     const addMessage = (severity, content, summary, detail) => {
-        // setMessage({
-        //     severity, content, toggle: !message.toggle, summary, detail
-        // })
+        setMessage({
+            severity, content, toggle: !message.toggle, summary, detail
+        })
     };
 
     let itemsArr = [
@@ -54,6 +78,9 @@ export default function ApplicationView(props) {
         loading: true,
         showModal: false,
         showSuccess: false,
+        formStatus: {
+            status: searchVal || ''
+        },
         formPersonal: {
             firstname: '',
             middlename: '',
@@ -172,49 +199,7 @@ export default function ApplicationView(props) {
         }
     })
 
-    let editPastJobList = (param1, param2, param3) => {
-        // let item = state.formPastJob.list.filter((a)=> a.id == param2)[0]
-        let item = state.formPastJob.list[param2]
-        // let index = state.formPastJob.list.indexOf(item)
-
-
-        let newList = []
-        for (let i = 0; i < state.formPastJob ?.list ?.length; i++) {
-            if (i != param2) {
-                const element = state.formPastJob.list[i];
-                newList.push(element)
-            }
-
-        }
-        if (param1 == "edit") {
-            delete item["list"]
-            param3(item)
-
-            changeState({
-                ...state,
-                formPastJob: {
-                    ...state.formPastJob,
-                    ...item,
-                    list: newList
-                }
-            })
-        } else {
-            changeState({
-                ...state,
-                formPastJob: {
-                    ...state.formPastJob,
-                    list: newList
-                }
-
-            })
-        }
-
-    }
-
-    let setPastjobField = (field, value) => {
-        return { field, value }
-    }
-
+  
 
     const tabChange = (e) => {
         // if (e.value.step <= (Number(state.activeItem.step))) {
@@ -232,14 +217,12 @@ export default function ApplicationView(props) {
 
 
     const handleDropdownChange = (e, formName) => {
-        // onDropdownChange(e, state, changeState, formName)
+        onDropdownChange(e, state, changeState, formName)
     }
 
-    const handleSubmit = (fn, param1, param2, showLoader = true) => {
-        if (showLoader) {
-            showLoading({ title: "Saving..." })
-        }
-        fn(param1, param2, state, changeState, addMessage)
+    const doSubmitStatus = async () => {
+      submitStatus(state.formPersonal.email, state.formStatus.status, addMessage)
+        
     }
 
     const handleDataFetch = (fn, stateObj = state, changeStateFn = changeState) => {
@@ -301,6 +284,7 @@ export default function ApplicationView(props) {
 
     useEffect(()=>{
         fetchData(1)
+        fetchTypes()
     }, [])
     return (
         <div className="p-d-flex p-flex-column application-page">
@@ -308,8 +292,17 @@ export default function ApplicationView(props) {
             <div className="p-grid p-m-0 p-py-3">
                 {state.loading ? <Loader /> :
                     <div className="p-col-12">
+                      <div className="p-justify-end">
+                      <StatusForm 
+                            dropdownOptions={applicationTypes}
+                            onChange={handleChange}
+                            formName="formStatus"
+                            formControl={state.formStatus}
+                            handleDropdownChange={handleDropdownChange}
+                            onSubmit={doSubmitStatus}
+                            />
+                      </div>
                         <div className="p-grid p-justify-center p-px-3 p-mt-auto p-mb-auto">
-
                             <div className="p-mb-3">
                                 <TabMenu className="application-tabs" model={state.items} activeItem={state.activeItem}
                                     onTabChange={tabChange}
@@ -324,7 +317,6 @@ export default function ApplicationView(props) {
                                             { name: 'Yes', code: true },
                                             { name: 'No', code: false }
                                         ]}
-                                        handleDropdownChange={handleDropdownChange}
                                         genderOptions={[
                                             { name: 'male', code: 'male' },
                                             { name: 'female', code: 'female' },
@@ -353,7 +345,7 @@ export default function ApplicationView(props) {
                                         { name: 'Yes', code: true },
                                         { name: 'No', code: false }
                                     ]}
-                                    handleDropdownChange={handleDropdownChange}
+                                    
                                     handleGoBack={handleGoBack}
                                     onSubmit={() => fetchData()} />}
 
@@ -367,7 +359,7 @@ export default function ApplicationView(props) {
                                         { name: 'Yes', code: true },
                                         { name: 'No', code: false }
                                     ]}
-                                    handleDropdownChange={handleDropdownChange}
+                                    
                                     handleGoBack={handleGoBack}
                                     onSubmit={() => fetchData()}
                                 />}
@@ -388,7 +380,7 @@ export default function ApplicationView(props) {
                                         { name: 'Professional', code: "Professional" },
                                     ]}
                                     doToggleModal={() => changeState({ ...state, formEducation: { ...state.formEducation, toggle: !state.formEducation.toggle } })}
-                                    handleDropdownChange={handleDropdownChange}
+                                    
                                     handleGoBack={handleGoBack}
                                     handleNext={() => fetchData(6)}
                                     onDelete={(id) => removeEducation(id, state, changeState, addMessage)}
@@ -404,7 +396,7 @@ export default function ApplicationView(props) {
                                         { name: 'Yes', code: "Yes" },
                                         { name: 'No', code: "No" }
                                     ]}
-                                    handleDropdownChange={handleDropdownChange}
+                                    
                                     handleGoBack={handleGoBack}
                                     onSubmit={() => fetchData()}
                                 />}
@@ -414,7 +406,6 @@ export default function ApplicationView(props) {
                                     readOnly={true}
                                     formName="formPastJob"
                                     formControl={state.formPastJob}
-                                    editPastJobList={editPastJobList}
                                     handleGoBack={handleGoBack}
                                     onDelete={(id) => removePastJob(id, state, changeState, addMessage)}
                                     toggleWorks={() => changeState({ ...state, formPastJob: { ...state.formPastJob, workHere: !state.formPastJob.workHere } })}
@@ -430,7 +421,7 @@ export default function ApplicationView(props) {
                                         { name: 'Yes', code: true },
                                         { name: 'No', code: false }
                                     ]}
-                                    handleDropdownChange={handleDropdownChange}
+                                    
                                     handleGoBack={handleGoBack}
                                     handleNext={() => fetchData(9)}
                                     doToggleModal={() => changeState({ ...state, formReference: { ...state.formReference, toggle: !state.formReference.toggle } })}
@@ -446,7 +437,7 @@ export default function ApplicationView(props) {
                                     handleGoBack={handleGoBack}
                                     readOnly={true}
                                     doReload={() => getConsentData(state, changeState)}
-                                    onSubmit={() => handleSubmit(consentSubmit, signatureRef.current.getTrimmedCanvas().toDataURL('image/png'), null)} />
+                                    onSubmit={() => {}} />
                                 }
                             </div>
                         </div>

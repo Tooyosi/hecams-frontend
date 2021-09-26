@@ -66,14 +66,14 @@ export default function HrDashboard() {
     }
     useEffect(() => {
         fetchApplication()
-        fetchTypes()
+        // fetchTypes()
     }, [])
 
     const viewTemplate = (data, props) => {
         return (
             <>
 
-                <Link to={`/apply/${data[props.field]}`} className="p-button p-component">View</Link>
+                <Link to={`/apply/${data[props.field]}?status=${data[props.field2]}`} className="p-button p-component">View</Link>
             </>
         )
     };
@@ -119,39 +119,40 @@ export default function HrDashboard() {
             <DataTable
                 value={state.applicants}
                 paginator
+                first={state.page}
                 className="p-datatable-customers"
                 // rows={state.limit}
                 // rows={(state.totalCount/state.limit)}
                 rows={state.limit}
                 // rowsPerPageOptions={[...Array((state.totalCount/state.limit))]}
                 lazy={true}
-                onLazyLoad={(e) => {
-                    console.log(e)
+                onLazyLoad={(e, ...param) => {
+                    // console.log(e, "lazy")
+                    // console.log(e, {param})
                 }}
                 dataKey="id"
                 rowHover
                 totalRecords={state.totalCount}
                 selection={selectedCustomers1}
                 onSelectionChange={(e) => {
-                    console.log(e)
+                    // console.log(e)
                     setSelectedCustomers1(e.value)
                 }}
                 globalFilter={globalFilter1}
                 emptyMessage="No Applicants."
                 loading={state.loading}
-                onPage={(e) => {
-                    console.log(e)
+                onPage={(e, ...param) => {
                     if((e.page + 1) !== state.page){
                         fetchApplication((e.page + 1), state.limit)
                     }
                 }}
                 header={customer1TableHeader}>
-                <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
+                {/* <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column> */}
                 <Column field="firstName" field2="lastName" header="Applicant Name" body={bodyTemplate} sortable ></Column>
                 {/* <Column field="role" header="Role" sortable body={countryBodyTemplate}></Column> */}
                 <Column field="processStatus" header="Status" sortable body={statusBodyTemplate}></Column>
                 <Column field="jobAppSubmittedDate" header="Date" sortable body={bodyTemplate}></Column>
-                <Column field="emailAddress" body={viewTemplate}></Column>
+                <Column field="emailAddress" field2="processStatus" body={viewTemplate}></Column>
             </DataTable>
         </div>
     )

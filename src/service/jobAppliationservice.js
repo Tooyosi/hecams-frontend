@@ -55,5 +55,7 @@ export const getAllApplications = (pageNo, pageSize)=> axios.get(`${jobPath}/job
 
 export const getAllApplicationTypes = ()=> axios.get(`${jobPath}/jobApp/jobProcessTypes`)
 
+export const updateStatus =  (emailAddress, status)=> axios.put(`${jobPath}/jobApp/jobProcess/${emailAddress}/${status}`)
+
 
 

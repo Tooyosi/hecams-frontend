@@ -7,10 +7,10 @@ const cookies = new Cookies();
 
 const instance = axios.create({
   // baseURL: "/"
-  httpsAgent: new https.Agent({  
-    rejectUnauthorized: false
-  }),
-  baseURL: "https://18.188.135.202:8443"
+  // httpsAgent: new https.Agent({  
+  //   rejectUnauthorized: false
+  // }),
+  baseURL: "http://18.188.135.202:8080"
 });
 
 
@@ -69,10 +69,10 @@ export default instance
 
 export const loginInstance = axios.create({
   // baseURL: "/"
-  httpsAgent: new https.Agent({  
-    rejectUnauthorized: false
-  }),
-  baseURL: "https://18.188.135.202:8443"
+  // httpsAgent: new https.Agent({  
+  //   rejectUnauthorized: false
+  // }),
+  baseURL: "http://18.188.135.202:8080"
 });
 
 

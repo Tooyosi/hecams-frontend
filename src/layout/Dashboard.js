@@ -96,7 +96,7 @@ const DashboardLayout = ({ children }) => {
         }
 
         const layoutLink = document.getElementById('layout-css');
-        const layoutHref = 'assets/layout/css/layout-' + mode + '.css';
+        const layoutHref = '/assets/layout/css/layout-' + mode + '.css';
         replaceLink(layoutLink, layoutHref);
 
         const themeLink = document.getElementById('theme-css');

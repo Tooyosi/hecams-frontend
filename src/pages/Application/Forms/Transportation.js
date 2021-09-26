@@ -117,6 +117,7 @@ export default function Transportation(props) {
                                                 id="expiration"
                                                 dateFormat={DATE_FORMAT}
                                                 value={values.expiration}
+                                                disabled={readOnly}
                                                 readOnly={readOnly}
                                                 minDate={minDate}
                                                 onChange={(e) => {
