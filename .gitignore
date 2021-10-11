@@ -24,3 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 Dockerfile
 consent.doc\
+docker-compose-prod.yml
+docker-compose-staging.yml

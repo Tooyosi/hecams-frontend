@@ -10,7 +10,7 @@ const instance = axios.create({
   // httpsAgent: new https.Agent({  
   //   rejectUnauthorized: false
   // }),
-  baseURL: "http://18.188.135.202:8443"
+  baseURL: process.env.REACT_APP_BASE_URL
 });
 
 
@@ -72,7 +72,7 @@ export const loginInstance = axios.create({
   // httpsAgent: new https.Agent({  
   //   rejectUnauthorized: false
   // }),
-  baseURL: "http://18.188.135.202:8443"
+  baseURL: process.env.REACT_APP_BASE_URL
 });
 
 
